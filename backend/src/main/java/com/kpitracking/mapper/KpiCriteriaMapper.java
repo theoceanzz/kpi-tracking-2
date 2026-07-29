@@ -1,0 +1,193 @@
+package com.kpitracking.mapper;
+
+import com.kpitracking.dto.response.kpi.KpiCriteriaResponse;
+import com.kpitracking.dto.response.kpi.KpiCriteriaSummaryResponse;
+import com.kpitracking.entity.KpiCriteria;
+import com.kpitracking.entity.KpiPeriod;
+import com.kpitracking.dto.response.kpi.KpiPeriodResponse;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
+@Mapper(componentModel = "spring")
+public interface KpiCriteriaMapper {
+    @AfterMapping
+    default void mapOrgUnitIds(com.kpitracking.entity.KpiCriteria kpi, @MappingTarget KpiCriteriaResponse response) {
+        if (kpi.getOrgUnit() != null) {
+            response.setOrgUnitIds(java.util.List.of(kpi.getOrgUnit().getId()));
+        }
+    }
+
+    @AfterMapping
+    default void mapIsReverseKpi(KpiCriteria kpi, @MappingTarget KpiCriteriaResponse response) {
+        response.setIsReverseKpi(kpi.getIsReverseKpi());
+        response.setIsBonusKpi(kpi.getIsBonusKpi());
+    }
+
+    @AfterMapping
+    default void mapIsReverseKpiSummary(KpiCriteria kpi, @MappingTarget KpiCriteriaSummaryResponse response) {
+        response.setIsReverseKpi(kpi.getIsReverseKpi());
+        response.setIsBonusKpi(kpi.getIsBonusKpi());
+    }
+    @Mapping(source = "kpiType", target = "kpiType")
+    @Mapping(source = "orgUnit.id", target = "orgUnitId")
+    @Mapping(source = "orgUnit.name", target = "orgUnitName")
+    @Mapping(source = "assignees", target = "assignees")
+    @Mapping(source = "createdBy.id", target = "createdById")
+    @Mapping(source = "createdBy.fullName", target = "createdByName")
+    @Mapping(source = "approvedBy.id", target = "approvedById")
+    @Mapping(source = "approvedBy.fullName", target = "approvedByName")
+    @Mapping(source = "assignees", target = "assigneeIds", qualifiedByName = "mapAssigneeIds")
+    @Mapping(source = "assignees", target = "assigneeNames", qualifiedByName = "mapAssigneeNames")
+    @Mapping(source = "kpiPeriod.id", target = "kpiPeriodId")
+    @Mapping(source = "keyResult.id", target = "keyResultId")
+    @Mapping(source = "keyResult.name", target = "keyResultName")
+    @Mapping(source = "keyResult.code", target = "keyResultCode")
+    @Mapping(source = "keyResult.objective.id", target = "objectiveId")
+    @Mapping(source = "keyResult.objective.name", target = "objectiveName")
+    @Mapping(source = "keyResult.objective.code", target = "objectiveCode")
+    @Mapping(source = "perspective.id", target = "perspectiveId")
+    @Mapping(source = "perspective.name", target = "perspectiveName")
+    @Mapping(source = "perspective.color", target = "perspectiveColor")
+    @Mapping(target = "effectivePerspectiveId", expression = "java(effectivePerspectiveId(kpiCriteria))")
+    @Mapping(target = "effectivePerspectiveName", expression = "java(effectivePerspectiveName(kpiCriteria))")
+    @Mapping(target = "effectivePerspectiveColor", expression = "java(effectivePerspectiveColor(kpiCriteria))")
+    @Mapping(target = "effectiveFixedPerspective", expression = "java(effectiveFixedPerspective(kpiCriteria))")
+    @Mapping(target = "effectiveFixedPerspectiveName", expression = "java(effectiveFixedPerspectiveName(kpiCriteria))")
+    @Mapping(target = "effectiveFixedPerspectiveColor", expression = "java(effectiveFixedPerspectiveColor(kpiCriteria))")
+    @Mapping(source = "parent.id", target = "parentId")
+    @Mapping(source = "parent.name", target = "parentName")
+    @Mapping(source = "replacedBy.id", target = "replacedById")
+    @Mapping(source = "replacedBy.name", target = "replacedByName")
+    @Mapping(target = "submissionCount", expression = "java(countActiveSubmissions(kpiCriteria))")
+    @Mapping(target = "expectedSubmissions", expression = "java(calculateExpected(kpiCriteria))")
+    @Mapping(target = "effectiveDeadline", expression = "java(kpiCriteria.getEffectiveDeadline())")
+    @Mapping(target = "hasChildren", expression = "java(kpiCriteria.getChildren() != null && !kpiCriteria.getChildren().isEmpty())")
+    @Mapping(target = "delegatedToNames", expression = "java(mapDelegatedNames(kpiCriteria))")
+    @Mapping(target = "delegatedToIds", expression = "java(mapDelegatedIds(kpiCriteria))")
+    @Mapping(target = "childrenWeightTotal", expression = "java(sumDecompositionChildrenWeight(kpiCriteria))")
+    KpiCriteriaResponse toResponse(KpiCriteria kpiCriteria);
+
+    @Mapping(source = "orgUnit.name", target = "orgUnitName")
+    @Mapping(source = "assignees", target = "assigneeNames", qualifiedByName = "mapAssigneeNames")
+    @Mapping(target = "submissionCount", expression = "java(countActiveSubmissions(kpiCriteria))")
+    @Mapping(target = "expectedSubmissions", expression = "java(calculateExpected(kpiCriteria))")
+    KpiCriteriaSummaryResponse toSummaryResponse(KpiCriteria kpiCriteria);
+
+
+
+    default int countActiveSubmissions(com.kpitracking.entity.KpiCriteria kpi) {
+        if (kpi.getSubmissions() == null) return 0;
+        return (int) kpi.getSubmissions().stream()
+                .filter(s -> s.getDeletedAt() == null && 
+                             (s.getStatus() == com.kpitracking.enums.SubmissionStatus.PENDING || 
+                              s.getStatus() == com.kpitracking.enums.SubmissionStatus.APPROVED ||
+                              s.getStatus() == com.kpitracking.enums.SubmissionStatus.REJECTED))
+                .count();
+    }
+
+    default int calculateExpected(com.kpitracking.entity.KpiCriteria kpi) {
+        if (kpi.getFrequency() == null || kpi.getKpiPeriod() == null || kpi.getKpiPeriod().getPeriodType() == null) {
+            return 1;
+        }
+        return calculateExpected(kpi.getFrequency(), kpi.getKpiPeriod().getPeriodType());
+    }
+
+    private int calculateExpected(com.kpitracking.enums.KpiFrequency kpiFreq, com.kpitracking.enums.KpiFrequency periodType) {
+        if (kpiFreq == com.kpitracking.enums.KpiFrequency.UNLIMITED) return Integer.MAX_VALUE;
+        if (kpiFreq == periodType) return 1;
+        if (kpiFreq == com.kpitracking.enums.KpiFrequency.DAILY) {
+            if (periodType == com.kpitracking.enums.KpiFrequency.MONTHLY) return 30;
+            if (periodType == com.kpitracking.enums.KpiFrequency.QUARTERLY) return 90;
+            if (periodType == com.kpitracking.enums.KpiFrequency.YEARLY) return 365;
+        }
+        if (kpiFreq == com.kpitracking.enums.KpiFrequency.WEEKLY) {
+            if (periodType == com.kpitracking.enums.KpiFrequency.MONTHLY) return 4;
+            if (periodType == com.kpitracking.enums.KpiFrequency.QUARTERLY) return 13;
+            if (periodType == com.kpitracking.enums.KpiFrequency.YEARLY) return 52;
+        }
+        if (kpiFreq == com.kpitracking.enums.KpiFrequency.MONTHLY) {
+            if (periodType == com.kpitracking.enums.KpiFrequency.QUARTERLY) return 3;
+            if (periodType == com.kpitracking.enums.KpiFrequency.YEARLY) return 12;
+        }
+        if (kpiFreq == com.kpitracking.enums.KpiFrequency.QUARTERLY && periodType == com.kpitracking.enums.KpiFrequency.YEARLY) return 4;
+        return 1;
+    }
+
+
+
+    @Mapping(source = "organization.id", target = "organizationId")
+    KpiPeriodResponse toKpiPeriodResponse(KpiPeriod kpiPeriod);
+
+    @org.mapstruct.Named("mapAssigneeNames")
+    default java.util.List<String> mapAssigneeNames(java.util.List<com.kpitracking.entity.User> assignees) {
+        if (assignees == null) return java.util.Collections.emptyList();
+        return assignees.stream()
+                .map(com.kpitracking.entity.User::getFullName)
+                .toList();
+    }
+
+    @org.mapstruct.Named("mapAssigneeIds")
+    default java.util.List<java.util.UUID> mapAssigneeIds(java.util.List<com.kpitracking.entity.User> assignees) {
+        if (assignees == null) return java.util.Collections.emptyList();
+        return assignees.stream()
+                .map(com.kpitracking.entity.User::getId)
+                .toList();
+    }
+
+    default java.util.List<String> mapDelegatedNames(com.kpitracking.entity.KpiCriteria kpi) {
+        if (kpi.getChildren() == null || kpi.getChildren().isEmpty()) return java.util.Collections.emptyList();
+        return kpi.getChildren().stream()
+                .flatMap(child -> child.getAssignees().stream())
+                .map(com.kpitracking.entity.User::getFullName)
+                .distinct()
+                .toList();
+    }
+
+    default java.util.List<java.util.UUID> mapDelegatedIds(com.kpitracking.entity.KpiCriteria kpi) {
+        if (kpi.getChildren() == null || kpi.getChildren().isEmpty()) return java.util.Collections.emptyList();
+        return kpi.getChildren().stream()
+                .flatMap(child -> child.getAssignees().stream())
+                .map(com.kpitracking.entity.User::getId)
+                .distinct()
+                .toList();
+    }
+
+    default java.util.UUID effectivePerspectiveId(com.kpitracking.entity.KpiCriteria kpi) {
+        return com.kpitracking.util.BscPerspectiveResolver.effectivePerspectiveId(kpi);
+    }
+
+    default String effectivePerspectiveName(com.kpitracking.entity.KpiCriteria kpi) {
+        var p = com.kpitracking.util.BscPerspectiveResolver.effectivePerspective(kpi);
+        return p != null ? p.getName() : null;
+    }
+
+    default String effectivePerspectiveColor(com.kpitracking.entity.KpiCriteria kpi) {
+        var p = com.kpitracking.util.BscPerspectiveResolver.effectivePerspective(kpi);
+        return p != null ? p.getColor() : null;
+    }
+
+    default String effectiveFixedPerspective(com.kpitracking.entity.KpiCriteria kpi) {
+        var p = com.kpitracking.util.BscPerspectiveResolver.effectivePerspective(kpi);
+        return p != null && p.getFixedPerspective() != null ? p.getFixedPerspective().name() : null;
+    }
+
+    default String effectiveFixedPerspectiveName(com.kpitracking.entity.KpiCriteria kpi) {
+        var p = com.kpitracking.util.BscPerspectiveResolver.effectivePerspective(kpi);
+        return p != null && p.getFixedPerspective() != null ? p.getFixedPerspective().getDisplayName() : null;
+    }
+
+    default String effectiveFixedPerspectiveColor(com.kpitracking.entity.KpiCriteria kpi) {
+        var p = com.kpitracking.util.BscPerspectiveResolver.effectivePerspective(kpi);
+        return p != null && p.getFixedPerspective() != null ? p.getFixedPerspective().getColor() : null;
+    }
+
+    default Double sumDecompositionChildrenWeight(com.kpitracking.entity.KpiCriteria kpi) {
+        if (kpi.getChildren() == null || kpi.getChildren().isEmpty()) return 0.0;
+        return kpi.getChildren().stream()
+                .filter(child -> child.getParentRelationType() == com.kpitracking.enums.KpiParentRelationType.DECOMPOSITION)
+                .mapToDouble(child -> child.getWeight() != null ? child.getWeight() : 0.0)
+                .sum();
+    }
+}

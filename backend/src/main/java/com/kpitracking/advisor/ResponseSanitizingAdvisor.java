@@ -1,0 +1,217 @@
+package com.kpitracking.advisor;
+
+import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
+import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
+import org.springframework.ai.chat.client.advisor.api.StreamAdvisor;
+import org.springframework.ai.chat.client.advisor.api.StreamAdvisorChain;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.model.Generation;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.client.ChatClientRequest;
+import org.springframework.ai.chat.client.ChatClientResponse;
+import org.springframework.core.Ordered;
+import reactor.core.publisher.Flux;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
+
+public class ResponseSanitizingAdvisor implements CallAdvisor, StreamAdvisor {
+
+    /**
+     * Pre-compiled matcher for internal tool-name leaks. Matches an (optional) lead-in verb and an
+     * (optional) "tool" noun followed by a known tool name (with or without surrounding backticks),
+     * e.g. "Sử dụng công cụ `compare_org_units`", "dùng get_kpi_detail", "`search_users`".
+     * {@code null} when no tool names were supplied (redaction disabled).
+     */
+    private final Pattern toolLeakPattern;
+
+    /** Replacement phrase shown to the user in place of any leaked internal tool name. */
+    private static final String TOOL_REPLACEMENT = "tính năng tương ứng";
+
+    public ResponseSanitizingAdvisor(Collection<String> toolNames) {
+        this.toolLeakPattern = buildToolLeakPattern(toolNames);
+    }
+
+    /** No-arg fallback: keeps existing behavior (formatting only, no tool-name redaction). */
+    public ResponseSanitizingAdvisor() {
+        this(List.of());
+    }
+
+    private static Pattern buildToolLeakPattern(Collection<String> toolNames) {
+        if (toolNames == null || toolNames.isEmpty()) {
+            return null;
+        }
+        // Longest names first so e.g. "get_kpi_period_breakdown" matches before "get_kpi".
+        List<String> sorted = new ArrayList<>(toolNames);
+        sorted.removeIf(n -> n == null || n.isBlank());
+        if (sorted.isEmpty()) {
+            return null;
+        }
+        sorted.sort((a, b) -> Integer.compare(b.length(), a.length()));
+        StringBuilder alt = new StringBuilder();
+        for (int i = 0; i < sorted.size(); i++) {
+            if (i > 0) alt.append('|');
+            alt.append(Pattern.quote(sorted.get(i).trim()));
+        }
+        String regex = "(?iu)(?:\\b(?:bằng cách|hãy|nên|có thể)\\s+)?"
+                + "(?:(?:công cụ|tool|hàm|chức năng|function)\\s+)?"
+                + "`?\\b(?:" + alt + ")\\b`?";
+        return Pattern.compile(regex);
+    }
+
+    @Override
+    public ChatClientResponse adviseCall(ChatClientRequest request, CallAdvisorChain chain) {
+        ChatClientResponse response = chain.nextCall(request);
+        if (response.chatResponse() == null || response.chatResponse().getResult() == null) {
+            return response;
+        }
+
+        String raw = response.chatResponse().getResult().getOutput().getText();
+        if (raw == null) {
+            return response;
+        }
+
+        String sanitized = sanitize(raw);
+        if (sanitized.equals(raw)) {
+            return response;
+        }
+
+        AssistantMessage sanitizedMsg = new AssistantMessage(sanitized);
+        Generation gen = new Generation(sanitizedMsg,
+                response.chatResponse().getResult().getMetadata());
+        ChatResponse chatResp = new ChatResponse(java.util.List.of(gen),
+                response.chatResponse().getMetadata());
+        return new ChatClientResponse(chatResp, response.context());
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getName();
+    }
+
+    @Override
+    public int getOrder() {
+        return Ordered.LOWEST_PRECEDENCE - 1;
+    }
+
+    @Override
+    public Flux<ChatClientResponse> adviseStream(ChatClientRequest request, StreamAdvisorChain chain) {
+        return null;
+    }
+
+    private String sanitize(String result) {
+        if (result == null) return "";
+        result = repairTableRows(result);
+        String[] lines = result.split("\n", -1);
+        for (int i = 0; i < lines.length; i++) {
+            if (lines[i].stripLeading().startsWith("|")) {
+                lines[i] = lines[i].replaceAll("(?i)<br\\s*/?>", " / ");
+            } else {
+                lines[i] = lines[i].replaceAll("(?i)<br\\s*/?>", "\n");
+            }
+        }
+        result = String.join("\n", lines);
+        result = result.replaceAll("(?m)(\\|[^\\n]+)\\n{2,}(?=\\|)", "$1\n");
+        result = redactToolNames(result);
+        result = redactFieldKeys(result);
+        return result.strip();
+    }
+
+    /** Dòng phân cách của bảng Markdown, vd {@code |-----|------|}. */
+    private static final Pattern TABLE_SEPARATOR = Pattern.compile("[|\\s:-]+");
+
+    /** Đầu dòng dạng danh sách mà model hay chèn nhầm vào bảng: "1. ", "2) ", "- ", "* ". */
+    private static final Pattern LEADING_LIST_MARKER = Pattern.compile("^(?:\\d+[.)]|[-*+])\\s+");
+
+    private static boolean isTableSeparator(String line) {
+        String s = line.strip();
+        return s.startsWith("|") && s.indexOf('-') >= 0 && TABLE_SEPARATOR.matcher(s).matches();
+    }
+
+    private static int countPipes(String s) {
+        int n = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '|') n++;
+        }
+        return n;
+    }
+
+    /**
+     * Vá bảng Markdown bị hỏng. Model nhỏ đôi khi viết đúng dòng tiêu đề + dòng phân cách nhưng
+     * các dòng dữ liệu lại THIẾU dấu {@code |} mở đầu (thường bị thay bằng "1.", "2.", "-"), khiến
+     * trình render hiện tiêu đề thành bảng còn dữ liệu rơi xuống thành danh sách — bảng vỡ đôi.
+     *
+     * <p>Chỉ sửa dòng nằm ngay trong một bảng đã hợp lệ (tiêu đề + phân cách) VÀ có đúng số cột
+     * như tiêu đề sau khi bỏ ký tự đánh số thừa; mọi trường hợp khác để nguyên, nên không có
+     * nguy cơ biến văn bản thường thành bảng.
+     */
+    private String repairTableRows(String text) {
+        if (text == null || text.indexOf('|') < 0) return text;
+        String[] lines = text.split("\n", -1);
+        int headerPipes = -1; // > 0 nghĩa là đang ở trong một bảng
+        for (int i = 0; i < lines.length; i++) {
+            String stripped = lines[i].strip();
+
+            if (headerPipes < 0) {
+                if (stripped.startsWith("|") && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+                    headerPipes = countPipes(stripped);
+                    i++; // bỏ qua dòng phân cách
+                }
+                continue;
+            }
+
+            if (stripped.isEmpty()) {          // dòng trống -> kết thúc bảng
+                headerPipes = -1;
+                continue;
+            }
+            if (stripped.startsWith("|")) continue; // dòng bảng vốn đã đúng
+
+            String candidate = LEADING_LIST_MARKER.matcher(stripped).replaceFirst("");
+            if (candidate.endsWith("|") && countPipes(candidate) == headerPipes - 1) {
+                lines[i] = "| " + candidate;    // trả lại dấu | mở đầu bị thiếu
+            } else {
+                headerPipes = -1;               // không phải dòng bảng -> bảng đã hết
+            }
+        }
+        return String.join("\n", lines);
+    }
+
+    /**
+     * Removes leaked internal tool names from user-facing text, replacing each leak (and its
+     * optional "công cụ/tool" scaffolding) with a neutral business phrase so the sentence still
+     * reads naturally — e.g. "Sử dụng công cụ `compare_org_units` để…" → "Sử dụng tính năng
+     * tương ứng để…". Only known tool names are touched, avoiding false positives.
+     */
+    private String redactToolNames(String text) {
+        if (toolLeakPattern == null || text == null || text.isEmpty()) {
+            return text;
+        }
+        String redacted = toolLeakPattern.matcher(text).replaceAll(TOOL_REPLACEMENT);
+        // Tidy up artifacts left behind: empty backticks and doubled spaces.
+        redacted = redacted.replaceAll("`\\s*`", "");
+        redacted = redacted.replaceAll("[ \\t]{2,}", " ");
+        return redacted;
+    }
+
+    /**
+     * Removes leaked internal JSON field/param keys that the model occasionally parrots despite
+     * the confidentiality rule. Such keys surface as a bare camelCase/lowercase ASCII identifier
+     * wrapped in backticks (e.g. {@code `managers`}, {@code `fullName`}) — Vietnamese business
+     * text never looks like that, so this is safe. First drops a parenthetical aside built around
+     * such a key (cleanest — e.g. "(được liệt kê trong `managers` của …)"), then strips any
+     * remaining standalone leak, then tidies whitespace/punctuation. UPPER-CASE tokens (e.g.
+     * status codes {@code `APPROVED`}) are intentionally left untouched.
+     */
+    private String redactFieldKeys(String text) {
+        if (text == null || text.isEmpty()) return text;
+        // "(… `managers` …)" -> "" : an aside that only exists to reference an internal key.
+        String out = text.replaceAll("\\s*\\([^()]*`[a-z][A-Za-z0-9_]*`[^()]*\\)", "");
+        // Any leftover standalone `identifier` leak -> drop the backticked token.
+        out = out.replaceAll("`[a-z][A-Za-z0-9_]*`", "");
+        // Tidy: collapse doubled spaces and remove space before punctuation.
+        out = out.replaceAll("[ \\t]{2,}", " ").replaceAll("\\s+([.,;:])", "$1");
+        return out;
+    }
+}

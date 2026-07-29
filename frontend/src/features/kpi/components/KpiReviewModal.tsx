@@ -1,0 +1,406 @@
+import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { kpiApi } from '../api/kpiApi'
+import { toast } from 'sonner'
+import { X, Loader2, CheckCircle, XCircle, Target, Building2, Users, BarChart3, Award, Calendar, Clock, Pencil, Undo2, Layers } from 'lucide-react'
+import { formatNumber, formatDateTime, cn, FREQUENCY_MAP, STATUS_CONFIG } from '@/lib/utils'
+import type { KpiCriteria } from '@/types/kpi'
+import { usePermission } from '@/hooks/usePermission'
+import { useMemo } from 'react'
+import { useAuthStore } from '@/store/authStore'
+import { useOrganization } from '@/features/orgunits/hooks/useOrganization'
+import { useScorecards } from '@/features/bsc/hooks/useBsc'
+import { useOrgUnitTree } from '@/features/orgunits/hooks/useOrgUnitTree'
+import { computeRealWeight } from '../utils/realWeight'
+
+
+
+
+
+interface KpiReviewModalProps {
+  open: boolean
+  onClose: () => void
+  kpi: KpiCriteria | null
+  onEdit?: (kpi: KpiCriteria) => void
+}
+
+export default function KpiReviewModal({ open, onClose, kpi, onEdit }: KpiReviewModalProps) {
+  const [rejectReason, setRejectReason] = useState('')
+  const [mode, setMode] = useState<'view' | 'reject'>('view')
+  const qc = useQueryClient()
+  const { canRevertApproval } = usePermission()
+
+  const { user } = useAuthStore()
+  const organizationId = user?.memberships?.[0]?.organizationId
+  const { data: org } = useOrganization(organizationId)
+  const { data: bscScorecards } = useScorecards(org?.enableBsc ? organizationId : undefined)
+  const { data: orgUnitTreeData } = useOrgUnitTree()
+  const realWeight = useMemo(
+    () => computeRealWeight(kpi, bscScorecards, orgUnitTreeData, org?.enableBsc),
+    [kpi, bscScorecards, orgUnitTreeData, org?.enableBsc]
+  )
+
+  const revertApprovalMutation = useMutation({
+    mutationFn: () => kpiApi.revertApproval(kpi!.id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['kpi-criteria'] })
+      toast.success('Đã hoàn duyệt chỉ tiêu, chuyển về trạng thái chờ phê duyệt')
+      onClose()
+    },
+    onError: () => toast.error('Hoàn duyệt thất bại'),
+  })
+
+  const approveMutation = useMutation({
+    mutationFn: () => kpiApi.approve(kpi!.id),
+    onSuccess: () => { 
+      qc.invalidateQueries({ queryKey: ['kpi-criteria'] }); 
+      toast.success('Đã phê duyệt chỉ tiêu thành công'); 
+      onClose(); 
+      setMode('view') 
+    },
+    onError: () => toast.error('Duyệt thất bại'),
+  })
+
+  const rejectMutation = useMutation({
+    mutationFn: () => kpiApi.reject(kpi!.id, { reason: rejectReason }),
+    onSuccess: () => { 
+      qc.invalidateQueries({ queryKey: ['kpi-criteria'] }); 
+      toast.success('Đã trả lại chỉ tiêu'); 
+      setRejectReason(''); 
+      setMode('view'); 
+      onClose() 
+    },
+    onError: () => toast.error('Từ chối thất bại'),
+  })
+
+  if (!open || !kpi) return null
+
+  const isPending = approveMutation.isPending || rejectMutation.isPending
+  const isReviewable = kpi.status === 'PENDING_APPROVAL'
+  const status = STATUS_CONFIG[kpi.status as keyof typeof STATUS_CONFIG] ?? STATUS_CONFIG['PENDING_APPROVAL']!
+  const StatusIcon = status.icon
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      
+      <div className="relative bg-white dark:bg-slate-900 rounded-[32px] shadow-2xl w-full max-w-2xl mx-4 animate-in zoom-in-95 fade-in duration-300 max-h-[90vh] overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col">
+        
+        {/* Header Section */}
+        <div className="px-4 sm:px-8 py-4 sm:py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+            <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-600/20 shrink-0">
+              <Target size={18} className="sm:hidden" />
+              <Target size={24} className="hidden sm:block" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-base sm:text-xl font-black text-slate-900 dark:text-white whitespace-nowrap">Thẩm định Chỉ tiêu</h3>
+              <div className={cn(
+                "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[9px] font-black uppercase tracking-widest mt-1 whitespace-nowrap",
+                status.bgColor, status.color
+              )}>
+                <StatusIcon size={10} className={kpi.status === 'PENDING_APPROVAL' ? 'animate-pulse' : ''} /> {status.label}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            {isReviewable && onEdit && (
+              <button
+                onClick={() => onEdit(kpi)}
+                className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest hover:bg-indigo-100 transition-all border border-indigo-100 dark:border-indigo-800"
+              >
+                <Pencil size={14} className="shrink-0" />
+                <span className="hidden sm:inline">Chỉnh sửa</span>
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="p-2 sm:p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-all hover:rotate-90 shrink-0"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="flex-1 overflow-y-auto p-8 space-y-8">
+          
+          {/* Overview & Description */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Tên chỉ tiêu</p>
+              <h4 className="text-2xl font-black text-slate-900 dark:text-white leading-tight">{kpi.name}</h4>
+              {kpi.isReverseKpi && (
+                <span className="inline-flex items-center gap-1 mt-2 px-2.5 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-[10px] font-black uppercase tracking-wider border border-orange-200 dark:border-orange-800/50">
+                  ↓ KPI Ngược
+                </span>
+              )}
+              {kpi.isBonusKpi && (
+                <span className="inline-flex items-center gap-1 mt-2 ml-2 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-wider border border-emerald-200 dark:border-emerald-800/50">
+                  + KPI Thưởng
+                </span>
+              )}
+            </div>
+            {kpi.description && (
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Mô tả chi tiết</p>
+                <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+                   <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                     {kpi.description}
+                   </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Core Metrics Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {kpi.kpiType !== 'QUALITATIVE' && (
+            <MetricBox
+              icon={Target}
+              label="Mục tiêu yêu cầu"
+              value={kpi.targetValue != null ? formatNumber(kpi.targetValue) : '—'}
+              unit={kpi.unit ?? ''}
+              color="text-indigo-600"
+            />
+            )}
+            {kpi.kpiType !== 'QUALITATIVE' && (
+            <MetricBox
+              icon={BarChart3}
+              label="Tối thiểu"
+              value={kpi.minimumValue != null ? formatNumber(kpi.minimumValue) : '0'}
+              unit={kpi.unit ?? ''}
+              color="text-rose-600"
+            />
+            )}
+            <MetricBox
+              icon={Award}
+              label={realWeight != null ? 'Trọng số thật (%)' : 'Trọng số (%)'}
+              value={realWeight != null ? `${realWeight.toFixed(1)}% / ${kpi.weight}%` : `${kpi.weight ?? '—'}%`}
+              color="text-blue-600"
+            />
+            <MetricBox
+              icon={Calendar}
+              label="Tần suất báo cáo"
+              value={FREQUENCY_MAP[kpi.frequency as keyof typeof FREQUENCY_MAP] ?? kpi.frequency}
+              color="text-purple-600"
+            />
+            <MetricBox
+              icon={Clock}
+              label="Hạn chót KPI (riêng)"
+              value={formatDateTime(kpi.deadline)}
+              color="text-orange-600"
+            />
+            <MetricBox
+              icon={Calendar}
+              label="Hạn chót đợt đánh giá"
+              value={formatDateTime(kpi.kpiPeriod?.endDate)}
+              color="text-amber-600"
+            />
+          </div>
+
+          {/* Secondary Info */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+            <div className="space-y-4">
+              <h5 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                <Building2 size={14} /> Thông tin đơn vị
+              </h5>
+              <div className="space-y-3">
+                <InfoRow label="Phòng ban" value={kpi.orgUnitName ?? '—'} />
+                <InfoRow label="Đợt đánh giá" value={kpi.kpiPeriod?.name ?? '—'} />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h5 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                <Users size={14} /> Người thực hiện
+              </h5>
+              <div className="flex flex-wrap gap-2">
+                {kpi.assigneeNames?.map((name, i) => (
+                  <span key={i} className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    {name}
+                  </span>
+                )) || <span className="text-xs text-slate-400">Chưa được giao cho ai</span>}
+              </div>
+            </div>
+          </div>
+
+          {/* OKR Info */}
+          {kpi.keyResultName && (
+            <div className="space-y-4">
+              <h5 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                <Target size={14} className="text-violet-500" /> Liên kết OKR
+              </h5>
+              <div className="space-y-4 p-6 rounded-[24px] bg-violet-50/30 dark:bg-violet-900/10 border border-violet-100 dark:border-violet-900/20">
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1.5">Mục tiêu (Objective)</p>
+                  <p className="text-sm font-black text-indigo-600 dark:text-indigo-400 leading-tight">
+                    {kpi.objectiveCode && <span className="bg-indigo-100 dark:bg-indigo-900/40 px-1.5 py-0.5 rounded mr-1.5">{kpi.objectiveCode}</span>}
+                    {kpi.objectiveName || '—'}
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-violet-100 dark:border-violet-900/20">
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1.5">Kết quả then chốt (Key Result)</p>
+                  <p className="text-sm font-bold text-violet-600 dark:text-violet-400 leading-tight">
+                    {kpi.keyResultCode && <span className="bg-violet-100 dark:bg-violet-900/40 px-1.5 py-0.5 rounded mr-1.5">{kpi.keyResultCode}</span>}
+                    {kpi.keyResultName}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* BSC Perspective Info */}
+          {kpi.effectivePerspectiveName && (
+            <div className="space-y-4">
+              <h5 className="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                <Layers size={14} style={{ color: kpi.effectivePerspectiveColor || '#8b5cf6' }} /> Hạng mục BSC
+              </h5>
+              <div
+                className="flex items-center gap-3 p-6 rounded-[24px] border"
+                style={{
+                  backgroundColor: `${kpi.effectivePerspectiveColor || '#8b5cf6'}12`,
+                  borderColor: `${kpi.effectivePerspectiveColor || '#8b5cf6'}33`,
+                }}
+              >
+                <span className="w-3 h-10 rounded-full shrink-0" style={{ backgroundColor: kpi.effectivePerspectiveColor || '#8b5cf6' }} />
+                <div>
+                  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">Thuộc hạng mục</p>
+                  <p className="text-base font-black leading-tight" style={{ color: kpi.effectivePerspectiveColor || '#8b5cf6' }}>
+                    {kpi.effectivePerspectiveName}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Reject Reason History if any */}
+          {kpi.rejectReason && (
+             <div className="p-6 rounded-2xl bg-red-50 dark:bg-red-900/10 border border-red-200/50 dark:border-red-900/30">
+                <div className="flex items-center gap-2 text-red-600 dark:text-red-400 mb-2">
+                  <XCircle size={18} className="shrink-0" />
+                  <span className="text-xs font-black uppercase tracking-widest">Lý do từ chối trước đó</span>
+                </div>
+                <p className="text-sm font-medium text-red-700 dark:text-red-300 leading-relaxed">
+                   {kpi.rejectReason}
+                </p>
+             </div>
+          )}
+
+          {/* Audit Trail */}
+          <div className="pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-x-8 gap-y-4">
+             <div className="flex items-center gap-2">
+                <Calendar size={14} className="text-slate-400" />
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ngày tạo: {formatDateTime(kpi.createdAt)}</span>
+             </div>
+             {kpi.createdByName && (
+               <div className="flex items-center gap-2">
+                  <Users size={14} className="text-slate-400" />
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Người tạo: {kpi.createdByName}</span>
+               </div>
+             )}
+          </div>
+        </div>
+
+        {/* Actions Footer */}
+        <div className="px-8 py-6 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 shrink-0">
+          {isReviewable ? (
+            mode === 'reject' ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                    Lý do từ chối <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    value={rejectReason}
+                    onChange={(e) => setRejectReason(e.target.value)}
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-400 resize-none transition-all"
+                    placeholder="Mô tả lý do cụ thể để người tạo có thể chỉnh sửa..."
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setMode('view')} 
+                    className="flex-1 px-6 py-3 rounded-2xl text-sm font-black text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-900 transition-all"
+                  >
+                    Quay lại
+                  </button>
+                  <button
+                    onClick={() => rejectMutation.mutate()}
+                    disabled={!rejectReason.trim() || isPending}
+                    className="flex-1 px-6 py-3 rounded-2xl text-sm font-black bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-500/20"
+                  >
+                    {rejectMutation.isPending && <Loader2 size={16} className="animate-spin" />}
+                    <XCircle size={18} /> Xác nhận Từ chối
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setMode('reject')}
+                  disabled={isPending}
+                  className="flex-1 px-3 sm:px-6 py-4 rounded-2xl text-sm font-black border-2 border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  <XCircle size={20} className="shrink-0" /> Trả lại yêu cầu
+                </button>
+                <button
+                  onClick={() => approveMutation.mutate()}
+                  disabled={isPending}
+                  className="flex-1 px-3 sm:px-6 py-4 rounded-2xl text-sm font-black bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-xl shadow-emerald-500/20 whitespace-nowrap"
+                >
+                  {approveMutation.isPending ? <Loader2 size={16} className="animate-spin shrink-0" /> : <CheckCircle size={20} className="shrink-0" />}
+                  Phê duyệt ngay
+                </button>
+              </div>
+            )
+          ) : (
+            <div className="flex justify-end gap-3">
+              {kpi.status === 'APPROVED' && canRevertApproval && (
+                <button
+                  onClick={() => revertApprovalMutation.mutate()}
+                  disabled={revertApprovalMutation.isPending}
+                  className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/30 text-sm font-black text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-all shadow-sm active:scale-95 disabled:opacity-50"
+                >
+                  {revertApprovalMutation.isPending ? <Loader2 size={16} className="animate-spin" /> : <Undo2 size={18} />}
+                  Hoàn duyệt
+                </button>
+              )}
+              <button
+                onClick={onClose}
+                className="px-10 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-black text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm active:scale-95"
+              >
+                Đóng
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function MetricBox({ icon: Icon, label, value, unit, color }: { icon: any; label: string; value: string; unit?: string; color: string }) {
+  return (
+    <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex items-center gap-2 mb-3">
+        <Icon size={14} className="text-slate-400" />
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</p>
+      </div>
+      <div className="flex items-baseline gap-1">
+        <span className={cn("text-2xl font-black", color)}>{value}</span>
+        {unit && <span className="text-xs font-bold text-slate-400 uppercase">{unit}</span>}
+      </div>
+    </div>
+  )
+}
+
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start justify-between gap-4">
+      <span className="text-sm font-medium text-slate-400">{label}</span>
+      <span className="text-sm font-black text-slate-900 dark:text-white text-right">{value}</span>
+    </div>
+  )
+}

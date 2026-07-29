@@ -1,0 +1,21 @@
+package com.kpitracking.dto.response.kpi;
+
+import com.kpitracking.enums.KpiFrequency;
+import lombok.*;
+
+import java.time.Instant;
+import java.util.UUID;
+
+@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
+public class KpiPeriodResponse {
+    private UUID id;
+    private String name;
+    private KpiFrequency periodType;
+    private Instant startDate;
+    private Instant endDate;
+    private Instant notificationDate;
+    private UUID organizationId;
+    /** Kỳ đánh giá tổng hợp chứa đợt này (null nếu chưa gán). */
+    private UUID cycleId;
+    private String cycleName;
+}

@@ -1,0 +1,172 @@
+import { createBrowserRouter } from 'react-router-dom'
+import AuthLayout from '@/layouts/AuthLayout'
+import AppLayout from '@/layouts/AppLayout'
+import ProtectedRoute from './ProtectedRoute'
+import PermissionRoute from './PermissionRoute'
+import PlatformAdminRoute from './PlatformAdminRoute'
+import LandingPage from '@/features/landing/pages/LandingPage'
+
+// Auth pages
+import LoginPage from '@/features/auth/pages/LoginPage'
+import RegisterPage from '@/features/auth/pages/RegisterPage'
+import VerifyEmailPage from '@/features/auth/pages/VerifyEmailPage'
+import ForgotPasswordPage from '@/features/auth/pages/ForgotPasswordPage'
+import ResetPasswordPage from '@/features/auth/pages/ResetPasswordPage'
+import RoleManagementPage from '@/features/organization/pages/RoleManagementPage'
+
+// Dashboard pages
+import EmployeePerformancePage from '@/features/dashboard/pages/EmployeePerformancePage'
+
+import { OrganizationStructurePage } from '@/features/organization/pages/OrganizationStructurePage'
+import OrgUnitDetailPage from '@/features/organization/pages/OrgUnitDetailPage'
+import UsersPage from '@/features/users/pages/UsersPage'
+import CompanyPage from '@/features/orgunits/pages/CompanyPage'
+import KpiCriteriaPage from '@/features/kpi/pages/KpiCriteriaPage'
+import KpiApprovalPage from '@/features/kpi/pages/KpiApprovalPage'
+import KpiAdjustmentApprovalPage from '../features/kpi/pages/KpiAdjustmentApprovalPage'
+import MyKpiPage from '@/features/kpi/pages/MyKpiPage'
+import MySubmissionsPage from '@/features/submissions/pages/MySubmissionsPage'
+import NewSubmissionPage from '@/features/submissions/pages/NewSubmissionPage'
+import SubmissionDetailPage from '@/features/submissions/pages/SubmissionDetailPage'
+import OrgUnitSubmissionsPage from '@/features/submissions/pages/OrgUnitSubmissionsPage'
+import EvaluationsPage from '@/features/evaluations/pages/EvaluationsPage'
+import ProfilePage from '@/features/profile/pages/ProfilePage'
+import NotificationsPage from '@/features/notifications/pages/NotificationsPage'
+import ForceChangePasswordPage from '@/features/auth/pages/ForceChangePasswordPage'
+import MyAdjustmentsPage from '../features/kpi/pages/MyAdjustmentsPage'
+import KpiPeriodsPage from '@/features/kpi/pages/KpiPeriodsPage'
+import KpiCyclesPage from '@/features/kpi/pages/KpiCyclesPage'
+import CycleEvaluationPage from '@/features/kpi/pages/CycleEvaluationPage'
+import DatasourcesPage from '@/features/datasources/pages/DatasourcesPage'
+import DatasourceDetailPage from '@/features/datasources/pages/DatasourceDetailPage'
+import ReportsPage from '@/features/reports/pages/ReportsPage'
+import ReportDetailPage from '@/features/reports/pages/ReportDetailPage'
+import AnalyticsPage from '@/features/analytics/pages/AnalyticsPage'
+import AiAssistantPage from '@/features/analytics/pages/AiAssistantPage'
+import SystemSettingsPage from '@/features/organization/pages/SystemSettingsPage'
+import OkrManagementPage from '@/features/okr/pages/OkrManagementPage'
+import BscManagementPage from '@/features/bsc/pages/BscManagementPage'
+import BscDashboardPage from '@/features/bsc/pages/BscDashboardPage'
+import BscStrategyMapPage from '@/features/bsc/pages/BscStrategyMapPage'
+
+import DashboardPage from '@/features/dashboard/pages/DashboardPage'
+import ErrorPage from '@/features/errors/pages/ErrorPage'
+import PlatformAdminPage from '@/features/platformAdmin/pages/PlatformAdminPage'
+
+export const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <LandingPage />,
+  },
+  {
+    element: <AuthLayout />,
+    children: [
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <RegisterPage /> },
+      { path: '/verify-email', element: <VerifyEmailPage /> },
+      { path: '/forgot-password', element: <ForgotPasswordPage /> },
+      { path: '/reset-password', element: <ResetPasswordPage /> },
+    ],
+  },
+  {
+    element: <PlatformAdminRoute />,
+    children: [
+      {
+        element: <AppLayout />,
+        children: [
+          { path: '/admin', element: <PlatformAdminPage /> },
+        ],
+      },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      { path: '/force-password-change', element: <ForceChangePasswordPage /> },
+      {
+        element: <AppLayout />,
+        children: [
+          { path: '/dashboard', element: <DashboardPage /> },
+          { path: '/profile', element: <ProfilePage /> },
+
+          // Director & KPI Managers
+          {
+            element: <PermissionRoute permission={['KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI_PERIOD:CREATE', 'KPI_CYCLE:CREATE', 'CYCLE_EVAL:VIEW']} />,
+            children: [
+              { path: '/kpi-criteria/pending', element: <KpiApprovalPage /> },
+              { path: '/kpi-adjustments/pending', element: <KpiAdjustmentApprovalPage /> },
+              { path: '/kpi-periods', element: <KpiPeriodsPage /> },
+              { path: '/kpi-cycles', element: <KpiCyclesPage /> },
+              { path: '/kpi-cycles/evaluation', element: <CycleEvaluationPage /> },
+            ],
+          },
+
+          // Admin / HR Management (Strict)
+          {
+            element: <PermissionRoute permission={['ORG:VIEW', 'USER:VIEW', 'ROLE:VIEW']} requireAll={true} />,
+            children: [
+              { path: '/users', element: <UsersPage /> },
+              { path: '/company', element: <CompanyPage /> },
+              { path: '/roles', element: <RoleManagementPage /> },
+              { path: '/org-structure', element: <OrganizationStructurePage /> },
+              { path: '/org-units/:id', element: <OrgUnitDetailPage /> },
+              { path: '/settings', element: <SystemSettingsPage /> },
+            ],
+          },
+
+          // OKR — chỉ Giám đốc/Phó GĐ.
+          {
+            element: <PermissionRoute permission={['OKR:MANAGE']} />,
+            children: [
+              { path: '/okr', element: <OkrManagementPage /> },
+            ],
+          },
+
+          // BSC — chỉ Giám đốc/Phó GĐ.
+          {
+            element: <PermissionRoute permission={['BSC:MANAGE']} />,
+            children: [
+              { path: '/bsc', element: <BscManagementPage /> },
+              { path: '/bsc/dashboard', element: <BscDashboardPage /> },
+              { path: '/bsc/strategy-map', element: <BscStrategyMapPage /> },
+            ],
+          },
+
+          // Director + Head + Deputy
+          {
+            element: <PermissionRoute permission={['KPI:VIEW', 'SUBMISSION:REVIEW', 'USER:VIEW_LIST']} />,
+            children: [
+              { path: '/org-units/:id', element: <OrgUnitDetailPage /> },
+              { path: '/kpi-criteria', element: <KpiCriteriaPage /> },
+              { path: '/submissions/org-unit', element: <OrgUnitSubmissionsPage /> },
+              { path: '/employees/:userId/performance', element: <EmployeePerformancePage /> },
+            ],
+          },
+
+          // Datasources & Reports
+          { path: '/datasources', element: <DatasourcesPage /> },
+          { path: '/datasources/:id', element: <DatasourceDetailPage /> },
+          { path: '/reports', element: <ReportsPage /> },
+          { path: '/reports/:id', element: <ReportDetailPage /> },
+          { path: '/analytics', element: <AnalyticsPage /> },
+          { path: '/ai-assistant', element: <AiAssistantPage /> },
+
+          // All roles — my KPI, submissions & evaluations
+          { path: '/my-kpi', element: <MyKpiPage /> },
+          { path: '/submissions', element: <MySubmissionsPage /> },
+          { path: '/submissions/new', element: <NewSubmissionPage /> },
+          { path: '/submissions/edit/:id', element: <NewSubmissionPage /> },
+          { path: '/evaluations', element: <EvaluationsPage /> },
+          { path: '/my-adjustments', element: <MyAdjustmentsPage /> },
+          { path: '/submissions/:id', element: <SubmissionDetailPage /> },
+          { path: '/notifications', element: <NotificationsPage /> },
+        ],
+      },
+    ],
+  },
+  {
+    path: '*',
+    element: <ErrorPage code="404" />,
+  },
+])
+
