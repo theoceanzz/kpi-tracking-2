@@ -497,7 +497,7 @@ public class KpiCriteriaService {
                     if (id.equals(currentUser.getId())) continue;
 
                     User staff = userRepository.findById(id)
-                            .orElseThrow(() -> new ResourceNotFoundException("Nhân viên", "id", id));
+                            .orElseThrow(() -> new ResourceNotFoundException("Giảng viên", "id", id));
 
                     // Check if a child KPI already exists for this staff to avoid duplicates
                     boolean exists = kpiCriteriaRepository.existsByParentAndAssigneesContains(kpi, staff);
@@ -591,7 +591,7 @@ public class KpiCriteriaService {
         Double totalWeight = calculateTotalWeightByOrgUnit(firstKpi.getOrgUnit().getId(), firstKpi.getKpiPeriod().getId(), WEIGHT_COUNTED_STATUSES);
 
         if (totalWeight == null || Math.abs(totalWeight - 100.0) > 0.001) {
-            throw new BusinessException("Tổng trọng số của đơn vị theo phân bổ nhân sự (cao nhất) phải bằng chính xác 100% trước khi gửi duyệt. Hiện tại: " + (totalWeight != null ? totalWeight : 0) + "%");
+            throw new BusinessException("Tổng trọng số của đơn vị theo phân bổ giảng viên (cao nhất) phải bằng chính xác 100% trước khi gửi duyệt. Hiện tại: " + (totalWeight != null ? totalWeight : 0) + "%");
         }
 
         for (UUID kpiId : kpiIds) {
@@ -727,7 +727,7 @@ public class KpiCriteriaService {
 
     /**
      * Khi org bật BSC & kỳ có thẻ điểm: tổng trọng số các KPI (tính điểm) trong CÙNG một HẠNG MỤC
-     * — cùng phòng ban + cùng kỳ + cùng viễn cảnh hiệu lực — phải = 100% trước khi duyệt (xem ảnh 3).
+     * — cùng khoa + cùng kỳ + cùng viễn cảnh hiệu lực — phải = 100% trước khi duyệt (xem ảnh 3).
      * Đây là ràng buộc chặn CỨNG lúc duyệt; lúc tạo/sửa chỉ cảnh báo mềm (phía FE) để user xây dần.
      */
     private void requireCategoryWeightSum100OnApprove(KpiCriteria kpi) {
@@ -1197,7 +1197,7 @@ public class KpiCriteriaService {
             Double totalWeight = kpiCriteriaRepository.sumWeightByUserIdAndOrgUnitIdAndKpiPeriodIdAndStatusIn(uId, ouId, pId, WEIGHT_COUNTED_STATUSES);
 
             if (totalWeight == null || Math.abs(totalWeight - 100.0) > 0.001) {
-                throw new BusinessException("Lỗi Import: Nhân viên '" + (user != null ? user.getFullName() : uId) +
+                throw new BusinessException("Lỗi Import: Giảng viên '" + (user != null ? user.getFullName() : uId) +
                           "' trong đơn vị '" + (unit != null ? unit.getName() : ouId) +
                           "' trong đợt '" + periodName + "' có tổng trọng số là " +
                           (totalWeight != null ? totalWeight : 0) + "%. Quy tắc bắt buộc phải bằng chính xác 100%.");
@@ -1286,11 +1286,11 @@ public class KpiCriteriaService {
                 String trimmedCode = code.trim();
                 if (trimmedCode.isEmpty()) continue;
                 User user = userRepository.findByEmployeeCode(trimmedCode)
-                        .orElseThrow(() -> new BusinessException("Không tìm thấy nhân viên với mã: " + trimmedCode));
+                        .orElseThrow(() -> new BusinessException("Không tìm thấy giảng viên với mã: " + trimmedCode));
                 assignees.add(user);
             }
         }
-        if (assignees.isEmpty()) throw new BusinessException("Vui lòng cung cấp ít nhất một mã nhân viên để giao chỉ tiêu");
+        if (assignees.isEmpty()) throw new BusinessException("Vui lòng cung cấp ít nhất một mã giảng viên để giao chỉ tiêu");
 
         KpiFrequency frequency;
         try {
@@ -1408,7 +1408,7 @@ public class KpiCriteriaService {
                 
                 if (!isAssigneeLeader) {
                     throw new BusinessException("Trong chế độ Thác nước, chỉ có thể giao chỉ tiêu cho Lãnh đạo đơn vị (rank 0). " +
-                            "Nhân viên '" + assignee.getFullName() + "' không phải là lãnh đạo của đơn vị " + orgUnit.getName());
+                            "Giảng viên '" + assignee.getFullName() + "' không phải là lãnh đạo của đơn vị " + orgUnit.getName());
                 }
             }
         }

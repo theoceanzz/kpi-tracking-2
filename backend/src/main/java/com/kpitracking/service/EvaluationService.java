@@ -96,7 +96,7 @@ public class EvaluationService {
 
                 // 1. Chỉ cấp Trưởng (Rank 0) mới có quyền thực hiện đánh giá cho người khác
                 if (viewerRank > 0) {
-                    throw new ForbiddenException("Chỉ cấp Trưởng mới có quyền thực hiện đánh giá cho nhân viên.");
+                    throw new ForbiddenException("Chỉ cấp Trưởng mới có quyền thực hiện đánh giá cho giảng viên.");
                 }
 
                 // 2. Kiểm tra quan hệ cấp trên - cấp dưới
@@ -112,7 +112,7 @@ public class EvaluationService {
                 });
 
                 if (!isSubordinate) {
-                    throw new ForbiddenException("Bạn chỉ có quyền đánh giá nhân viên cấp dưới trong sơ đồ tổ chức.");
+                    throw new ForbiddenException("Bạn chỉ có quyền đánh giá giảng viên cấp dưới trong sơ đồ tổ chức.");
                 }
             }
         }
@@ -354,7 +354,7 @@ public class EvaluationService {
         return (long) bestLevel * 1000 + bestRank;
     }
 
-    /** Công ty của user có bật thác nước không. */
+    /** Nhà trường của user có bật thác nước không. */
     private boolean isWaterfallForUser(UUID userId) {
         List<UserRoleOrgUnit> uros = userRoleOrgUnitRepository.findByUserId(userId);
         for (UserRoleOrgUnit u : uros) {
@@ -476,7 +476,7 @@ public class EvaluationService {
             userRoleOrgUnitRepository.findManagersByOrgUnitId(unit.getId())
                     .forEach(uro -> userIds.add(uro.getUser().getId()));
         } else {
-            // = TB đánh giá của tất cả nhân sự trong đơn vị (subtree).
+            // = TB đánh giá của tất cả giảng viên trong đơn vị (subtree).
             userRoleOrgUnitRepository.findByOrgUnitIdIn(subtreeIds)
                     .forEach(uro -> userIds.add(uro.getUser().getId()));
         }
@@ -596,7 +596,7 @@ public class EvaluationService {
         });
 
         if (!isSuperior) {
-            throw new com.kpitracking.exception.ForbiddenException("Bạn không có quyền xem bản đánh giá này vì không phải là cấp trên của nhân viên.");
+            throw new com.kpitracking.exception.ForbiddenException("Bạn không có quyền xem bản đánh giá này vì không phải là cấp trên của giảng viên.");
         }
 
         return enrichResponse(evaluation);

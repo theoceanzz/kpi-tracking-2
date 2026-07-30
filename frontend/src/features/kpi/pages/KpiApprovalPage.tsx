@@ -257,7 +257,7 @@ export default function KpiApprovalPage() {
                 <input
                   value={search}
                   onChange={e => { setSearch(e.target.value); setPage(0) }}
-                  placeholder="Tìm tên chỉ tiêu, phòng ban, nhân sự..."
+                  placeholder="Tìm tên chỉ tiêu, khoa, giảng viên..."
                   className="w-full h-12 pl-12 pr-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm font-medium focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all"
                 />
               </div>
@@ -433,7 +433,7 @@ export default function KpiApprovalPage() {
           <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-[40px] border border-dashed border-slate-300 dark:border-slate-700 p-24 shadow-sm text-center">
             <EmptyState 
               title={activeTab === 'PENDING_APPROVAL' ? 'Không có chỉ tiêu nào đang chờ' : 'Không có dữ liệu'} 
-              description="Hãy thay đổi bộ lọc hoặc đợi báo cáo từ các phòng ban." 
+              description="Hãy thay đổi bộ lọc hoặc đợi báo cáo từ các khoa." 
             />
           </div>
         ) : (
@@ -465,7 +465,7 @@ export default function KpiApprovalPage() {
                       </>
                     )}
                     <th className="px-4 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 whitespace-nowrap">
-                      Phòng ban / Nhân sự
+                      Khoa / Giảng viên
                     </th>
                     <th className="px-4 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right whitespace-nowrap">Mục tiêu</th>
                     <th className="px-4 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 whitespace-nowrap">Trọng số</th>

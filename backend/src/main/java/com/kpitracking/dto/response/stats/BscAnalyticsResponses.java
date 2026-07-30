@@ -96,7 +96,7 @@ public class BscAnalyticsResponses {
         private Map<String, Double> values;
     }
 
-    /** GĐ "Kiểm chứng SHADOW": đối chiếu bsc_score vs system_score theo đơn vị/nhân sự. */
+    /** GĐ "Kiểm chứng SHADOW": đối chiếu bsc_score vs system_score theo đơn vị/giảng viên. */
     @Data @Builder @NoArgsConstructor @AllArgsConstructor
     public static class BscVsSystemResponse {
         /** UNIT | MEMBER. */
@@ -114,7 +114,7 @@ public class BscAnalyticsResponses {
         private Integer evaluationCount;
     }
 
-    /** GĐ "Xếp hạng theo BSC": bảng nhân sự phân trang + breakdown viễn cảnh. */
+    /** GĐ "Xếp hạng theo BSC": bảng giảng viên phân trang + breakdown viễn cảnh. */
     @Data @Builder @NoArgsConstructor @AllArgsConstructor
     public static class RankingResponse {
         private List<PerspectiveMeta> perspectives;
@@ -135,7 +135,7 @@ public class BscAnalyticsResponses {
         private Double bscScore;
         private Double systemScore;
         private Integer evaluationCount;
-        /** perspectiveId (string) → điểm đạt trung bình của nhân sự ở viễn cảnh. */
+        /** perspectiveId (string) → điểm đạt trung bình của giảng viên ở viễn cảnh. */
         private Map<String, Double> perspectiveScores;
     }
 }

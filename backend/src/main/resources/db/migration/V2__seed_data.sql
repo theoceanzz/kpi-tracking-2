@@ -18,7 +18,7 @@ INSERT INTO districts (id, name, code, province_id) VALUES
 
 -- Organization
 INSERT INTO organizations (id, name, code, evaluation_max_score, kpi_reminder_percentage, enable_okr) VALUES
-    ('11111111-1111-1111-1111-111111111111', 'Demo Company', 'DEMO1', 100.0, 50, TRUE);
+    ('11111111-1111-1111-1111-111111111111', 'Trường Demo', 'DEMO1', 100.0, 50, TRUE);
 -- Evaluation Levels
 INSERT INTO evaluation_levels (organization_id, name, threshold, color) VALUES
     ('11111111-1111-1111-1111-111111111111', 'XUẤT SẮC',   90.0, '#10b981'),
@@ -57,44 +57,44 @@ SET enable_qualitative = TRUE,
 }'::jsonb
 WHERE id = '11111111-1111-1111-1111-111111111111';
 
--- Org Hierarchy Levels (3-tier: Chi nhánh → Phòng ban → Tổ/Nhóm)
--- level_order 0 = top (Công ty / Chi nhánh), role_level matches role.level
+-- Org Hierarchy Levels (3-tier: Cơ sở → Khoa → Bộ môn)
+-- level_order 0 = top (Trường / Cơ sở), role_level matches role.level
 INSERT INTO org_hierarchy_levels (id, organization_id, level_order, unit_type_name, manager_role_label, role_level) VALUES
-    ('21111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 0, 'Công ty', 'Giám đốc',2),
-    ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', 1, 'Phòng ban',  'Trưởng phòng',3),
-    ('23333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 2, 'Nhóm',         'Trưởng nhóm',4);
+    ('21111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 0, 'Trường', 'Hiệu trưởng',2),
+    ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', 1, 'Khoa',    'Trưởng khoa',3),
+    ('23333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 2, 'Bộ môn',       'Trưởng bộ môn',4);
 
 -- Org Units
 -- Note: path is set automatically by the trg_set_org_path trigger on INSERT
 INSERT INTO org_units (id, name, code, parent_id, org_hierarchy_id, district_id, status) VALUES
-    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Chi nhánh Hà Nội',   'HN-BRANCH',  NULL,                                     '21111111-1111-1111-1111-111111111111', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    -- Phòng IT
-    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Phòng IT',           'IT-DEPT',    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'Team Backend',       'BE-TEAM',    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Team Frontend',      'FE-TEAM',    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    -- Phòng Truyền Thông
-    ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Phòng Truyền Thông', 'COMM-DEPT',  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'Team Content',       'CONT-TEAM',  'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('abcdefab-cdef-cdef-cdef-abcdefabcdef', 'Team Design',        'DES-TEAM',   'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE');
+    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Cơ sở Hà Nội',   'HN-BRANCH',  NULL,                                     '21111111-1111-1111-1111-111111111111', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    -- Khoa Kỹ thuật
+    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Khoa Kỹ thuật',      'IT-DEPT',    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'Bộ môn Lập trình',   'BE-TEAM',    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Bộ môn Giao diện',   'FE-TEAM',    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    -- Khoa Truyền thông
+    ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Khoa Truyền thông',  'COMM-DEPT',  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'Bộ môn Nội dung',    'CONT-TEAM',  'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('abcdefab-cdef-cdef-cdef-abcdefabcdef', 'Bộ môn Thiết kế',    'DES-TEAM',   'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE');
 
 
 -- 3. ROLES
 -- ============================================================================
--- level 2 = Chi nhánh (top-level of this org), level 3 = Phòng ban, level 4 = Tổ/Nhóm
+-- level 2 = Cơ sở (top-level of this org), level 3 = Khoa, level 4 = Bộ môn
 -- rank: 0=primary, 1=deputy, 2=staff
 INSERT INTO roles (id, organization_id, name, level, rank, is_system) VALUES
-    -- Level 2: Chi nhánh
-    ('a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '11111111-1111-1111-1111-111111111111', 'Giám đốc',     2, 0, false),
-    ('a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', '11111111-1111-1111-1111-111111111111', 'Phó Giám đốc', 2, 1, false),
+    -- Level 2: Cơ sở
+    ('a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '11111111-1111-1111-1111-111111111111', 'Hiệu trưởng',     2, 0, false),
+    ('a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', '11111111-1111-1111-1111-111111111111', 'Phó Hiệu trưởng', 2, 1, false),
 
-    -- Level 3: Phòng ban
-    ('b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '11111111-1111-1111-1111-111111111111', 'Trưởng phòng', 3, 0, false),
-    ('c3cccccc-cccc-cccc-cccc-cccccccccccc', '11111111-1111-1111-1111-111111111111', 'Phó phòng',    3, 1, false),
+    -- Level 3: Khoa
+    ('b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '11111111-1111-1111-1111-111111111111', 'Trưởng khoa', 3, 0, false),
+    ('c3cccccc-cccc-cccc-cccc-cccccccccccc', '11111111-1111-1111-1111-111111111111', 'Phó khoa',    3, 1, false),
 
-    -- Level 4: Tổ/Nhóm
-    ('e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '11111111-1111-1111-1111-111111111111', 'Trưởng nhóm',  4, 0, false),
-    ('e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', '11111111-1111-1111-1111-111111111111', 'Phó nhóm',     4, 1, false),
-    ('d4dddddd-dddd-dddd-dddd-dddddddddddd', '11111111-1111-1111-1111-111111111111', 'Nhân viên',    4, 2, false);
+    -- Level 4: Bộ môn
+    ('e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '11111111-1111-1111-1111-111111111111', 'Trưởng bộ môn', 4, 0, false),
+    ('e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', '11111111-1111-1111-1111-111111111111', 'Phó bộ môn',    4, 1, false),
+    ('d4dddddd-dddd-dddd-dddd-dddddddddddd', '11111111-1111-1111-1111-111111111111', 'Giảng viên',    4, 2, false);
 
 
 -- 4. PERMISSIONS
@@ -103,22 +103,22 @@ INSERT INTO permissions (id, code, resource, action, description) VALUES
     -- Dashboard
     ('00000000-0000-0000-0000-000000000101', 'DASHBOARD:VIEW',           'DASHBOARD',    'VIEW',             'Cho phép xem các biểu đồ, số liệu thống kê tổng quan và các khung hiển thị trên trang tổng quan chính'),
     -- Company
-    ('00000000-0000-0000-0000-000000000102', 'COMPANY:VIEW',             'COMPANY',      'VIEW',             'Cho phép xem thông tin hồ sơ công ty/tổ chức (tên, địa chỉ, logo, thông tin liên hệ...)'),
-    ('00000000-0000-0000-0000-000000000205', 'COMPANY:UPDATE',           'COMPANY',      'UPDATE',           'Cho phép chỉnh sửa, cập nhật thông tin hồ sơ công ty/tổ chức'),
+    ('00000000-0000-0000-0000-000000000102', 'COMPANY:VIEW',             'COMPANY',      'VIEW',             'Cho phép xem thông tin hồ sơ nhà trường (tên, địa chỉ, logo, thông tin liên hệ...)'),
+    ('00000000-0000-0000-0000-000000000205', 'COMPANY:UPDATE',           'COMPANY',      'UPDATE',           'Cho phép chỉnh sửa, cập nhật thông tin hồ sơ nhà trường'),
     ('00000000-0000-0000-0000-000000000206', 'COMPANY:DELETE',           'COMPANY',      'DELETE',           'Cho phép xoá hoặc lưu trữ tổ chức khỏi hệ thống — chỉ dành cho quản trị cấp cao nhất'),
     -- Org
-    ('00000000-0000-0000-0000-000000000103', 'ORG:VIEW',                 'ORG',          'VIEW',             'Cho phép xem sơ đồ tổ chức, danh sách các đơn vị/phòng ban đầy đủ chi tiết'),
-    ('00000000-0000-0000-0000-000000000104', 'ORG:CREATE',               'ORG',          'CREATE',           'Cho phép tạo mới đơn vị/phòng ban trong sơ đồ tổ chức'),
-    ('00000000-0000-0000-0000-000000000105', 'ORG:UPDATE',               'ORG',          'UPDATE',           'Cho phép chỉnh sửa thông tin đơn vị/phòng ban (tên, cấp bậc, trưởng đơn vị...)'),
-    ('00000000-0000-0000-0000-000000000106', 'ORG:DELETE',               'ORG',          'DELETE',           'Cho phép xoá đơn vị/phòng ban khỏi sơ đồ tổ chức'),
+    ('00000000-0000-0000-0000-000000000103', 'ORG:VIEW',                 'ORG',          'VIEW',             'Cho phép xem sơ đồ tổ chức, danh sách các đơn vị/khoa đầy đủ chi tiết'),
+    ('00000000-0000-0000-0000-000000000104', 'ORG:CREATE',               'ORG',          'CREATE',           'Cho phép tạo mới đơn vị/khoa trong sơ đồ tổ chức'),
+    ('00000000-0000-0000-0000-000000000105', 'ORG:UPDATE',               'ORG',          'UPDATE',           'Cho phép chỉnh sửa thông tin đơn vị/khoa (tên, cấp bậc, trưởng đơn vị...)'),
+    ('00000000-0000-0000-0000-000000000106', 'ORG:DELETE',               'ORG',          'DELETE',           'Cho phép xoá đơn vị/khoa khỏi sơ đồ tổ chức'),
     ('00000000-0000-0000-0000-000000000238', 'ORG:VIEW_TREE',            'ORG',          'VIEW_TREE',        'Cho phép xem cây sơ đồ tổ chức ở dạng rút gọn (dùng cho bộ lọc, chọn đơn vị nhanh)'),
     -- User
-    ('00000000-0000-0000-0000-000000000107', 'USER:VIEW',                'USER',         'VIEW',             'Cho phép xem danh mục, hồ sơ chi tiết của nhân sự trong tổ chức'),
-    ('00000000-0000-0000-0000-000000000108', 'USER:CREATE',              'USER',         'CREATE',           'Cho phép thêm mới tài khoản/hồ sơ nhân sự vào hệ thống'),
-    ('00000000-0000-0000-0000-000000000109', 'USER:UPDATE',              'USER',         'UPDATE',           'Cho phép chỉnh sửa thông tin cá nhân, chức vụ, đơn vị công tác của nhân sự'),
-    ('00000000-0000-0000-0000-000000000110', 'USER:DELETE',              'USER',         'DELETE',           'Cho phép xoá hoặc vô hiệu hoá tài khoản nhân sự'),
-    ('00000000-0000-0000-0000-000000000111', 'USER:IMPORT',              'USER',         'IMPORT',           'Cho phép nhập danh sách nhân sự hàng loạt từ tệp Excel/CSV'),
-    ('00000000-0000-0000-0000-000000000236', 'USER:VIEW_LIST',           'USER',         'VIEW_LIST',        'Cho phép xem danh sách nhân sự ở dạng rút gọn, dùng để hiển thị trên trang tổng quan hoặc bộ lọc nhanh'),
+    ('00000000-0000-0000-0000-000000000107', 'USER:VIEW',                'USER',         'VIEW',             'Cho phép xem danh mục, hồ sơ chi tiết của giảng viên trong tổ chức'),
+    ('00000000-0000-0000-0000-000000000108', 'USER:CREATE',              'USER',         'CREATE',           'Cho phép thêm mới tài khoản/hồ sơ giảng viên vào hệ thống'),
+    ('00000000-0000-0000-0000-000000000109', 'USER:UPDATE',              'USER',         'UPDATE',           'Cho phép chỉnh sửa thông tin cá nhân, chức vụ, đơn vị công tác của giảng viên'),
+    ('00000000-0000-0000-0000-000000000110', 'USER:DELETE',              'USER',         'DELETE',           'Cho phép xoá hoặc vô hiệu hoá tài khoản giảng viên'),
+    ('00000000-0000-0000-0000-000000000111', 'USER:IMPORT',              'USER',         'IMPORT',           'Cho phép nhập danh sách giảng viên hàng loạt từ tệp Excel/CSV'),
+    ('00000000-0000-0000-0000-000000000236', 'USER:VIEW_LIST',           'USER',         'VIEW_LIST',        'Cho phép xem danh sách giảng viên ở dạng rút gọn, dùng để hiển thị trên trang tổng quan hoặc bộ lọc nhanh'),
     -- Role
     ('00000000-0000-0000-0000-000000000112', 'ROLE:VIEW',                'ROLE',         'VIEW',             'Cho phép xem danh sách các vai trò hiện có trong tổ chức'),
     ('00000000-0000-0000-0000-000000000113', 'ROLE:ASSIGN',              'ROLE',         'ASSIGN',           'Cho phép gán một hoặc nhiều vai trò cho người dùng cụ thể'),
@@ -130,13 +130,13 @@ INSERT INTO permissions (id, code, resource, action, description) VALUES
     ('00000000-0000-0000-0000-000000000204', 'PERMISSION:VIEW',          'PERMISSION',   'VIEW',             'Cho phép xem danh sách toàn bộ quyền hiện có trong hệ thống'),
     -- KPI
     ('00000000-0000-0000-0000-000000000115', 'KPI:VIEW',                 'KPI',          'VIEW',             'Cho phép xem danh mục, chi tiết các chỉ tiêu KPI đã thiết lập trong tổ chức'),
-    ('00000000-0000-0000-0000-000000000116', 'KPI:CREATE',               'KPI',          'CREATE',           'Cho phép thiết lập mới chỉ tiêu KPI cho đơn vị/nhân sự'),
+    ('00000000-0000-0000-0000-000000000116', 'KPI:CREATE',               'KPI',          'CREATE',           'Cho phép thiết lập mới chỉ tiêu KPI cho đơn vị/giảng viên'),
     ('00000000-0000-0000-0000-000000000117', 'KPI:UPDATE',               'KPI',          'UPDATE',           'Cho phép chỉnh sửa nội dung, trọng số, mục tiêu của chỉ tiêu KPI đã tạo'),
     ('00000000-0000-0000-0000-000000000118', 'KPI:DELETE',               'KPI',          'DELETE',           'Cho phép xoá chỉ tiêu KPI khỏi hệ thống'),
     ('00000000-0000-0000-0000-000000000119', 'KPI:APPROVE_CRITERIA',     'KPI',          'APPROVE_CRITERIA', 'Cho phép phê duyệt chỉ tiêu KPI do cấp dưới đề xuất trước khi áp dụng'),
     ('00000000-0000-0000-0000-000000000132', 'KPI:APPROVE_ADJUSTMENT',   'KPI',          'APPROVE_ADJUSTMENT','Cho phép phê duyệt yêu cầu điều chỉnh chỉ tiêu KPI trong quá trình thực hiện'),
     ('00000000-0000-0000-0000-000000000240', 'KPI:APPROVE_OWN',          'KPI',          'APPROVE_OWN',      'Cho phép chỉ tiêu KPI tự tạo được duyệt ngay (tự động chuyển sang trạng thái đã duyệt khi tạo) mà không cần chờ người khác phê duyệt'),
-    ('00000000-0000-0000-0000-000000000241', 'KPI:REVERT_APPROVAL',      'KPI',          'REVERT_APPROVAL',  'Cho phép hoàn duyệt (huỷ phê duyệt) chỉ tiêu KPI đã được duyệt, đưa về trạng thái chờ phê duyệt — chỉ dành cho Giám đốc'),
+    ('00000000-0000-0000-0000-000000000241', 'KPI:REVERT_APPROVAL',      'KPI',          'REVERT_APPROVAL',  'Cho phép hoàn duyệt (huỷ phê duyệt) chỉ tiêu KPI đã được duyệt, đưa về trạng thái chờ phê duyệt — chỉ dành cho Hiệu trưởng'),
     ('00000000-0000-0000-0000-000000000120', 'KPI:VIEW_MY',              'KPI',          'VIEW_MY',          'Cho phép xem các chỉ tiêu KPI được giao cho chính bản thân người dùng'),
     ('00000000-0000-0000-0000-000000000211', 'KPI:IMPORT',               'KPI',          'IMPORT',           'Cho phép nhập hàng loạt chỉ tiêu KPI từ tệp Excel/CSV'),
     ('00000000-0000-0000-0000-000000000212', 'KPI:SUBMIT',               'KPI',          'SUBMIT',           'Cho phép gửi chỉ tiêu KPI đã thiết lập đi để cấp trên phê duyệt'),
@@ -152,19 +152,19 @@ INSERT INTO permissions (id, code, resource, action, description) VALUES
     ('00000000-0000-0000-0000-000000000244', 'KPI_CYCLE:UPDATE',         'KPI_CYCLE',    'UPDATE',           'Cho phép cập nhật thông tin, thời gian của kỳ đánh giá tổng hợp'),
     ('00000000-0000-0000-0000-000000000245', 'KPI_CYCLE:DELETE',         'KPI_CYCLE',    'DELETE',           'Cho phép xoá kỳ đánh giá tổng hợp khỏi hệ thống'),
     -- Đánh giá theo kỳ. Việc GÁN quyền làm ở cuối file theo cách data-driven.
-    ('00000000-0000-0000-0000-000000000246', 'CYCLE_EVAL:VIEW',          'CYCLE_EVAL',   'VIEW',             'Cho phép xem kết quả đánh giá tổng hợp theo kỳ (nhân viên và phòng ban)'),
-    ('00000000-0000-0000-0000-000000000247', 'CYCLE_EVAL:FINALIZE',      'CYCLE_EVAL',   'FINALIZE',         'Cho phép chốt đánh giá tổng hợp phòng ban theo kỳ kèm nhận xét'),
+    ('00000000-0000-0000-0000-000000000246', 'CYCLE_EVAL:VIEW',          'CYCLE_EVAL',   'VIEW',             'Cho phép xem kết quả đánh giá tổng hợp theo kỳ (giảng viên và khoa)'),
+    ('00000000-0000-0000-0000-000000000247', 'CYCLE_EVAL:FINALIZE',      'CYCLE_EVAL',   'FINALIZE',         'Cho phép chốt đánh giá tổng hợp khoa theo kỳ kèm nhận xét'),
     -- Submission
-    ('00000000-0000-0000-0000-000000000121', 'SUBMISSION:REVIEW',        'SUBMISSION',   'REVIEW',           'Cho phép duyệt/từ chối bài nộp kết quả KPI của nhân viên cấp dưới'),
-    ('00000000-0000-0000-0000-000000000127', 'SUBMISSION:REVIEW_KPI',    'SUBMISSION',   'REVIEW_KPI',       'Cho phép xem chi tiết bài nộp KPI của nhân viên để phục vụ việc đánh giá'),
+    ('00000000-0000-0000-0000-000000000121', 'SUBMISSION:REVIEW',        'SUBMISSION',   'REVIEW',           'Cho phép duyệt/từ chối bài nộp kết quả KPI của giảng viên cấp dưới'),
+    ('00000000-0000-0000-0000-000000000127', 'SUBMISSION:REVIEW_KPI',    'SUBMISSION',   'REVIEW_KPI',       'Cho phép xem chi tiết bài nộp KPI của giảng viên để phục vụ việc đánh giá'),
     ('00000000-0000-0000-0000-000000000122', 'SUBMISSION:CREATE',        'SUBMISSION',   'CREATE',           'Cho phép nộp báo cáo kết quả thực hiện KPI cá nhân kèm minh chứng/tệp đính kèm'),
     ('00000000-0000-0000-0000-000000000123', 'SUBMISSION:VIEW_MY',       'SUBMISSION',   'VIEW_MY',          'Cho phép xem lại lịch sử các bài nộp báo cáo KPI của chính bản thân'),
-    ('00000000-0000-0000-0000-000000000214', 'SUBMISSION:VIEW',          'SUBMISSION',   'VIEW',             'Cho phép xem toàn bộ bản nộp KPI của tất cả nhân sự trong phạm vi quản lý'),
+    ('00000000-0000-0000-0000-000000000214', 'SUBMISSION:VIEW',          'SUBMISSION',   'VIEW',             'Cho phép xem toàn bộ bản nộp KPI của tất cả giảng viên trong phạm vi quản lý'),
     ('00000000-0000-0000-0000-000000000215', 'SUBMISSION:DELETE',        'SUBMISSION',   'DELETE',           'Cho phép xoá bản nộp KPI đã được gửi lên hệ thống'),
     ('00000000-0000-0000-0000-000000000216', 'SUBMISSION:UPDATE',        'SUBMISSION',   'UPDATE',           'Cho phép chỉnh sửa nội dung bản nộp KPI đã tồn tại'),
     -- Evaluation
-    ('00000000-0000-0000-0000-000000000124', 'EVALUATION:VIEW',          'EVALUATION',   'VIEW',             'Cho phép xem kết quả đánh giá, xếp loại KPI của nhân sự trong phạm vi quản lý'),
-    ('00000000-0000-0000-0000-000000000125', 'EVALUATION:CREATE',        'EVALUATION',   'CREATE',           'Cho phép thực hiện đánh giá, chấm điểm và xếp loại kết quả KPI cho nhân viên'),
+    ('00000000-0000-0000-0000-000000000124', 'EVALUATION:VIEW',          'EVALUATION',   'VIEW',             'Cho phép xem kết quả đánh giá, xếp loại KPI của giảng viên trong phạm vi quản lý'),
+    ('00000000-0000-0000-0000-000000000125', 'EVALUATION:CREATE',        'EVALUATION',   'CREATE',           'Cho phép thực hiện đánh giá, chấm điểm và xếp loại kết quả KPI cho giảng viên'),
     ('00000000-0000-0000-0000-000000000217', 'EVALUATION:UPDATE',        'EVALUATION',   'UPDATE',           'Cho phép chỉnh sửa kết quả đánh giá KPI đã được lập trước đó'),
     ('00000000-0000-0000-0000-000000000218', 'EVALUATION:DELETE',        'EVALUATION',   'DELETE',           'Cho phép xoá kết quả đánh giá KPI khỏi hệ thống'),
     ('00000000-0000-0000-0000-000000000219', 'EVALUATION:VIEW_MY',       'EVALUATION',   'VIEW_MY',          'Cho phép xem kết quả đánh giá KPI của chính bản thân người dùng'),
@@ -180,8 +180,8 @@ INSERT INTO permissions (id, code, resource, action, description) VALUES
     ('00000000-0000-0000-0000-000000000225', 'POLICY:DELETE',            'POLICY',       'DELETE',           'Cho phép xoá chính sách/quy định khỏi hệ thống'),
     ('00000000-0000-0000-0000-000000000226', 'POLICY:ASSIGN',            'POLICY',       'ASSIGN',           'Cho phép gán chính sách/quy định áp dụng cho từng vai trò cụ thể'),
     -- Stats
-    ('00000000-0000-0000-0000-000000000227', 'STATS:VIEW_ORG',           'STATS',        'VIEW_ORG',         'Cho phép xem số liệu thống kê, báo cáo tổng hợp theo từng đơn vị/phòng ban'),
-    ('00000000-0000-0000-0000-000000000228', 'STATS:VIEW_EMPLOYEE',      'STATS',        'VIEW_EMPLOYEE',    'Cho phép xem số liệu thống kê kết quả KPI chi tiết theo từng nhân viên'),
+    ('00000000-0000-0000-0000-000000000227', 'STATS:VIEW_ORG',           'STATS',        'VIEW_ORG',         'Cho phép xem số liệu thống kê, báo cáo tổng hợp theo từng đơn vị/khoa'),
+    ('00000000-0000-0000-0000-000000000228', 'STATS:VIEW_EMPLOYEE',      'STATS',        'VIEW_EMPLOYEE',    'Cho phép xem số liệu thống kê kết quả KPI chi tiết theo từng giảng viên'),
     ('00000000-0000-0000-0000-000000000229', 'STATS:VIEW_MY',            'STATS',        'VIEW_MY',          'Cho phép xem tiến độ, số liệu thống kê KPI của chính bản thân người dùng'),
     -- System
     ('00000000-0000-0000-0000-000000000230', 'SYSTEM:ADMIN',             'SYSTEM',       'ADMIN',            'Quyền quản trị toàn hệ thống, cho phép bỏ qua mọi giới hạn phạm vi đơn vị/tổ chức — chỉ cấp cho quản trị viên cao nhất'),
@@ -193,7 +193,7 @@ INSERT INTO permissions (id, code, resource, action, description) VALUES
     ('00000000-0000-0000-0000-000000000234', 'ATTACHMENT:UPLOAD',        'ATTACHMENT',   'UPLOAD',           'Cho phép tải lên tệp đính kèm (minh chứng, tài liệu...) cho các bản nộp KPI'),
     ('00000000-0000-0000-0000-000000000235', 'ATTACHMENT:DELETE',        'ATTACHMENT',   'DELETE',           'Cho phép xoá tệp đính kèm đã tải lên hệ thống'),
     -- Reminder
-    ('00000000-0000-0000-0000-000000000237', 'REMINDER:SEND',            'REMINDER',     'SEND',             'Cho phép gửi thông báo nhắc nhở nhân viên về tiến độ nộp/hoàn thành KPI'),
+    ('00000000-0000-0000-0000-000000000237', 'REMINDER:SEND',            'REMINDER',     'SEND',             'Cho phép gửi thông báo nhắc nhở giảng viên về tiến độ nộp/hoàn thành KPI'),
     -- Adjustment (used in PERSONAL_PERMS / UNIT_HEAD_PERSONAL_PERMS)
     ('00000000-0000-0000-0000-000000000239', 'ADJUSTMENT:VIEW_MY',       'ADJUSTMENT',   'VIEW_MY',          'Cho phép xem các yêu cầu điều chỉnh chỉ tiêu KPI do chính bản thân gửi lên'),
     -- BSC (Balanced Scorecard). Việc GÁN 3 quyền này cho role làm ở cuối file theo cách data-driven.
@@ -210,21 +210,21 @@ ON CONFLICT (code) DO NOTHING;
 -- ============================================================================
 -- Mapping follows RolePermissionConstants.java
 --
--- tierLevel=1 (top of this 3-tier org = Chi nhánh = level 2)
+-- tierLevel=1 (top of this 3-tier org = Cơ sở = level 2)
 --   director        → DIRECTOR_PERMS + SYSTEM_ONLY
 --   deputy_director → DEPUTY_DIRECTOR_PERMS + SYSTEM_ONLY except SYSTEM:ADMIN
 --
--- tierLevel=2 (Phòng ban = level 3)
+-- tierLevel=2 (Khoa = level 3)
 --   manager  → MANAGER_PERMS  + UNIT_HEAD_PERSONAL_PERMS
 --   deputy   → DEPUTY_PERMS   + PERSONAL_PERMS
 --
--- tierLevel=3 (Tổ/Nhóm = level 4)
+-- tierLevel=3 (Bộ môn = level 4)
 --   manager  → MANAGER_PERMS  + UNIT_HEAD_PERSONAL_PERMS  (Trưởng nhóm)
 --   deputy   → DEPUTY_PERMS   + PERSONAL_PERMS             (Phó nhóm)
---   staff    → STAFF_PERMS    + PERSONAL_PERMS             (Nhân viên)
+--   staff    → STAFF_PERMS    + PERSONAL_PERMS             (Giảng viên)
 
 -- ----------------------------------------------------------------
--- Role: Giám đốc (director, tierLevel=1)
+-- Role: Hiệu trưởng (director, tierLevel=1)
 -- DIRECTOR_PERMS + SYSTEM_ONLY (SYSTEM:ADMIN, COMPANY:DELETE, ROLE:DELETE, POLICY:DELETE, PERMISSION:EDIT)
 -- ----------------------------------------------------------------
 INSERT INTO role_permissions (role_id, permission_id)
@@ -261,7 +261,7 @@ WHERE code IN (
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------
--- Role: Phó Giám đốc (deputy_director, tierLevel=1)
+-- Role: Phó Hiệu trưởng (deputy_director, tierLevel=1)
 -- DEPUTY_DIRECTOR_PERMS + SYSTEM_ONLY except SYSTEM:ADMIN
 -- ----------------------------------------------------------------
 INSERT INTO role_permissions (role_id, permission_id)
@@ -297,7 +297,7 @@ WHERE code IN (
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------
--- Role: Trưởng phòng (manager, tierLevel=2)
+-- Role: Trưởng khoa (manager, tierLevel=2)
 -- MANAGER_PERMS + UNIT_HEAD_PERSONAL_PERMS
 -- UNIT_HEAD_PERSONAL_PERMS = KPI:VIEW_MY, SUBMISSION:VIEW_MY, STATS:VIEW_MY, ADJUSTMENT:VIEW_MY
 -- ----------------------------------------------------------------
@@ -326,7 +326,7 @@ WHERE code IN (
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------
--- Role: Phó phòng (deputy, tierLevel=2)
+-- Role: Phó khoa (deputy, tierLevel=2)
 -- DEPUTY_PERMS + PERSONAL_PERMS
 -- PERSONAL_PERMS = KPI:VIEW_MY, SUBMISSION:VIEW_MY, EVALUATION:VIEW_MY, STATS:VIEW_MY, ADJUSTMENT:VIEW_MY
 -- ----------------------------------------------------------------
@@ -409,7 +409,7 @@ WHERE code IN (
 ON CONFLICT DO NOTHING;
 
 -- ----------------------------------------------------------------
--- Role: Nhân viên (staff, tierLevel=3)
+-- Role: Giảng viên (staff, tierLevel=3)
 -- STAFF_PERMS + PERSONAL_PERMS
 -- ----------------------------------------------------------------
 INSERT INTO role_permissions (role_id, permission_id)
@@ -421,7 +421,7 @@ WHERE code IN (
     'SUBMISSION:CREATE',
     'EVALUATION:VIEW', 'EVALUATION:CREATE',
     'NOTIF:VIEW', 'KPI_PERIOD:VIEW', 'KPI_CYCLE:VIEW',
-    -- Không có CYCLE_EVAL: nhân viên chỉ xem kết quả, không đánh giá kỳ
+    -- Không có CYCLE_EVAL: giảng viên chỉ xem kết quả, không đánh giá kỳ
     'ATTACHMENT:UPLOAD',
     -- BSC/OKR (chỉ có KPI:VIEW ⇒ chỉ quyền xem, để dùng selector viễn cảnh / mục tiêu)
     'BSC:VIEW', 'OKR:VIEW',
@@ -455,32 +455,32 @@ INSERT INTO role_policies (role_id, policy_id) VALUES
 -- ============================================================================
 -- Platform admin (no org membership)
 INSERT INTO users (id, email, password, full_name, status, is_email_verified, has_seen_onboarding, is_platform_admin) VALUES
-    ('00000000-0000-0000-0000-000000000001', 'admin@keygo.vn', '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'KeyGo Admin', 'ACTIVE', true, true, true);
+    ('00000000-0000-0000-0000-000000000001', 'admin@keylearn.vn', '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'KeyLearn Admin', 'ACTIVE', true, true, true);
 
 -- Passwords Demo123@
 INSERT INTO users (id, email, password, full_name, employee_code, phone, status, is_email_verified, has_seen_onboarding) VALUES
-    -- Chi nhánh (level 2)
+    -- Cơ sở (level 2)
     ('22222222-0000-0000-0000-000000000100', 'director@demo.com',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Nguyễn Văn Director',   'EM001', '0901000001', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000200', 'deputy.dir@demo.com',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Trần Thị Deputy Dir',   'EM002', '0901000002', 'ACTIVE', true, false),
-    -- Phòng IT (level 3)
+    -- Khoa Kỹ thuật (level 3)
     ('22222222-0000-0000-0000-000000000101', 'head@demo.com',          '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Lê Văn Head',           'EM003', '0901000003', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000102', 'deputy@demo.com',        '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phạm Thị Deputy',       'EM004', '0901000004', 'ACTIVE', true, false),
-    -- Team Backend (level 4)
+    -- Bộ môn Lập trình (level 4)
     ('22222222-0000-0000-0000-000000000300', 'teamlead@demo.com',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Hoàng Văn TeamLead',    'EM005', '0901000005', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000301', 'deputy.lead@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Vũ Thị Deputy Lead',    'EM006', '0901000006', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000103', 'staff@demo.com',         '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phạm Thị Staff',        'EM007', '0901000007', 'ACTIVE', true, false),
-    -- Team Frontend (level 4)
+    -- Bộ môn Giao diện (level 4)
     ('22222222-0000-0000-0000-000000000400', 'fe.teamlead@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Đinh Văn FE Lead',      'EM008', '0901000008', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000401', 'fe.deputy@demo.com',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Ngô Thị FE Deputy',     'EM009', '0901000009', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000402', 'fe.staff@demo.com',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Bùi Văn FE Staff',      'EM010', '0901000010', 'ACTIVE', true, false),
-    -- Phòng Truyền Thông (level 3)
+    -- Khoa Truyền thông (level 3)
     ('22222222-0000-0000-0000-000000000500', 'comm.head@demo.com',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Trịnh Văn Comm Head',   'EM011', '0901000011', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000501', 'comm.deputy@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Lý Thị Comm Deputy',    'EM012', '0901000012', 'ACTIVE', true, false),
-    -- Team Content (level 4)
+    -- Bộ môn Nội dung (level 4)
     ('22222222-0000-0000-0000-000000000600', 'cont.teamlead@demo.com', '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Mai Văn Cont Lead',     'EM013', '0901000013', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000601', 'cont.deputy@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Đỗ Thị Cont Deputy',    'EM014', '0901000014', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000602', 'cont.staff@demo.com',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phan Văn Cont Staff',   'EM015', '0901000015', 'ACTIVE', true, false),
-    -- Team Design (level 4)
+    -- Bộ môn Thiết kế (level 4)
     ('22222222-0000-0000-0000-000000000700', 'des.teamlead@demo.com',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Cao Văn Des Lead',      'EM016', '0901000016', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000701', 'des.deputy@demo.com',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Tô Thị Des Deputy',     'EM017', '0901000017', 'ACTIVE', true, false),
     ('22222222-0000-0000-0000-000000000702', 'des.staff@demo.com',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Dương Văn Des Staff',   'EM018', '0901000018', 'ACTIVE', true, false);
@@ -489,31 +489,31 @@ INSERT INTO users (id, email, password, full_name, employee_code, phone, status,
 -- 8. USER → ROLE → ORG UNIT ASSIGNMENTS
 -- ============================================================================
 INSERT INTO user_role_org_units (user_id, role_id, org_unit_id) VALUES
-    -- Chi nhánh Hà Nội
-    ('22222222-0000-0000-0000-000000000100', 'a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Giám đốc    @ Chi nhánh HN
-    ('22222222-0000-0000-0000-000000000200', 'a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Phó GĐ      @ Chi nhánh HN
-    -- Phòng IT
-    ('22222222-0000-0000-0000-000000000101', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Trưởng phòng @ Phòng IT
-    ('22222222-0000-0000-0000-000000000102', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Phó phòng    @ Phòng IT
-    -- Team Backend
-    ('22222222-0000-0000-0000-000000000300', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Trưởng nhóm @ Team Backend
-    ('22222222-0000-0000-0000-000000000301', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Phó nhóm    @ Team Backend
-    ('22222222-0000-0000-0000-000000000103', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Nhân viên   @ Team Backend
-    -- Team Frontend
-    ('22222222-0000-0000-0000-000000000400', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Trưởng nhóm @ Team Frontend
-    ('22222222-0000-0000-0000-000000000401', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Phó nhóm    @ Team Frontend
-    ('22222222-0000-0000-0000-000000000402', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Nhân viên   @ Team Frontend
-    -- Phòng Truyền Thông
-    ('22222222-0000-0000-0000-000000000500', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Trưởng phòng @ Phòng Truyền Thông
-    ('22222222-0000-0000-0000-000000000501', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Phó phòng    @ Phòng Truyền Thông
-    -- Team Content
-    ('22222222-0000-0000-0000-000000000600', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Trưởng nhóm @ Team Content
-    ('22222222-0000-0000-0000-000000000601', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Phó nhóm    @ Team Content
-    ('22222222-0000-0000-0000-000000000602', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Nhân viên   @ Team Content
-    -- Team Design
-    ('22222222-0000-0000-0000-000000000700', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Trưởng nhóm @ Team Design
-    ('22222222-0000-0000-0000-000000000701', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Phó nhóm    @ Team Design
-    ('22222222-0000-0000-0000-000000000702', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- Nhân viên   @ Team Design
+    -- Cơ sở Hà Nội
+    ('22222222-0000-0000-0000-000000000100', 'a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Hiệu trưởng    @ Cơ sở HN
+    ('22222222-0000-0000-0000-000000000200', 'a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Phó GĐ      @ Cơ sở HN
+    -- Khoa Kỹ thuật
+    ('22222222-0000-0000-0000-000000000101', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Trưởng khoa @ Khoa Kỹ thuật
+    ('22222222-0000-0000-0000-000000000102', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Phó khoa    @ Khoa Kỹ thuật
+    -- Bộ môn Lập trình
+    ('22222222-0000-0000-0000-000000000300', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Trưởng bộ môn @ Bộ môn Lập trình
+    ('22222222-0000-0000-0000-000000000301', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Phó bộ môn   @ Bộ môn Lập trình
+    ('22222222-0000-0000-0000-000000000103', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Giảng viên   @ Bộ môn Lập trình
+    -- Bộ môn Giao diện
+    ('22222222-0000-0000-0000-000000000400', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Trưởng bộ môn @ Bộ môn Giao diện
+    ('22222222-0000-0000-0000-000000000401', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Phó bộ môn   @ Bộ môn Giao diện
+    ('22222222-0000-0000-0000-000000000402', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Giảng viên   @ Bộ môn Giao diện
+    -- Khoa Truyền thông
+    ('22222222-0000-0000-0000-000000000500', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Trưởng khoa @ Khoa Truyền thông
+    ('22222222-0000-0000-0000-000000000501', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Phó khoa    @ Khoa Truyền thông
+    -- Bộ môn Nội dung
+    ('22222222-0000-0000-0000-000000000600', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Trưởng bộ môn @ Bộ môn Nội dung
+    ('22222222-0000-0000-0000-000000000601', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Phó bộ môn   @ Bộ môn Nội dung
+    ('22222222-0000-0000-0000-000000000602', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Giảng viên   @ Bộ môn Nội dung
+    -- Bộ môn Thiết kế
+    ('22222222-0000-0000-0000-000000000700', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Trưởng bộ môn @ Bộ môn Thiết kế
+    ('22222222-0000-0000-0000-000000000701', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Phó bộ môn   @ Bộ môn Thiết kế
+    ('22222222-0000-0000-0000-000000000702', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- Giảng viên   @ Bộ môn Thiết kế
 
 
 -- ============================================================
@@ -524,7 +524,7 @@ INSERT INTO user_role_org_units (user_id, role_id, org_unit_id) VALUES
 INSERT INTO objectives
     (id, organization_id, code, name, description, start_date, end_date, status)
 VALUES
-    -- Phòng IT
+    -- Khoa Kỹ thuật
     ('0b000001-0000-0000-0000-000000000001',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-IT-Q2-2026',
@@ -532,7 +532,7 @@ VALUES
      'Đảm bảo team IT hoàn thành sprint đúng tiến độ, kiểm soát tỉ lệ bug ở mức thấp nhất',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Phòng Truyền Thông
+    -- Khoa Truyền thông
     ('0b000002-0000-0000-0000-000000000002',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-COMM-Q2-2026',
@@ -540,7 +540,7 @@ VALUES
      'Mở rộng nội dung đa kênh, tối ưu tương tác người dùng trên các nền tảng',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Team Backend
+    -- Bộ môn Lập trình
     ('0b000003-0000-0000-0000-000000000003',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-BE-Q2-2026',
@@ -548,7 +548,7 @@ VALUES
      'Đảm bảo API ổn định, review code đúng SLA và giảm thiểu technical debt',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Team Frontend
+    -- Bộ môn Giao diện
     ('0b000004-0000-0000-0000-000000000004',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-FE-Q2-2026',
@@ -556,7 +556,7 @@ VALUES
      'Hoàn thành các màn hình đúng tiến độ, duy trì điểm Lighthouse Performance ở mức cao',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Team Content
+    -- Bộ môn Nội dung
     ('0b000005-0000-0000-0000-000000000005',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-CONT-Q2-2026',
@@ -564,7 +564,7 @@ VALUES
      'Tăng sản lượng bài viết, nâng tỉ lệ bài đúng deadline biên tập',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Team Design
+    -- Bộ môn Thiết kế
     ('0b000006-0000-0000-0000-000000000006',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-DES-Q2-2026',
@@ -573,17 +573,17 @@ VALUES
      '2026-04-01', '2026-06-30', 'ACTIVE');
 
 INSERT INTO objective_org_units (objective_id, org_unit_id) VALUES
-    ('0b000001-0000-0000-0000-000000000001', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- OBJ-IT-Q2-2026       → Phòng IT
-    ('0b000002-0000-0000-0000-000000000002', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- OBJ-COMM-Q2-2026     → Phòng Truyền Thông
-    ('0b000003-0000-0000-0000-000000000003', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- OBJ-BE-Q2-2026       → Team Backend
-    ('0b000004-0000-0000-0000-000000000004', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- OBJ-FE-Q2-2026       → Team Frontend
-    ('0b000005-0000-0000-0000-000000000005', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- OBJ-CONT-Q2-2026     → Team Content
-    ('0b000006-0000-0000-0000-000000000006', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- OBJ-DES-Q2-2026      → Team Design
+    ('0b000001-0000-0000-0000-000000000001', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- OBJ-IT-Q2-2026       → Khoa Kỹ thuật
+    ('0b000002-0000-0000-0000-000000000002', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- OBJ-COMM-Q2-2026     → Khoa Truyền thông
+    ('0b000003-0000-0000-0000-000000000003', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- OBJ-BE-Q2-2026       → Bộ môn Lập trình
+    ('0b000004-0000-0000-0000-000000000004', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- OBJ-FE-Q2-2026       → Bộ môn Giao diện
+    ('0b000005-0000-0000-0000-000000000005', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- OBJ-CONT-Q2-2026     → Bộ môn Nội dung
+    ('0b000006-0000-0000-0000-000000000006', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- OBJ-DES-Q2-2026      → Bộ môn Thiết kế
  
 INSERT INTO key_results
     (id, objective_id, code, name, description, target_value, current_value, unit)
 VALUES
-    -- Phòng IT
+    -- Khoa Kỹ thuật
     ('0c000001-0000-0000-0000-000000000001',
      '0b000001-0000-0000-0000-000000000001',
      'KR-IT-01', 'Hoàn thành ≥ 50 task/tháng trong cả Q2',
@@ -596,7 +596,7 @@ VALUES
      'Tỉ lệ bug/feature trung bình không vượt 5% trong toàn Q2',
      5, 0, '%'),
  
-    -- Phòng Truyền Thông
+    -- Khoa Truyền thông
     ('0c000003-0000-0000-0000-000000000003',
      '0b000002-0000-0000-0000-000000000002',
      'KR-COMM-01', 'Đăng ≥ 30 bài/tháng trên các kênh',
@@ -609,7 +609,7 @@ VALUES
      'Tổng lượt like/share/comment ≥ 5.000 mỗi tháng trong Q2',
      15000, 0, 'lượt'),
  
-    -- Team Backend
+    -- Bộ môn Lập trình
     ('0c000005-0000-0000-0000-000000000005',
      '0b000003-0000-0000-0000-000000000003',
      'KR-BE-01', 'Hoàn thành ≥ 20 API endpoint/tháng pass test',
@@ -622,7 +622,7 @@ VALUES
      'Số pull request được review và merge trong SLA ≥ 30/tháng',
      90, 0, 'PR'),
  
-    -- Team Frontend
+    -- Bộ môn Giao diện
     ('0c000007-0000-0000-0000-000000000007',
      '0b000004-0000-0000-0000-000000000004',
      'KR-FE-01', 'Hoàn thành ≥ 15 màn hình pass QA/tháng',
@@ -635,7 +635,7 @@ VALUES
      'Trung bình điểm Lighthouse Performance của toàn bộ page ≥ 85 điểm',
      85, 0, 'điểm'),
  
-    -- Team Content
+    -- Bộ môn Nội dung
     ('0c000009-0000-0000-0000-000000000009',
      '0b000005-0000-0000-0000-000000000005',
      'KR-CONT-01', 'Sản xuất ≥ 20 bài viết/tháng',
@@ -648,7 +648,7 @@ VALUES
      'Tỉ lệ bài nộp đúng deadline biên tập đạt ≥ 90% mỗi tháng',
      90, 0, '%'),
  
-    -- Team Design
+    -- Bộ môn Thiết kế
     ('0c000011-0000-0000-0000-000000000011',
      '0b000006-0000-0000-0000-000000000006',
      'KR-DES-01', 'Hoàn thành ≥ 25 asset thiết kế/tháng',
@@ -1531,8 +1531,8 @@ VALUES
 INSERT INTO sidebar_settings (id, organization_id, menu_key, custom_label) VALUES
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/dashboard', 'Tổng quan'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/dashboard?view=staff', 'Dashboard cá nhân'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Thiết lập công ty', 'Thiết lập công ty'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/company', 'Thông tin công ty'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Thiết lập nhà trường', 'Thiết lập nhà trường'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/company', 'Thông tin trường'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/okr', 'Quản lý OKR'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Quản lý BSC', 'Quản lý BSC'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/bsc', 'Thẻ điểm BSC'),
@@ -1541,7 +1541,7 @@ INSERT INTO sidebar_settings (id, organization_id, menu_key, custom_label) VALUE
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Tổ chức', 'Tổ chức'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/roles', 'Phân quyền vai trò'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/org-structure', 'Cấu trúc tổ chức'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/users', 'Quản lý nhân sự'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/users', 'Quản lý giảng viên'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/settings', 'Cấu hình hệ thống'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Quản lý KPI', 'Quản trị KPI'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/kpi-cycles', 'Danh mục kỳ KPI'),
@@ -2283,7 +2283,7 @@ ON CONFLICT DO NOTHING;
 INSERT INTO sidebar_settings (id, organization_id, menu_key, custom_label) VALUES
     (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', '/dashboard', 'Tổng quan'),
     (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', '/dashboard?view=staff', 'Dashboard cá nhân'),
-    (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', 'Thiết lập công ty', 'Thiệt lập tổ chức'),
+    (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', 'Thiết lập nhà trường', 'Thiệt lập khoa'),
     (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', '/company', 'Thông tin trường'),
     (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', '/okr', 'Mục tiêu OKR'),
     (gen_random_uuid(), '22222222-2222-2222-2222-222222222222', 'Quản lý BSC', 'Thẻ điểm cân bằng'),
@@ -2376,13 +2376,13 @@ WHERE e.org_unit_id IN (
 );
 
 -- ============================================================================
--- (TEST) Nắn phân bố XẾP LOẠI thành viên org "Demo Company" thành HÌNH CHUÔNG
+-- (TEST) Nắn phân bố XẾP LOẠI thành viên org "Trường Demo" thành HÌNH CHUÔNG
 --        (dàn đủ 5 hạng, tập trung ở giữa) — phục vụ test thống kê xếp loại đơn vị.
 --        GHI ĐÈ kết quả matrix_rating suy ở block trên cho org 11111111-… : gán lại
 --        hạng theo phân bố 10/20/40/20/10 và ĐỒNG BỘ score / behavior_score /
 --        kpi_completion_percent / matrix_rating (mỗi bộ tra ĐÚNG ô ma trận = hạng)
 --        để donut xếp loại, đường phân phối, heatmap, BSC và thang điểm cùng khớp.
---        Phân nhóm theo PHÒNG × KỲ để cả Công ty lẫn từng phòng đều cong ở giữa.
+--        Phân nhóm theo KHOA × KỲ để cả Trường lẫn từng khoa đều cong ở giữa.
 -- ============================================================================
 WITH grp AS (
     SELECT e.id,
@@ -2390,16 +2390,16 @@ WITH grp AS (
            e.user_id,
            CASE
                WHEN e.org_unit_id IN (
-                   'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',  -- Phòng IT
-                   'dddddddd-dddd-dddd-dddd-dddddddddddd',  -- Team Backend
-                   'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee')  -- Team Frontend
+                   'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',  -- Khoa Kỹ thuật
+                   'dddddddd-dddd-dddd-dddd-dddddddddddd',  -- Bộ môn Lập trình
+                   'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee')  -- Bộ môn Giao diện
                    THEN 'IT'
                WHEN e.org_unit_id IN (
-                   'cccccccc-cccc-cccc-cccc-cccccccccccc',  -- Phòng Truyền Thông
-                   'ffffffff-ffff-ffff-ffff-ffffffffffff',  -- Team Content
-                   'abcdefab-cdef-cdef-cdef-abcdefabcdef')  -- Team Design
+                   'cccccccc-cccc-cccc-cccc-cccccccccccc',  -- Khoa Truyền thông
+                   'ffffffff-ffff-ffff-ffff-ffffffffffff',  -- Bộ môn Nội dung
+                   'abcdefab-cdef-cdef-cdef-abcdefabcdef')  -- Bộ môn Thiết kế
                    THEN 'COMM'
-               ELSE 'BRANCH'                                -- Chi nhánh Hà Nội
+               ELSE 'BRANCH'                                -- Cơ sở Hà Nội
            END AS grp
     FROM evaluations e
     WHERE e.org_unit_id IN (

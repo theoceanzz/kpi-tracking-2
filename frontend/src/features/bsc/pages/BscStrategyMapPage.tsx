@@ -241,7 +241,7 @@ export default function BscStrategyMapPage() {
         <div className="shrink-0 flex items-start gap-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 px-4 py-2.5">
           <Lightbulb size={14} className="text-indigo-500 shrink-0 mt-0.5" />
           <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
-            Kéo từ <b className="font-black text-slate-900 dark:text-white">chấm tròn mép phải của một Mục tiêu</b> sang <b className="font-black text-slate-900 dark:text-white">một Mục tiêu khác</b> để tạo quan hệ nhân-quả (VD: Học hỏi → Quy trình → Khách hàng → Tài chính).{' '}
+            Kéo từ <b className="font-black text-slate-900 dark:text-white">chấm tròn mép phải của một Mục tiêu</b> sang <b className="font-black text-slate-900 dark:text-white">một Mục tiêu khác</b> để tạo quan hệ nhân-quả (VD: Học hỏi → Quy trình → Người học → Tài chính).{' '}
             {relationCount > 0 ? (
               <>Bấm vào <b className="font-black text-rose-600 dark:text-rose-400">cạnh nhân-quả màu đỏ có mũi tên</b> để xóa — <b className="font-black text-slate-900 dark:text-white">cạnh phân cấp màu xám không xóa được</b>.</>
             ) : (

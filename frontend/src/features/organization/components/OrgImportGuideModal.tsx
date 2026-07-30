@@ -8,18 +8,18 @@ interface OrgImportGuideModalProps {
 }
 
 const SAMPLE_CSV_CONTENT = `Name,Code,ParentCode,Email,Phone,Address
-Khối Công nghệ,KPG-TECH,KPG,tech@keyperson.com,0325614226,Hà Nội
-Trung tâm Phát triển,KPG-TECH-DEV,KPG-TECH,dev@keyperson.com,0354744854,Hà Nội
-Trung tâm QA,KPG-TECH-QA,KPG-TECH,qa@keyperson.com,0342719583,Hà Nội
-Khối Kinh doanh,KPG-SALES,KPG,sales@keyperson.com,0972458591,Hà Nội`
+Khoa Công nghệ thông tin,KL-CNTT,KL,cntt@keylearn.vn,0325614226,Hà Nội
+Bộ môn Kỹ thuật phần mềm,KL-CNTT-KTPM,KL-CNTT,ktpm@keylearn.vn,0354744854,Hà Nội
+Bộ môn Mạng & An toàn thông tin,KL-CNTT-MANG,KL-CNTT,mang@keylearn.vn,0342719583,Hà Nội
+Khoa Kinh tế,KL-KT,KL,kinhte@keylearn.vn,0972458591,Hà Nội`
 
 const COLUMNS = [
-  { name: 'Name', required: true, desc: 'Tên đầy đủ của đơn vị tổ chức', example: 'Khối Công nghệ' },
-  { name: 'Code', required: true, desc: 'Mã đơn vị (duy nhất trong hệ thống)', example: 'KPG-TECH' },
-  { name: 'ParentCode', required: true, desc: 'Mã đơn vị cha (bắt buộc để xác định vị trí trong sơ đồ, bỏ trống nếu là đơn vị gốc)', example: 'KPG' },
-  { name: 'Email', required: false, desc: 'Email liên hệ của đơn vị', example: 'tech@company.com' },
+  { name: 'Name', required: true, desc: 'Tên đầy đủ của đơn vị tổ chức', example: 'Khoa Công nghệ thông tin' },
+  { name: 'Code', required: true, desc: 'Mã đơn vị (duy nhất trong hệ thống)', example: 'KL-CNTT' },
+  { name: 'ParentCode', required: true, desc: 'Mã đơn vị cha (bắt buộc để xác định vị trí trong sơ đồ, bỏ trống nếu là đơn vị gốc)', example: 'KL' },
+  { name: 'Email', required: false, desc: 'Email liên hệ của đơn vị', example: 'cntt@truong.edu.vn' },
   { name: 'Phone', required: false, desc: 'Số điện thoại liên hệ', example: '0243123456' },
-  { name: 'Address', required: false, desc: 'Địa chỉ trụ sở đơn vị', example: 'Tầng 5, Tòa nhà A' },
+  { name: 'Address', required: false, desc: 'Địa chỉ của đơn vị', example: 'Tầng 5, Nhà A' },
 ]
 
 async function downloadTemplate(type: 'csv' | 'xlsx') {
@@ -139,7 +139,7 @@ export default function OrgImportGuideModal({ open, onClose, onSelectFile }: Org
             </div>
             <div>
               <h2 className="text-xl font-black text-slate-900 dark:text-white">Import Sơ đồ Tổ chức</h2>
-              <p className="text-sm font-medium text-slate-500">Xây dựng cấu trúc phòng ban hàng loạt</p>
+              <p className="text-sm font-medium text-slate-500">Xây dựng cấu trúc khoa hàng loạt</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 transition-all">
@@ -246,7 +246,7 @@ export default function OrgImportGuideModal({ open, onClose, onSelectFile }: Org
               <div className="flex items-start gap-3 p-3 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-200/50 dark:border-blue-900/30">
                 <Info size={16} className="text-blue-600 mt-0.5 shrink-0" />
                 <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
-                  Cột <code>ParentCode</code> rất quan trọng để hệ thống tự động sắp xếp các phòng ban vào đúng vị trí trên sơ đồ. Hãy đảm bảo mã đơn vị cha được nhập chính xác.
+                  Cột <code>ParentCode</code> rất quan trọng để hệ thống tự động sắp xếp các khoa vào đúng vị trí trên sơ đồ. Hãy đảm bảo mã đơn vị cha được nhập chính xác.
                 </p>
               </div>
         </div>

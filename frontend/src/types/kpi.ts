@@ -31,7 +31,7 @@ export interface KpiCycle {
   periodCount: number
 }
 
-// Đánh giá kỳ của 1 nhân viên (TB các đợt). Matches BE: CycleUserEvaluationResponse
+// Đánh giá kỳ của 1 giảng viên (TB các đợt). Matches BE: CycleUserEvaluationResponse
 export interface CyclePeriodBreakdown {
   periodId: string
   periodName: string
@@ -72,7 +72,7 @@ export interface CycleUserEvaluation {
   periodBreakdown: CyclePeriodBreakdown[]
 }
 
-// Đánh giá tổng hợp phòng ban theo kỳ. Matches BE: CycleUnitEvaluationResponse
+// Đánh giá tổng hợp khoa theo kỳ. Matches BE: CycleUnitEvaluationResponse
 export interface CycleUnitEvaluation {
   cycleId: string
   cycleName: string

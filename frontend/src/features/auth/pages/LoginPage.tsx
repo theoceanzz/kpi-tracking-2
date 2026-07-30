@@ -220,7 +220,7 @@ export default function LoginPage() {
         <p className="text-sm text-[var(--color-muted-foreground)]">
           Cổng thông tin chưa có tài khoản?{' '}
           <Link to="/register" className="text-[var(--color-foreground)] font-bold hover:text-[var(--color-primary)] transition-colors underline decoration-[var(--color-primary)]/30 underline-offset-4">
-            Đăng ký doanh nghiệp
+            Đăng ký nhà trường
           </Link>
         </p>
       </div>
@@ -233,8 +233,8 @@ const DEMO_ACCOUNTS = [
   {
     email: 'director@demo.com',
     password: 'Demo123@',
-    role: 'Giám Đốc',
-    org: 'Công ty',
+    role: 'Hiệu Trưởng',
+    org: 'Trường Demo',
     icon: Crown,
   },
   {

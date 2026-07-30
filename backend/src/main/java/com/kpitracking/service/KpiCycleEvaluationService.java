@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Đánh giá theo KỲ (rollup trên đánh giá đợt sẵn có):
  * - Điểm kỳ của 1 người = trung bình điểm các đợt trong kỳ (2 phía self/QLTT).
- * - Điểm phòng ban = gộp trung bình điểm kỳ của các thành viên.
+ * - Điểm khoa = gộp trung bình điểm kỳ của các thành viên.
  * - Chế độ định lượng/định tính/cả 2 chỉ chọn chiều điểm nào để lấy trung bình.
  */
 @Service
@@ -97,7 +97,7 @@ public class KpiCycleEvaluationService {
                 .findByKpiCycleIdAndUserId(cycle.getId(), user.getId()).orElse(null);
         boolean overridden = saved != null && saved.getFinalScore() != null;
 
-        // Khoá được kế thừa xuống dưới: đơn vị của nhân viên hoặc bất kỳ đơn vị cha nào đã chốt.
+        // Khoá được kế thừa xuống dưới: đơn vị của giảng viên hoặc bất kỳ đơn vị cha nào đã chốt.
         OrgUnit lockingUnit = lockingUnit(unit, finalizedUnits);
 
         return CycleUserEvaluationResponse.builder()
@@ -122,7 +122,7 @@ public class KpiCycleEvaluationService {
                 .build();
     }
 
-    /** Lưu điểm chốt kỳ (nhập tay) cho một nhân viên. */
+    /** Lưu điểm chốt kỳ (nhập tay) cho một giảng viên. */
     @Transactional
     public CycleUserEvaluationResponse saveUserCycleScore(UUID cycleId, UUID userId, Double finalScore,
                                                           Double qualScore, String comment) {
@@ -131,11 +131,11 @@ public class KpiCycleEvaluationService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Người dùng", "id", userId));
 
-        // Chỉ được chấm nhân viên thuộc phạm vi đơn vị mình quản lý.
+        // Chỉ được chấm giảng viên thuộc phạm vi đơn vị mình quản lý.
         OrgUnit userUnit = primaryUnit(user.getId());
         if (userUnit != null) assertCanManageUnit(userUnit.getId());
 
-        // Phòng ban chứa nhân viên đã chốt ⇒ khoá, chỉ được xem.
+        // Khoa chứa giảng viên đã chốt ⇒ khoá, chỉ được xem.
         OrgUnit locking = lockingUnit(userUnit, finalizedUnits(cycleId));
         if (locking != null) {
             throw new IllegalArgumentException("Đánh giá kỳ của đơn vị \"" + locking.getName()
@@ -193,7 +193,7 @@ public class KpiCycleEvaluationService {
     // ─────────────────────────────── Per-unit ───────────────────────────────
 
     /**
-     * Tổng hợp phòng ban: tính LIVE từ thành viên, nhưng nếu đã CHỐT thì các con số
+     * Tổng hợp khoa: tính LIVE từ thành viên, nhưng nếu đã CHỐT thì các con số
      * lấy từ snapshot lúc chốt để không bị trôi khi ai đó sửa đánh giá đợt cũ.
      */
     @Transactional(readOnly = true)
@@ -220,7 +220,7 @@ public class KpiCycleEvaluationService {
         return live;
     }
 
-    /** Tính tổng hợp phòng ban trực tiếp từ thành viên (bỏ qua snapshot). */
+    /** Tính tổng hợp khoa trực tiếp từ thành viên (bỏ qua snapshot). */
     private CycleUnitEvaluationResponse computeUnitSummary(UUID cycleId, UUID orgUnitId) {
         KpiCycle cycle = kpiCycleRepository.findById(cycleId)
                 .orElseThrow(() -> new ResourceNotFoundException("Kỳ đánh giá", "id", cycleId));
@@ -235,7 +235,7 @@ public class KpiCycleEvaluationService {
         double qualSum = 0; int qualN = 0;
         double matrixSum = 0; int matrixN = 0;
         List<CycleUnitEvaluation> finalizedUnits = finalizedUnits(cycle.getId());
-        // Điểm phòng ban gộp từ ĐIỂM CHỐT của từng nhân viên (đã tính cả phần chỉnh tay).
+        // Điểm khoa gộp từ ĐIỂM CHỐT của từng giảng viên (đã tính cả phần chỉnh tay).
         for (User u : subtreeMembers(unit)) {
             CycleUserEvaluationResponse m = computeUser(cycle, u, maxScore, finalizedUnits);
             members.add(m);
@@ -295,7 +295,7 @@ public class KpiCycleEvaluationService {
         assertCanManageUnit(orgUnitId);
         CycleUnitEvaluation entity = cycleUnitEvaluationRepository
                 .findByKpiCycleIdAndOrgUnitId(cycleId, orgUnitId)
-                .orElseThrow(() -> new ResourceNotFoundException("Đánh giá kỳ của phòng ban", "orgUnitId", orgUnitId));
+                .orElseThrow(() -> new ResourceNotFoundException("Đánh giá kỳ của khoa", "orgUnitId", orgUnitId));
 
         entity.setStatus(CycleUnitEvalStatus.DRAFT);
         entity.setFinalizedBy(null);
@@ -317,7 +317,7 @@ public class KpiCycleEvaluationService {
         }
     }
 
-    /** Các bản tổng hợp phòng ban ĐÃ CHỐT của kỳ (nạp 1 lần cho cả request). */
+    /** Các bản tổng hợp khoa ĐÃ CHỐT của kỳ (nạp 1 lần cho cả request). */
     private List<CycleUnitEvaluation> finalizedUnits(UUID cycleId) {
         return cycleUnitEvaluationRepository.findByKpiCycleId(cycleId).stream()
                 .filter(e -> e.getStatus() == CycleUnitEvalStatus.FINALIZED)
@@ -325,7 +325,7 @@ public class KpiCycleEvaluationService {
     }
 
     /**
-     * Đơn vị đã chốt đang khoá nhân viên thuộc {@code userUnit} (null nếu không bị khoá).
+     * Đơn vị đã chốt đang khoá giảng viên thuộc {@code userUnit} (null nếu không bị khoá).
      * Khoá kế thừa xuống dưới: OrgUnit dùng materialized path nên đơn vị con
      * có path bắt đầu bằng path của cha — chốt ở cha thì con cũng bị khoá.
      */

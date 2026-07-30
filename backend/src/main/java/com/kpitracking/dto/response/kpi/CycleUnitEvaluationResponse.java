@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-/** Đánh giá tổng hợp của một PHÒNG BAN theo một KỲ, kèm danh sách thành viên. */
+/** Đánh giá tổng hợp của một KHOA theo một KỲ, kèm danh sách thành viên. */
 @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 public class CycleUnitEvaluationResponse {
     private UUID cycleId;
@@ -17,7 +17,7 @@ public class CycleUnitEvaluationResponse {
     private String orgUnitName;
     private CycleEvaluationMode mode;
 
-    /** Điểm gộp toàn phòng (TB thành viên). */
+    /** Điểm gộp toàn khoa (TB thành viên). */
     private Double selfScore;
     private Double managerScore;
     /** TB mức định tính (0..5) và TB xếp loại ma trận (1..5) của thành viên. */

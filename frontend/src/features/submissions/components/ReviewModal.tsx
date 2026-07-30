@@ -148,7 +148,7 @@ export default function ReviewModal({ open, onClose, submission }: ReviewModalPr
               <div className="space-y-2">
                 <p className="text-xs font-medium text-slate-500 px-1">Chọn mức đánh giá định tính:</p>
                 {qualitativeLevels.length === 0 ? (
-                  <p className="text-xs font-bold text-amber-600 px-1">Chưa cấu hình thang điểm định tính ở trang Công ty.</p>
+                  <p className="text-xs font-bold text-amber-600 px-1">Chưa cấu hình thang điểm định tính ở trang Nhà trường.</p>
                 ) : (
                   <div className="space-y-2">
                     {qualitativeLevels.map(level => {
@@ -275,7 +275,7 @@ export default function ReviewModal({ open, onClose, submission }: ReviewModalPr
             className="w-full py-3.5 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 text-slate-500 hover:text-indigo-600 hover:border-indigo-500 hover:bg-indigo-50/50 transition-all flex items-center justify-center gap-3 group"
           >
             <Info size={18} className="group-hover:animate-bounce" />
-            <span className="text-sm font-bold">Xem chi tiết đợt đánh giá của nhân viên này</span>
+            <span className="text-sm font-bold">Xem chi tiết đợt đánh giá của giảng viên này</span>
           </button>
 
           {/* Aggregated Evaluation Modal */}
@@ -315,7 +315,7 @@ export default function ReviewModal({ open, onClose, submission }: ReviewModalPr
                       onChange={(e) => setReviewNote(e.target.value)}
                       rows={3}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/30 focus:border-red-400 resize-none transition-all"
-                      placeholder="Phản hồi chi tiết để nhân viên chỉnh sửa..."
+                      placeholder="Phản hồi chi tiết để giảng viên chỉnh sửa..."
                     />
                   </div>
                   <div className="flex gap-3">

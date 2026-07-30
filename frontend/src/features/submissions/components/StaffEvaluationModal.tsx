@@ -243,7 +243,7 @@ export default function StaffEvaluationModal({
 
       const autoApproved = data?.find(s => s.allChildrenApproved && s.parentSubmissionId)
       if (autoApproved) {
-        toast.success('Đã hoàn tất đánh giá và phê duyệt cho nhân viên')
+        toast.success('Đã hoàn tất đánh giá và phê duyệt cho giảng viên')
         setShowAllApproved(true)
       } else {
         onClose()
@@ -315,7 +315,7 @@ export default function StaffEvaluationModal({
                <AlertCircle size={48} className="text-slate-300" />
                <div className="space-y-1">
                   <p className="text-lg font-black text-slate-900 dark:text-white">Không tìm thấy bài nộp</p>
-                  <p className="text-sm text-slate-500">Nhân viên này chưa có bài nộp nào trong đợt {periodName}. Bạn chỉ có thể chốt đánh giá sau khi đợt kết thúc.</p>
+                  <p className="text-sm text-slate-500">Giảng viên này chưa có bài nộp nào trong đợt {periodName}. Bạn chỉ có thể chốt đánh giá sau khi đợt kết thúc.</p>
                </div>
             </div>
           ) : (
@@ -327,7 +327,7 @@ export default function StaffEvaluationModal({
                     <AlertCircle size={24} />
                   </div>
                   <div>
-                    <p className="text-sm font-black text-amber-900 dark:text-amber-100">Nhân viên chưa làm trong đợt này</p>
+                    <p className="text-sm font-black text-amber-900 dark:text-amber-100">Giảng viên chưa làm trong đợt này</p>
                     <p className="text-xs font-medium text-amber-700 dark:text-amber-400 opacity-80">
                       Không có bài nộp nào. Đợt đã kết thúc nên bạn có thể chốt đánh giá — điểm mặc định là 0, có thể điều chỉnh nếu cần.
                     </p>
@@ -570,7 +570,7 @@ export default function StaffEvaluationModal({
                           ? "bg-slate-50 dark:bg-slate-800/30 border-slate-200 dark:border-slate-700 cursor-not-allowed"
                           : "border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 focus:ring-4 focus:ring-indigo-500/10 outline-none"
                       )}
-                      placeholder={readOnly ? "Chưa có nhận xét nào..." : "Đánh giá tổng quát thái độ, nỗ lực và kết quả làm việc của nhân sự trong đợt này..."}
+                      placeholder={readOnly ? "Chưa có nhận xét nào..." : "Đánh giá tổng quát thái độ, nỗ lực và kết quả làm việc của giảng viên trong đợt này..."}
                     />
                   </div>
                 )}
@@ -663,7 +663,7 @@ export default function StaffEvaluationModal({
                       </div>
                       )}
 
-                      {/* Điểm cuối — con số thực sự lưu vào hồ sơ nhân sự */}
+                      {/* Điểm cuối — con số thực sự lưu vào hồ sơ giảng viên */}
                       <div className="pt-5 border-t border-white/10 relative z-10 space-y-2.5">
                          <div className="flex justify-between items-baseline">
                             <span className="text-[10px] font-black uppercase tracking-widest text-indigo-100">
@@ -759,7 +759,7 @@ export default function StaffEvaluationModal({
                  <AlertCircle size={20} />
               </div>
               <p className="text-[10px] font-medium text-slate-500 max-w-[280px]">
-                 Hành động này sẽ <b>phê duyệt đồng loạt</b> các bài nộp và <b>lưu kết quả đánh giá chính thức</b> vào hồ sơ nhân sự.
+                 Hành động này sẽ <b>phê duyệt đồng loạt</b> các bài nộp và <b>lưu kết quả đánh giá chính thức</b> vào hồ sơ giảng viên.
               </p>
            </div>
 

@@ -38,7 +38,7 @@ import java.util.UUID;
  * Tính điểm BSC.
  *
  * CÔNG THỨC 2 TẦNG (xem plan "Quy tắc chấm điểm"):
- *   Tầng trong  — điểm 1 viễn cảnh P của nhân viên E (trung bình có trọng số, chuẩn hóa trong viễn cảnh):
+ *   Tầng trong  — điểm 1 viễn cảnh P của giảng viên E (trung bình có trọng số, chuẩn hóa trong viễn cảnh):
  *                 raw_P(E) = Σ(kpi_ratio_i × weight_i) / Σ(weight_i) × 100, với i ∈ KPI của E thuộc P
  *                 = null nếu E không có KPI nào trong P (viễn cảnh rỗng)
  *   Tầng ngoài  — điểm BSC cuối:
@@ -46,7 +46,7 @@ import java.util.UUID;
  *                 ZERO_FILL  : bsc = Σ(W_P × (raw_P ?? 0)) / Σ(W_P) toàn bộ viễn cảnh
  *
  * Trọng số viễn cảnh (W_P) dùng chung toàn tổ chức mỗi kỳ (lấy từ scorecard);
- * raw_P tính RIÊNG cho từng nhân viên từ KPI cá nhân của họ.
+ * raw_P tính RIÊNG cho từng giảng viên từ KPI cá nhân của họ.
  *
  * kpi_ratio dùng KpiAchievementCalculator — CÙNG công thức với system_score để hai điểm so sánh được.
  */
@@ -70,13 +70,13 @@ public class BscScoringService {
     public static final List<KpiStatus> ACTIVE_STATUSES = Arrays.asList(
             KpiStatus.APPROVED, KpiStatus.EDITED, KpiStatus.EDIT, KpiStatus.INACTIVE);
 
-    /** Kết quả điểm BSC của một nhân viên trong một kỳ. */
+    /** Kết quả điểm BSC của một giảng viên trong một kỳ. */
     @Getter
     public static class BscUserScore {
         private final Double bscScore;
         private final List<PerspectiveScoreResponse> perspectives;
         private final List<String> unassignedKpiNames;
-        /** Chế độ chấm điểm của thẻ điểm ĐÃ ÁP DỤNG cho nhân viên này (theo phòng ban). */
+        /** Chế độ chấm điểm của thẻ điểm ĐÃ ÁP DỤNG cho giảng viên này (theo khoa). */
         private final BscScoringMode scoringMode;
 
         BscUserScore(Double bscScore, List<PerspectiveScoreResponse> perspectives, List<String> unassignedKpiNames, BscScoringMode scoringMode) {
@@ -101,12 +101,12 @@ public class BscScoringService {
     // ============================================================
 
     /**
-     * Tính điểm BSC cho 1 nhân viên trong 1 kỳ.
+     * Tính điểm BSC cho 1 giảng viên trong 1 kỳ.
      * Trả về null nếu kỳ đó chưa có thẻ điểm (không có trọng số ⇒ không tính được điểm BSC).
      */
     @Transactional(readOnly = true)
     public BscUserScore computeForUser(UUID userId, UUID kpiPeriodId, UUID organizationId, boolean enableWaterfall) {
-        // Thẻ điểm áp dụng cho nhân viên = thẻ điểm phòng ban của họ → cha gần nhất → mặc định org.
+        // Thẻ điểm áp dụng cho giảng viên = thẻ điểm khoa của họ → cha gần nhất → mặc định org.
         BscScorecard scorecard = resolveScorecard(userOrgUnit(userId), organizationId, kpiPeriodId);
         if (scorecard == null) return null;
 
@@ -216,8 +216,8 @@ public class BscScoringService {
     }
 
     /**
-     * Chế độ chấm điểm áp dụng cho MỘT phòng ban trong kỳ (null nếu không có thẻ điểm nào áp dụng).
-     * Dùng thẻ điểm của phòng ban → cha gần nhất → mặc định org (org_unit = NULL).
+     * Chế độ chấm điểm áp dụng cho MỘT khoa trong kỳ (null nếu không có thẻ điểm nào áp dụng).
+     * Dùng thẻ điểm của khoa → cha gần nhất → mặc định org (org_unit = NULL).
      */
     @Transactional(readOnly = true)
     public BscScoringMode getScoringMode(OrgUnit orgUnit, UUID organizationId, UUID kpiPeriodId) {
@@ -226,7 +226,7 @@ public class BscScoringService {
     }
 
     /**
-     * Tìm thẻ điểm HIỆU LỰC: bắt đầu từ phòng ban {@code orgUnit}, đi ngược lên các phòng ban cha
+     * Tìm thẻ điểm HIỆU LỰC: bắt đầu từ khoa {@code orgUnit}, đi ngược lên các khoa cha
      * lấy thẻ điểm gần nhất; nếu không có ⇒ dùng thẻ điểm MẶC ĐỊNH toàn org (org_unit = NULL).
      */
     @Transactional(readOnly = true)
@@ -245,7 +245,7 @@ public class BscScoringService {
                 .orElse(null);
     }
 
-    /** Phòng ban của một nhân viên (lấy role đầu tiên) — null nếu không xác định được. */
+    /** Khoa của một giảng viên (lấy role đầu tiên) — null nếu không xác định được. */
     private OrgUnit userOrgUnit(UUID userId) {
         if (userId == null) return null;
         List<UserRoleOrgUnit> roles = userRoleOrgUnitRepository.findByUserId(userId);

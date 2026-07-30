@@ -114,7 +114,7 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // OKR — chỉ Giám đốc/Phó GĐ.
+          // OKR — chỉ Hiệu trưởng/Phó GĐ.
           {
             element: <PermissionRoute permission={['OKR:MANAGE']} />,
             children: [
@@ -122,7 +122,7 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // BSC — chỉ Giám đốc/Phó GĐ.
+          // BSC — chỉ Hiệu trưởng/Phó GĐ.
           {
             element: <PermissionRoute permission={['BSC:MANAGE']} />,
             children: [

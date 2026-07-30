@@ -56,7 +56,7 @@ public class KpiAdjustmentService {
 
         for (KpiAdjustmentRequest adj : expiredRequests) {
             adj.setStatus(AdjustmentStatus.REJECTED);
-            adj.setReviewerNote("Tự động từ chối do quá hạn 24h. Vui lòng lên gặp trực tiếp giám đốc.");
+            adj.setReviewerNote("Tự động từ chối do quá hạn 24h. Vui lòng lên gặp trực tiếp hiệu trưởng.");
             
             // Revert KPI status
             KpiCriteria kpi = adj.getKpiCriteria();

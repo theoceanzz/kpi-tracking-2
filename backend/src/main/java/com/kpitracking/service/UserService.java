@@ -126,7 +126,7 @@ public class UserService {
 
         if (request.getEmployeeCode() != null && !request.getEmployeeCode().isBlank()) {
             if (userRepository.existsByEmployeeCodeAndDeletedAtIsNull(request.getEmployeeCode().trim())) {
-                throw new BusinessException("Mã nhân viên '" + request.getEmployeeCode() + "' đã được sử dụng");
+                throw new BusinessException("Mã giảng viên '" + request.getEmployeeCode() + "' đã được sử dụng");
             }
         }
 
@@ -172,7 +172,7 @@ public class UserService {
                 .build();
         userRoleOrgUnitRepository.save(assignment);
 
-        // If it's a child unit, also assign to its parent as "Nhân viên" (if not already assigned)
+        // If it's a child unit, also assign to its parent as "Giảng viên" (if not already assigned)
         if (orgUnit.getParent() != null) {
             UUID orgId = orgUnit.getOrgHierarchyLevel().getOrganization().getId();
             com.kpitracking.entity.Role staffRole = roleRepository.findByOrganizationIdAndRank(orgId, 2)
@@ -320,7 +320,7 @@ public class UserService {
         if (request.getEmployeeCode() != null) {
             String code = request.getEmployeeCode().trim();
             if (!code.isBlank() && userRepository.existsByEmployeeCodeAndIdNotAndDeletedAtIsNull(code, userId)) {
-                throw new BusinessException("Mã nhân viên '" + code + "' đã được sử dụng bởi nhân sự khác");
+                throw new BusinessException("Mã giảng viên '" + code + "' đã được sử dụng bởi người dùng khác");
             }
             user.setEmployeeCode(code);
         }
@@ -480,7 +480,7 @@ public class UserService {
 
                             if (!hasManagerInFile && !hasManagerInDb) {
                                 throw new BusinessException(String.format(
-                                    "Đơn vị '%s' (%s) chưa có nhân sự đảm nhiệm vai trò Trưởng đơn vị (Rank 0). Vui lòng bổ sung quản lý trong tệp tin hoặc hệ thống.",
+                                    "Đơn vị '%s' (%s) chưa có giảng viên đảm nhiệm vai trò Trưởng đơn vị (Rank 0). Vui lòng bổ sung quản lý trong tệp tin hoặc hệ thống.",
                                     unit.getName(), unit.getCode()
                                 ));
                             }
@@ -587,7 +587,7 @@ public class UserService {
             User user = existingUser.get();
             
             if (user.getStatus() == UserStatus.ACTIVE) {
-                throw new BusinessException("Email '" + email + "' đã tồn tại và đang hoạt động trên hệ thống. Không thể ghi đè nhân sự đang hoạt động.");
+                throw new BusinessException("Email '" + email + "' đã tồn tại và đang hoạt động trên hệ thống. Không thể ghi đè giảng viên đang hoạt động.");
             }
 
             if (fullName != null && !fullName.isBlank()) user.setFullName(fullName);
@@ -595,7 +595,7 @@ public class UserService {
             if (employeeCode != null && !employeeCode.isBlank()) {
                 String code = employeeCode.trim();
                 if (userRepository.existsByEmployeeCodeAndIdNotAndDeletedAtIsNull(code, user.getId())) {
-                    throw new BusinessException("Mã nhân viên '" + code + "' đã được sử dụng bởi nhân sự khác (" + email + ")");
+                    throw new BusinessException("Mã giảng viên '" + code + "' đã được sử dụng bởi người dùng khác (" + email + ")");
                 }
                 user.setEmployeeCode(code);
             }
@@ -611,7 +611,7 @@ public class UserService {
             if (employeeCode != null && !employeeCode.isBlank()) {
                 String code = employeeCode.trim();
                 if (userRepository.existsByEmployeeCodeAndDeletedAtIsNull(code)) {
-                    throw new BusinessException("Mã nhân viên '" + code + "' đã được sử dụng bởi nhân sự khác (" + email + ")");
+                    throw new BusinessException("Mã giảng viên '" + code + "' đã được sử dụng bởi người dùng khác (" + email + ")");
                 }
             }
 
@@ -668,7 +668,7 @@ public class UserService {
                 String rankName = (rank == 0) ? "Cấp Trưởng" : "Cấp Phó";
                 
                 throw new BusinessException(String.format(
-                    "Đơn vị '%s' đã có %s đảm nhiệm vai trò %s (%s). Mỗi đơn vị chỉ được phép có tối đa một nhân sự ở cấp độ này.",
+                    "Đơn vị '%s' đã có %s đảm nhiệm vai trò %s (%s). Mỗi đơn vị chỉ được phép có tối đa một giảng viên ở cấp độ này.",
                     first.getOrgUnit().getName(), currentName, currentRole, rankName
                 ));
             }
@@ -679,7 +679,7 @@ public class UserService {
         if (identifier == null || identifier.isBlank()) {
             return roleRepository.findByOrganizationIdAndRank(organizationId, 2)
                     .stream().findFirst()
-                    .orElseThrow(() -> new BusinessException("Vai trò nhân viên mặc định (Rank 2) không tồn tại cho tổ chức này"));
+                    .orElseThrow(() -> new BusinessException("Vai trò giảng viên mặc định (Rank 2) không tồn tại cho tổ chức này"));
         }
 
         if (identifier.matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) {
@@ -694,7 +694,7 @@ public class UserService {
         if (roleName == null || roleName.isBlank()) {
             return roleRepository.findByOrganizationIdAndRank(organizationId, 2)
                     .stream().findFirst()
-                    .orElseThrow(() -> new BusinessException("Không tìm thấy vai trò nhân viên mặc định"));
+                    .orElseThrow(() -> new BusinessException("Không tìm thấy vai trò giảng viên mặc định"));
         }
         String name = roleName.trim();
 

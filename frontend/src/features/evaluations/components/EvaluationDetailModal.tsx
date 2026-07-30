@@ -104,7 +104,7 @@ export default function EvaluationDetailModal({ open, onClose, evaluation }: Eva
     const evalUserLevel = mapLevel(rawEvalUserLevel)
     const evalUserRank = [evaluation.userRank, selfEval?.userRank, firstEval?.userRank].find(r => r != null) ?? 2
 
-    const roleLabel = evaluation.userRoleName || (selfEval?.evaluatorRoleName || (selfEval?.evaluatorRole === 'SELF' ? 'Nhân viên' : 'Thành viên'))
+    const roleLabel = evaluation.userRoleName || (selfEval?.evaluatorRoleName || (selfEval?.evaluatorRole === 'SELF' ? 'Giảng viên' : 'Thành viên'))
     const verb = (evalUserLevel <= 1) ? 'tự nhận xét' : 'tự đánh giá'
     let selfTitle = `${roleLabel} ${verb}`
 
@@ -353,7 +353,7 @@ export default function EvaluationDetailModal({ open, onClose, evaluation }: Eva
                 <h4 className="text-lg font-black text-slate-900 dark:text-white">{evaluation.userName}</h4>
                 <div className="flex items-center gap-2 mt-0.5 mb-1.5">
                   <span className="px-1.5 py-0.5 rounded-md bg-blue-50 dark:bg-blue-900/30 text-[8px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest border border-blue-100 dark:border-blue-800/50">
-                    {evaluation.userRoleName || 'NHÂN VIÊN'}
+                    {evaluation.userRoleName || 'GIẢNG VIÊN'}
                   </span>
                   <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">{evaluation.orgUnitName}</span>
                 </div>
@@ -407,7 +407,7 @@ export default function EvaluationDetailModal({ open, onClose, evaluation }: Eva
             </div>
           )}
 
-          {/* === Mid-level managers (Trưởng nhóm/Trưởng phòng): Inline evaluation form === */}
+          {/* === Mid-level managers (Trưởng nhóm/Trưởng khoa): Inline evaluation form === */}
           {!canReviewSubmission && canCreateEvaluation && isManager && evaluation?.userId !== user?.id && !myEvalAtLevel && (
             <div className="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-6">
               <div className="flex items-center justify-between">
@@ -470,7 +470,7 @@ export default function EvaluationDetailModal({ open, onClose, evaluation }: Eva
                     value={inlineComment}
                     onChange={e => setInlineComment(e.target.value)}
                     rows={3}
-                    placeholder="Ghi lại nhận xét chi tiết về nỗ lực và kết quả của nhân viên..."
+                    placeholder="Ghi lại nhận xét chi tiết về nỗ lực và kết quả của giảng viên..."
                     className="w-full px-6 py-5 rounded-[28px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm font-medium focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/50 outline-none resize-none transition-all shadow-sm placeholder:text-slate-400"
                   />
                 </div>

@@ -32,7 +32,7 @@ function RoleSegment(props: any) {
 }
 
 /**
- * "Nhân sự & vai trò theo đơn vị" — gộp số lượng nhân sự + phân bổ vai trò vào 1 biểu đồ:
+ * "Giảng viên & vai trò theo đơn vị" — gộp số lượng giảng viên + phân bổ vai trò vào 1 biểu đồ:
  * mỗi đơn vị 1 thanh ngang, độ dài = số người, chia đoạn theo vai trò; nhãn tổng ở cuối thanh.
  * Dữ liệu đã đếm MỖI NGƯỜI 1 LẦN ở đơn vị sâu nhất nên các đơn vị cộng lại = tổng thật (không trùng).
  */
@@ -89,7 +89,7 @@ export default function MemberRoleChart({ data }: { data?: RoleDist[] }) {
       {/* Tổng + chú thích */}
       <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-center">
         <span className="text-[11px] font-bold">Tổng: <span className="text-slate-900 dark:text-white">{total}</span> người</span>
-        <p className="text-[10px] text-slate-400 mt-0.5">Đơn vị hiện tại gồm toàn bộ nhân sự (kể cả đơn vị con) · mỗi người tính theo vai trò ở đơn vị sâu nhất</p>
+        <p className="text-[10px] text-slate-400 mt-0.5">Đơn vị hiện tại gồm toàn bộ giảng viên (kể cả đơn vị con) · mỗi người tính theo vai trò ở đơn vị sâu nhất</p>
       </div>
     </div>
   )

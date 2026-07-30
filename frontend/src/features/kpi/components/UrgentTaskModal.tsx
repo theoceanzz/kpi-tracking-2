@@ -121,7 +121,7 @@ function AssigneeSelector({ orgUnitId, selectedIds, onChange, hint, isStaff, cur
           {hint && <span className="text-[10px] font-medium text-[var(--color-muted-foreground)]">({hint})</span>}
         </label>
         <div className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-wider">
-          {usersData?.totalElements ?? 0} nhân sự khả dụng
+          {usersData?.totalElements ?? 0} giảng viên khả dụng
         </div>
       </div>
 
@@ -155,7 +155,7 @@ function AssigneeSelector({ orgUnitId, selectedIds, onChange, hint, isStaff, cur
             </div>
           ) : displayUsers.length === 0 ? (
             <div className="p-8 text-center text-xs text-[var(--color-muted-foreground)] font-medium italic">
-              Không tìm thấy nhân sự phù hợp
+              Không tìm thấy giảng viên phù hợp
             </div>
           ) : displayUsers.map(u => (
             <div key={u.id} onClick={() => toggle(u.id)}
@@ -400,7 +400,7 @@ function ReplaceTab({ kpiList, orgUnitId, period, enableOkr, enableQualitative, 
       <div>
         <label className={labelCls}>Lý do thay thế</label>
         <textarea {...register('replacementReason')} rows={2}
-          placeholder="VD: Phát sinh công việc khẩn cấp từ khách hàng..."
+          placeholder="VD: Phát sinh nhiệm vụ khẩn từ nhà trường..."
           className={inputCls + ' resize-none'} />
       </div>
 
@@ -414,7 +414,7 @@ function ReplaceTab({ kpiList, orgUnitId, period, enableOkr, enableQualitative, 
 
         <div>
           <label className={labelCls}>Tên KPI mới <span className="text-red-500">*</span></label>
-          <input {...register('name', { required: true })} placeholder="VD: Xử lý yêu cầu khẩn khách hàng Q3"
+          <input {...register('name', { required: true })} placeholder="VD: Xử lý nhiệm vụ khẩn của khoa Q3"
             className={cn(inputCls, errors.name && 'ring-2 ring-red-500')} />
         </div>
 

@@ -8,7 +8,7 @@ package com.kpitracking.enums;
  */
 public enum BscFixedPerspective {
     FINANCIAL       ("Tài chính",            "#2563eb", 1),
-    CUSTOMER        ("Khách hàng",           "#f59e0b", 2),
+    CUSTOMER        ("Người học",            "#f59e0b", 2),
     INTERNAL_PROCESS("Quy trình nội bộ",     "#10b981", 3),
     LEARNING_GROWTH ("Học hỏi & phát triển", "#8b5cf6", 4);
 

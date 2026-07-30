@@ -229,7 +229,7 @@ export default function ObjectiveFormModal({ isOpen, onClose, organizationId, ob
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Phòng ban</label>
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Khoa</label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <button

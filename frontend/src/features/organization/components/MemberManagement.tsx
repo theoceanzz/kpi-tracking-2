@@ -196,7 +196,7 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
       } else {
         // Bulk assignment for new members
         if (selectedUsers.length === 0) {
-          toast.error('Vui lòng chọn ít nhất một nhân sự')
+          toast.error('Vui lòng chọn ít nhất một giảng viên')
           return
         }
 
@@ -275,15 +275,15 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
     try {
         if (selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length) {
             await removeBulkMutation.mutateAsync({ userIds: selectedMemberIds, orgUnitId })
-            toast.success(`Đã xóa ${selectedMemberIds.length} nhân sự khỏi đơn vị`)
+            toast.success(`Đã xóa ${selectedMemberIds.length} giảng viên khỏi đơn vị`)
         } else {
             await removeAllMutation.mutateAsync(orgUnitId)
-            toast.success(`Đã xóa toàn bộ nhân sự khỏi đơn vị`)
+            toast.success(`Đã xóa toàn bộ giảng viên khỏi đơn vị`)
         }
         setShowRemoveAllConfirm(false)
         setSelectedMemberIds([])
     } catch (error) {
-        toast.error('Không thể xóa nhân sự')
+        toast.error('Không thể xóa giảng viên')
     }
   }
 
@@ -314,8 +314,8 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
             <Users className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
           </div>
           <div className="min-w-0">
-            <h2 className="text-sm md:text-lg font-black text-gray-900 whitespace-nowrap">Quản lý nhân sự</h2>
-            <p className="text-[10px] md:text-xs text-gray-500 font-bold uppercase tracking-wider truncate">{groupedMembers.length} nhân viên • {members.length} phân quyền</p>
+            <h2 className="text-sm md:text-lg font-black text-gray-900 whitespace-nowrap">Quản lý giảng viên</h2>
+            <p className="text-[10px] md:text-xs text-gray-500 font-bold uppercase tracking-wider truncate">{groupedMembers.length} giảng viên • {members.length} phân quyền</p>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -340,7 +340,7 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
             className="flex items-center px-3 md:px-5 py-2 md:py-2.5 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 text-xs md:text-sm font-black transition-all shadow-lg shadow-blue-200 whitespace-nowrap"
           >
             <UserPlus className="w-3.5 h-3.5 mr-1.5" />
-            Thêm nhân sự
+            Thêm giảng viên
           </button>
           {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
         </div>
@@ -357,7 +357,7 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
               <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-4 border-2 border-dashed border-gray-200">
                 <Users className="w-10 h-10 text-gray-300" />
               </div>
-              <p className="text-gray-500 font-bold">Chưa có nhân sự nào trong đơn vị này</p>
+              <p className="text-gray-500 font-bold">Chưa có giảng viên nào trong đơn vị này</p>
             </div>
           ) : (
             <>
@@ -379,7 +379,7 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
                         }}
                       />
                     </th>
-                    <th className="px-8 py-5">Nhân sự</th>
+                    <th className="px-8 py-5">Giảng viên</th>
                     <th className="px-8 py-5">Vai trò đảm nhiệm</th>
                     <th className="px-8 py-5 text-right">Thao tác</th>
                   </tr>
@@ -509,15 +509,15 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
             <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-xl max-h-[90vh] relative z-[201] overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
                 <div className="p-10 border-b bg-gradient-to-r from-gray-50 to-white">
                     <h3 className="text-2xl font-black text-gray-900 tracking-tight">
-                        {showManageModal ? `Quản lý vai trò: ${showManageModal.userFullName}` : 'Phân công nhân sự mới'}
+                        {showManageModal ? `Quản lý vai trò: ${showManageModal.userFullName}` : 'Phân công giảng viên mới'}
                     </h3>
-                    <p className="text-sm text-gray-500 mt-2 font-medium">Thiết lập các vai trò cụ thể cho nhân sự trong đơn vị này.</p>
+                    <p className="text-sm text-gray-500 mt-2 font-medium">Thiết lập các vai trò cụ thể cho giảng viên trong đơn vị này.</p>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto p-10 space-y-8 custom-scrollbar">
                     {!showManageModal && (
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Chọn nhân sự từ hệ thống</label>
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Chọn giảng viên từ hệ thống</label>
                             <div className="relative group">
                                 <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                                 <input 
@@ -619,7 +619,7 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
                                 <div className="col-span-2 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-center gap-3 text-red-600">
                                     <AlertTriangle className="w-5 h-5 shrink-0" />
                                     <p className="text-xs font-bold italic">
-                                        Đơn vị này chưa được thiết lập phạm vi vai trò. Vui lòng quay lại mục "Sơ đồ tổ chức" để cấu hình trước khi gán nhân sự.
+                                        Đơn vị này chưa được thiết lập phạm vi vai trò. Vui lòng quay lại mục "Sơ đồ tổ chức" để cấu hình trước khi gán giảng viên.
                                     </p>
                                 </div>
                             )}
@@ -729,13 +729,13 @@ export function MemberManagement({ orgUnitId }: MemberManagementProps) {
                         <AlertTriangle className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-black text-gray-900 mb-2">
-                        {selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length ? 'Xóa nhân sự đã chọn' : 'Xóa toàn bộ nhân sự'}
+                        {selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length ? 'Xóa giảng viên đã chọn' : 'Xóa toàn bộ giảng viên'}
                     </h3>
                     <p className="text-gray-500 font-medium">
                         {selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length ? (
-                            <>Hành động này sẽ thu hồi <span className="text-red-600 font-black">TẤT CẢ</span> vai trò của <span className="text-gray-900 font-black">{selectedMemberIds.length} nhân viên đã chọn</span>. Bạn có chắc chắn?</>
+                            <>Hành động này sẽ thu hồi <span className="text-red-600 font-black">TẤT CẢ</span> vai trò của <span className="text-gray-900 font-black">{selectedMemberIds.length} giảng viên đã chọn</span>. Bạn có chắc chắn?</>
                         ) : (
-                            <>Hành động này sẽ thu hồi <span className="text-red-600 font-black">TẤT CẢ</span> vai trò của <span className="text-gray-900 font-black">{groupedMembers.length} nhân viên</span> trong đơn vị này. Bạn có chắc chắn?</>
+                            <>Hành động này sẽ thu hồi <span className="text-red-600 font-black">TẤT CẢ</span> vai trò của <span className="text-gray-900 font-black">{groupedMembers.length} giảng viên</span> trong đơn vị này. Bạn có chắc chắn?</>
                         )}
                     </p>
                 </div>

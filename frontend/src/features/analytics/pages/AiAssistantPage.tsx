@@ -39,7 +39,7 @@ interface Message {
 const WELCOME_MSG: Message = {
   id: 'welcome',
   role: 'assistant',
-  content: 'Xin chào! Tôi có thể giúp gì cho bạn?\n\nBạn có thể hỏi tôi về:\n- **Tổng quan KPI** của tổ chức\n- **Hiệu suất** các phòng ban\n- **Phân tích xu hướng** theo thời gian\n- **So sánh** giữa các đơn vị',
+  content: 'Xin chào! Tôi có thể giúp gì cho bạn?\n\nBạn có thể hỏi tôi về:\n- **Tổng quan KPI** của tổ chức\n- **Hiệu suất** các khoa\n- **Phân tích xu hướng** theo thời gian\n- **So sánh** giữa các đơn vị',
 }
 
 export default function AiAssistantPage() {

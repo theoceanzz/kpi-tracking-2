@@ -76,7 +76,7 @@ public class RolePermissionConstants {
     );
 
     // ----------------------------------------------------------------
-    // Archetype MANAGER: Trưởng các cấp quản lý (Trưởng phòng, Trưởng bộ phận, Trưởng nhóm...)
+    // Archetype MANAGER: Trưởng các cấp quản lý (Trưởng khoa, Trưởng bộ phận, Trưởng nhóm...)
     // ----------------------------------------------------------------
     public static final List<String> MANAGER_PERMS = Arrays.asList(
             "DASHBOARD:VIEW",
@@ -96,7 +96,7 @@ public class RolePermissionConstants {
     );
 
     // ----------------------------------------------------------------
-    // Archetype DEPUTY: Phó các cấp quản lý (Phó phòng, Phó bộ phận, Phó nhóm...)
+    // Archetype DEPUTY: Phó các cấp quản lý (Phó khoa, Phó bộ phận, Phó nhóm...)
     // ----------------------------------------------------------------
     public static final List<String> DEPUTY_PERMS = Arrays.asList(
             "DASHBOARD:VIEW",
@@ -114,7 +114,7 @@ public class RolePermissionConstants {
     );
 
     // ----------------------------------------------------------------
-    // Archetype STAFF: Nhân viên (chỉ dữ liệu cá nhân)
+    // Archetype STAFF: Giảng viên (chỉ dữ liệu cá nhân)
     // ----------------------------------------------------------------
     public static final List<String> STAFF_PERMS = Arrays.asList(
             "DASHBOARD:VIEW",
@@ -128,16 +128,16 @@ public class RolePermissionConstants {
 
     // ================================================================
     // CORE METHOD
-    // numTiers   : tổng số phân cấp của công ty (2,3,4,5)
-    // tierLevel  : vị trí của role này trong công ty (1=cao nhất, n=thấp nhất)
+    // numTiers   : tổng số phân cấp của nhà trường (2,3,4,5)
+    // tierLevel  : vị trí của role này trong nhà trường (1=cao nhất, n=thấp nhất)
     // archetype  : director | deputy_director | manager | deputy | staff
     // ================================================================
     public static List<String> getPermissions(String archetype, int tierLevel, int numTiers) {
-        boolean isTopLevel = (tierLevel == 1);  // vị trí cao nhất trong công ty
+        boolean isTopLevel = (tierLevel == 1);  // vị trí cao nhất trong nhà trường
 
         List<String> perms = new ArrayList<>(resolveBasePerms(archetype));
 
-        // Mọi role (trừ Giám đốc) đều có PERSONAL_PERMS (xem dữ liệu của chính mình)
+        // Mọi role (trừ Hiệu trưởng) đều có PERSONAL_PERMS (xem dữ liệu của chính mình)
         // Riêng trưởng đơn vị (manager) dùng UNIT_HEAD_PERSONAL_PERMS (không có EVALUATION:VIEW_MY)
         if (!"director".equals(archetype) && !"deputy_director".equals(archetype)) {
             if ("manager".equals(archetype)) {
@@ -147,7 +147,7 @@ public class RolePermissionConstants {
             }
         }
 
-        // Role cao nhất của công ty → có thêm SYSTEM_ONLY
+        // Role cao nhất của nhà trường → có thêm SYSTEM_ONLY
         if (isTopLevel) {
             if ("director".equals(archetype)) {
                 addIfAbsent(perms, SYSTEM_ONLY);  // full SYSTEM_ONLY

@@ -118,8 +118,8 @@ function SidebarSettingsTab() {
 
   const menuItems = [
     { key: '/dashboard', defaultLabel: 'Tổng quan', category: 'Dashboard' },
-    { key: 'Thiết lập công ty', defaultLabel: 'Thiết lập công ty', category: 'Hệ thống' },
-    { key: '/company', defaultLabel: 'Công ty', category: 'Hệ thống' },
+    { key: 'Thiết lập nhà trường', defaultLabel: 'Thiết lập nhà trường', category: 'Hệ thống' },
+    { key: '/company', defaultLabel: 'Nhà trường', category: 'Hệ thống' },
     // Nhãn OKR/BSC chỉ sửa được khi tổ chức bật tính năng tương ứng (khớp cờ okrOnly/bscOnly ở Sidebar).
     // Nhóm không có path nên key là chính nhãn gốc — trùng quy ước getLabel() bên Sidebar.
     ...(enableOkr ? [
@@ -134,7 +134,7 @@ function SidebarSettingsTab() {
     { key: 'Tổ chức', defaultLabel: 'Tổ chức', category: 'Hệ thống' },
     { key: '/roles', defaultLabel: 'Vai trò', category: 'Hệ thống' },
     { key: '/org-structure', defaultLabel: 'Sơ đồ tổ chức', category: 'Hệ thống' },
-    { key: '/users', defaultLabel: 'Nhân sự', category: 'Hệ thống' },
+    { key: '/users', defaultLabel: 'Giảng viên', category: 'Hệ thống' },
     { key: '/settings', defaultLabel: 'Cấu hình hệ thống', category: 'Hệ thống' },
     { key: 'Quản lý KPI', defaultLabel: 'Quản lý KPI', category: 'KPI' },
     { key: '/kpi-cycles', defaultLabel: 'Quản lý kỳ', category: 'KPI' },
@@ -265,7 +265,7 @@ const EVENT_LABELS: Record<string, string> = {
   kpi_approved: 'Khi chỉ tiêu được phê duyệt',
   kpi_rejected: 'Khi chỉ tiêu bị từ chối',
   kpi_approval_reverted: 'Khi phê duyệt chỉ tiêu bị hoàn lại',
-  submission_submitted: 'Khi nhân viên nộp báo cáo KPI (dành cho quản lý)',
+  submission_submitted: 'Khi giảng viên nộp báo cáo KPI (dành cho quản lý)',
   submission_reviewed: 'Khi bài nộp được chấm điểm',
   reminder_deadline: 'Nhắc nhở sắp đến hạn nộp (24h)',
 }
@@ -334,7 +334,7 @@ function NotificationSettingsTab() {
           <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 flex items-start gap-3">
             <Info size={18} className="text-blue-600 shrink-0 mt-0.5" />
             <p className="text-xs text-blue-800 dark:text-blue-300 font-medium leading-relaxed">
-              Các thiết lập này sẽ áp dụng mặc định cho tất cả nhân viên trong tổ chức. Nhân viên có thể tùy chỉnh lại trong trang cá nhân của họ nếu được phép.
+              Các thiết lập này sẽ áp dụng mặc định cho tất cả giảng viên trong tổ chức. Giảng viên có thể tùy chỉnh lại trong trang cá nhân của họ nếu được phép.
             </p>
           </div>
 

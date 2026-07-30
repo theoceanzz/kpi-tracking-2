@@ -65,7 +65,7 @@ export default function CompanyPage() {
       onSuccess: () => {
         setIsEditingInfo(false)
         refreshUser()
-        toast.success('Cập nhật thông tin doanh nghiệp thành công')
+        toast.success('Cập nhật thông tin nhà trường thành công')
       },
       onError: () => toast.error('Không thể cập nhật thông tin')
     })
@@ -118,7 +118,7 @@ export default function CompanyPage() {
                       value={infoFormData.name}
                       onChange={e => setInfoFormData({ ...infoFormData, name: e.target.value })}
                       className="text-2xl font-bold bg-white/5 border-b border-indigo-500/50 text-white focus:outline-none w-full py-1 px-3 rounded-t-lg"
-                      placeholder="Tên doanh nghiệp"
+                      placeholder="Tên trường"
                     />
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10">
@@ -263,7 +263,7 @@ export default function CompanyPage() {
                                  <input 
                                    {...register(`hierarchyLevels.${index}.unitTypeName` as const, { required: true })} 
                                    className="w-full bg-white dark:bg-slate-900 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 dark:text-white border border-slate-100 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all"
-                                   placeholder="VD: Chi nhánh"
+                                   placeholder="VD: Cơ sở"
                                   />
                                </div>
                                <div className="flex-1 w-full space-y-1">
@@ -271,7 +271,7 @@ export default function CompanyPage() {
                                  <input 
                                    {...register(`hierarchyLevels.${index}.managerRoleLabel` as const)} 
                                    className="w-full bg-white dark:bg-slate-900 px-3 py-2 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-800 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all"
-                                   placeholder="VD: Giám đốc"
+                                   placeholder="VD: Hiệu trưởng"
                                   />
                                </div>
                              </div>
@@ -320,7 +320,7 @@ export default function CompanyPage() {
                             <div className="flex items-center gap-1.5 mt-2 px-2 py-0.5 rounded-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 w-fit">
                               <ShieldCheck size={12} className="text-indigo-500" />
                               <span className="text-[10px] font-medium text-slate-500">
-                                {level.managerRoleLabel || (idx === (org.hierarchyLevels?.length || 0) - 1 ? 'Nhân viên' : 'N/A')}
+                                {level.managerRoleLabel || (idx === (org.hierarchyLevels?.length || 0) - 1 ? 'Giảng viên' : 'N/A')}
                               </span>
                             </div>
                           </div>
@@ -1424,7 +1424,7 @@ function BscConfigSection({ org }: { org: any }) {
           <div className="space-y-1">
             <p className="text-xs text-indigo-800 dark:text-indigo-300 font-bold">Quản trị chiến lược theo 4 viễn cảnh</p>
             <p className="text-[11px] text-indigo-700/70 dark:text-indigo-400/70 font-medium leading-relaxed">
-              Khi bật, bạn có thể cấu hình các hạng mục theo 4 viễn cảnh cố định (Tài chính, Khách hàng, Quy trình nội bộ, Học hỏi & phát triển),
+              Khi bật, bạn có thể cấu hình các hạng mục theo 4 viễn cảnh cố định (Tài chính, Người học, Quy trình nội bộ, Học hỏi & phát triển),
               nhóm KPI theo hạng mục và theo dõi thẻ điểm cân bằng của tổ chức.
             </p>
           </div>
@@ -1565,7 +1565,7 @@ function WaterfallConfigSection({ org }: { org: any }) {
             <p className="text-xs text-cyan-800 dark:text-cyan-300 font-bold">Mô hình phân rã mục tiêu (Waterfall)</p>
             <p className="text-[11px] text-cyan-700/70 dark:text-cyan-400/70 font-medium leading-relaxed">
               Cho phép Trưởng đơn vị giao lại (Delegate) một phần hoặc toàn bộ chỉ tiêu của mình cho cấp dưới. 
-              Kết quả của nhân viên sẽ tự động được cộng dồn (Roll-up) lên kết quả của cấp quản lý.
+              Kết quả của giảng viên sẽ tự động được cộng dồn (Roll-up) lên kết quả của cấp quản lý.
             </p>
           </div>
         </div>
@@ -1575,21 +1575,21 @@ function WaterfallConfigSection({ org }: { org: any }) {
             <div className="w-10 h-10 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center text-cyan-600 shadow-sm font-black text-xs">1</div>
             <div>
               <p className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Giao xuống (Delegate)</p>
-              <p className="text-[10px] text-slate-400 font-medium">Trưởng đơn vị chia nhỏ 1 tỷ doanh số cho 3 nhân viên.</p>
+              <p className="text-[10px] text-slate-400 font-medium">Trưởng đơn vị chia nhỏ 1 tỷ doanh số cho 3 giảng viên.</p>
             </div>
           </div>
           <div className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
             <div className="w-10 h-10 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center text-cyan-600 shadow-sm font-black text-xs">2</div>
             <div>
               <p className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Thực hiện (Staff)</p>
-              <p className="text-[10px] text-slate-400 font-medium">Nhân viên nộp báo cáo kết quả thực hiện phần việc được giao.</p>
+              <p className="text-[10px] text-slate-400 font-medium">Giảng viên nộp báo cáo kết quả thực hiện phần việc được giao.</p>
             </div>
           </div>
           <div className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
             <div className="w-10 h-10 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center text-cyan-600 shadow-sm font-black text-xs">3</div>
             <div>
               <p className="text-xs font-bold text-slate-700 dark:text-slate-200 uppercase tracking-tight">Cộng dồn (Roll-up)</p>
-              <p className="text-[10px] text-slate-400 font-medium">Hệ thống tự tổng hợp kết quả nhân viên cho Trưởng đơn vị.</p>
+              <p className="text-[10px] text-slate-400 font-medium">Hệ thống tự tổng hợp kết quả giảng viên cho Trưởng đơn vị.</p>
             </div>
           </div>
         </div>

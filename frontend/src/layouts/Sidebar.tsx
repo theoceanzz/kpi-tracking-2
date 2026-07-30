@@ -67,10 +67,10 @@ const navItems: NavItem[] = [
   { label: 'Tổng quan', path: '/dashboard', icon: <LayoutDashboard size={20} />, permission: 'DASHBOARD:VIEW', end: true },
   { label: 'Dashboard cá nhân', path: '/dashboard?view=staff', icon: <UserCircle size={20} />, permission: 'KPI:VIEW_MY', end: true },
   {
-    label: 'Thiết lập công ty',
+    label: 'Thiết lập nhà trường',
     icon: <Building2 size={20} />,
     children: [
-      { label: 'Công ty', path: '/company', icon: <Building2 size={18} />, permission: 'COMPANY:VIEW' },
+      { label: 'Nhà trường', path: '/company', icon: <Building2 size={18} />, permission: 'COMPANY:VIEW' },
       { label: 'Quản lý OKR', path: '/okr', icon: <Target size={18} />, permission: 'OKR:MANAGE', okrOnly: true },
       {
         label: 'Quản lý BSC',
@@ -90,7 +90,7 @@ const navItems: NavItem[] = [
           { label: 'Sơ đồ tổ chức', path: '/org-structure', icon: <Network size={18} />, permission: 'ORG:VIEW' },
         ]
       },
-      { label: 'Nhân sự', path: '/users', icon: <Users size={18} />, permission: 'USER:VIEW' },
+      { label: 'Giảng viên', path: '/users', icon: <Users size={18} />, permission: 'USER:VIEW' },
       { label: 'Cấu hình hệ thống', path: '/settings', icon: <Settings size={18} />, permission: 'COMPANY:UPDATE' },
     ]
   },
@@ -351,7 +351,7 @@ useEffect(() => {
             </div>
             {(!isCollapsed || isMobileOpen) && (
               <span className="font-black text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-primary)] to-indigo-600">
-                KeyGo
+                KeyLearn
               </span>
             )}
           </div>
@@ -374,7 +374,7 @@ useEffect(() => {
               return (
                 <div key={menuKey} className="space-y-1">
                   <button
-                    id={menuKey === 'Thiết lập công ty' ? 'tour-company-nav-group' : menuKey === 'Quản lý KPI' ? 'tour-kpi-nav-group' : menuKey.includes('Phê duyệt') ? 'tour-approve-nav-group' : `nav-group-${menuKey.toLowerCase().replace(/\s+/g, '-')}`}
+                    id={menuKey === 'Thiết lập nhà trường' ? 'tour-company-nav-group' : menuKey === 'Quản lý KPI' ? 'tour-kpi-nav-group' : menuKey.includes('Phê duyệt') ? 'tour-approve-nav-group' : `nav-group-${menuKey.toLowerCase().replace(/\s+/g, '-')}`}
                     onClick={() => toggleMenu(menuKey)}
                     className={cn(
                       'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all group relative',

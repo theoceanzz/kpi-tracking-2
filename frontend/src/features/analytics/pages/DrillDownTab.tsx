@@ -310,7 +310,7 @@ export default function DrillDownTab() {
                 <div className="flex items-center gap-4 md:gap-8 shrink-0">
                   <div className="flex items-baseline gap-1.5">
                     <p className="text-xl md:text-2xl font-black">{data.memberCount}</p>
-                    <p className="text-[10px] text-white/70 font-bold uppercase whitespace-nowrap">Nhân sự</p>
+                    <p className="text-[10px] text-white/70 font-bold uppercase whitespace-nowrap">Giảng viên</p>
                   </div>
                   <div className="flex items-baseline gap-1.5">
                     <p className="text-xl md:text-2xl font-black">{data.totalKpi}</p>
@@ -490,7 +490,7 @@ export default function DrillDownTab() {
                 </section>
               ) : (
                 <div className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200 dark:border-slate-800 shadow-sm py-12 text-center text-slate-400 text-sm">
-                  Đơn vị này chưa có nhân sự trực thuộc
+                  Đơn vị này chưa có giảng viên trực thuộc
                 </div>
               )}
 

@@ -16,9 +16,9 @@ public class ScorecardResponse {
     private String vision;
     private UUID kpiPeriodId;
     private String kpiPeriodName;
-    /** Các phòng ban áp dụng; RỖNG = thẻ điểm mặc định toàn tổ chức. */
+    /** Các khoa áp dụng; RỖNG = thẻ điểm mặc định toàn tổ chức. */
     private List<ScorecardOrgUnitResponse> orgUnits;
-    /** Nhãn gộp tên các phòng ban (tiện hiển thị); null nếu là mặc định toàn tổ chức. */
+    /** Nhãn gộp tên các khoa (tiện hiển thị); null nếu là mặc định toàn tổ chức. */
     private String orgUnitName;
     private BscScorecardStatus status;
     private BscScoringMode scoringMode;

@@ -53,7 +53,7 @@ public class RoleService {
         Integer rank = request.getRank();
         if (rank == null || rank == 2) {
             String lowerName = request.getName().toLowerCase();
-            if (lowerName.contains("trưởng") || lowerName.contains("giám đốc") || lowerName.contains("head") || lowerName.contains("director")) rank = 0;
+            if (lowerName.contains("trưởng") || lowerName.contains("hiệu trưởng") || lowerName.contains("head") || lowerName.contains("director")) rank = 0;
             else if (lowerName.contains("phó") || lowerName.contains("deputy")) rank = 1;
             else rank = 2;
         }
@@ -106,7 +106,7 @@ public class RoleService {
         } else if (request.getName() != null && !Boolean.TRUE.equals(role.getIsSystem())) {
             // Only auto-derive rank for non-system roles to avoid messing up system roles
             String lowerName = request.getName().toLowerCase();
-            if (lowerName.contains("trưởng") || lowerName.contains("giám đốc") || lowerName.contains("head") || lowerName.contains("director")) role.setRank(0);
+            if (lowerName.contains("trưởng") || lowerName.contains("hiệu trưởng") || lowerName.contains("head") || lowerName.contains("director")) role.setRank(0);
             else if (lowerName.contains("phó") || lowerName.contains("deputy")) role.setRank(1);
         }
 
@@ -128,9 +128,9 @@ public class RoleService {
             throw new BusinessException("Không thể xóa vai trò hệ thống: " + role.getName());
         }
 
-        // Kiểm tra xem có bất kỳ nhân viên nào đang giữ vai trò này không
+        // Kiểm tra xem có bất kỳ giảng viên nào đang giữ vai trò này không
         if (userRoleOrgUnitRepository.existsByRoleId(roleId)) {
-            throw new BusinessException("Không thể xóa vai trò '" + role.getName() + "' vì vẫn còn nhân viên đang giữ vai trò này trong tổ chức.");
+            throw new BusinessException("Không thể xóa vai trò '" + role.getName() + "' vì vẫn còn giảng viên đang giữ vai trò này trong tổ chức.");
         }
 
         role.setDeletedAt(Instant.now());

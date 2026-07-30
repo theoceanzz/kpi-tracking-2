@@ -17,24 +17,24 @@ interface KpiImportGuideModalProps {
 
 const SAMPLE_DATA = [
   {
-    Name: 'Doanh số bán hàng',
-    Description: 'Tổng doanh số trong tháng',
+    Name: 'Số tiết giảng hoàn thành',
+    Description: 'Tổng số tiết giảng trong tháng',
     Weight: 40,
-    TargetValue: 100000000,
-    MinimumValue: 80000000,
+    TargetValue: 60,
+    MinimumValue: 45,
     IsReverseKpi: false,
     IsBonusKpi: false,
     Deadline: '',
-    Unit: 'VND',
-    EmployeeCode: 'NV001',
-    OrgUnitCode: 'MKT001',
+    Unit: 'tiết',
+    EmployeeCode: 'GV001',
+    OrgUnitCode: 'CNTT',
     ObjectiveCode: 'OBJ001',
     KeyResultCode: 'KR001',
-    Perspective: 'DOANH_THU',
+    Perspective: 'DAO_TAO',
   },
   {
-    Name: 'Tỉ lệ lỗi sản phẩm',
-    Description: 'Tỉ lệ lỗi càng thấp càng tốt',
+    Name: 'Tỉ lệ sinh viên bỏ học',
+    Description: 'Tỉ lệ càng thấp càng tốt',
     Weight: 30,
     TargetValue: 2,
     MinimumValue: 5,
@@ -42,14 +42,14 @@ const SAMPLE_DATA = [
     IsBonusKpi: false,
     Deadline: '25/10/2026 17:00',
     Unit: '%',
-    EmployeeCode: 'NV002, NV003',
-    OrgUnitCode: 'KD002',
+    EmployeeCode: 'GV002, GV003',
+    OrgUnitCode: 'KTPM',
     ObjectiveCode: '',
     KeyResultCode: '',
     Perspective: 'INTERNAL_PROCESS',
   },
   {
-    Name: 'Sáng kiến cải tiến quy trình',
+    Name: 'Đề tài nghiên cứu khoa học',
     Description: 'KPI tùy chọn, không tính vào 100% trọng số',
     Weight: 10,
     TargetValue: 1,
@@ -57,9 +57,9 @@ const SAMPLE_DATA = [
     IsReverseKpi: false,
     IsBonusKpi: true,
     Deadline: '',
-    Unit: 'sáng kiến',
-    EmployeeCode: 'NV001',
-    OrgUnitCode: 'MKT001',
+    Unit: 'đề tài',
+    EmployeeCode: 'GV001',
+    OrgUnitCode: 'CNTT',
     ObjectiveCode: '',
     KeyResultCode: '',
     Perspective: 'LEARNING_GROWTH',
@@ -67,24 +67,24 @@ const SAMPLE_DATA = [
 ]
 
 const BASE_COLUMNS = [
-  { name: 'Name', required: true, desc: 'Tên chỉ tiêu KPI', example: 'Doanh số tháng 10' },
-  { name: 'Description', required: false, desc: 'Mô tả chi tiết', example: 'Tính trên giá trị hợp đồng' },
+  { name: 'Name', required: true, desc: 'Tên chỉ tiêu KPI', example: 'Số tiết giảng tháng 10' },
+  { name: 'Description', required: false, desc: 'Mô tả chi tiết', example: 'Tính trên số tiết đã duyệt' },
   { name: 'Weight', required: true, desc: 'Trọng số (Ví dụ: 30 cho 30%)', example: '30' },
-  { name: 'TargetValue', required: true, desc: 'Giá trị mục tiêu cần đạt', example: '500000000' },
-  { name: 'MinimumValue', required: false, desc: 'Giá trị tối thiểu', example: '400000000' },
+  { name: 'TargetValue', required: true, desc: 'Giá trị mục tiêu cần đạt', example: '60' },
+  { name: 'MinimumValue', required: false, desc: 'Giá trị tối thiểu', example: '45' },
   { name: 'IsReverseKpi', required: false, desc: 'KPI Ngược — giá trị càng thấp càng tốt (true/false)', example: 'true' },
   { name: 'IsBonusKpi', required: false, desc: 'KPI Thưởng — tùy chọn, không tính vào 100% trọng số, hoàn thành thì cộng thêm điểm (true/false)', example: 'true' },
   { name: 'Deadline', required: false, desc: 'Hạn chót riêng cho KPI này, sớm hơn ngày kết thúc đợt. Định dạng dd/MM/yyyy hoặc dd/MM/yyyy HH:mm. Để trống = mặc định theo ngày kết thúc đợt', example: '25/10/2026 17:00' },
-  { name: 'Unit', required: true, desc: 'Đơn vị tính', example: 'VND' },
+  { name: 'Unit', required: true, desc: 'Đơn vị tính', example: 'tiết' },
   { name: 'Frequency', required: false, desc: 'Tần suất (Chọn nhanh trong giao diện Xem trước)', example: 'MONTHLY' },
-  { name: 'EmployeeCode', required: false, desc: 'Mã nhân viên (Chọn/Nhập trong giao diện Xem trước)', example: 'NV001' },
+  { name: 'EmployeeCode', required: false, desc: 'Mã giảng viên (Chọn/Nhập trong giao diện Xem trước)', example: 'GV001' },
   { name: 'Period', required: false, desc: 'Đợt KPI (Chọn nhanh trong giao diện Xem trước)', example: 'Tháng 10/2026' },
-  { name: 'OrgUnitCode', required: false, desc: 'Mã đơn vị (Hệ thống sẽ tự động tìm tên phòng ban tương ứng)', example: 'MKT01' },
+  { name: 'OrgUnitCode', required: false, desc: 'Mã đơn vị (Hệ thống sẽ tự động tìm tên khoa tương ứng)', example: 'CNTT' },
 ]
 
 const STEPS = [
   { num: '01', title: 'Tải file mẫu', desc: 'Nhấn nút bên dưới để tải về file CSV mẫu có sẵn header chuẩn cho KPI.' },
-  { num: '02', title: 'Điền thông tin', desc: 'Mở file bằng Excel, điền thông tin chỉ tiêu và Mã nhân viên (Employee Code) được giao.' },
+  { num: '02', title: 'Điền thông tin', desc: 'Mở file bằng Excel, điền thông tin chỉ tiêu và Mã giảng viên (Employee Code) được giao.' },
   { num: '03', title: 'Lưu & Upload', desc: 'Lưu file ở định dạng .csv hoặc .xlsx, sau đó nhấn "Chọn file & Import" bên dưới.' },
 ]
 
@@ -107,7 +107,7 @@ export default function KpiImportGuideModal({ open, onClose, onSelectFile }: Kpi
       { name: 'KeyResultCode', required: false, desc: 'Mã KR (OKR)', example: 'KR001' },
     ] : []),
     ...(enableBsc ? [
-      { name: 'Perspective', required: false, desc: 'Hạng mục BSC — nhập mã hoặc tên hạng mục (VD: DOANH_THU). Hạng mục PHẢI có trong thẻ điểm của đơn vị + đợt của dòng đó.', example: 'DOANH_THU' },
+      { name: 'Perspective', required: false, desc: 'Hạng mục BSC — nhập mã hoặc tên hạng mục (VD: DAO_TAO). Hạng mục PHẢI có trong thẻ điểm của đơn vị + đợt của dòng đó.', example: 'DAO_TAO' },
     ] : [])
   ]
 
@@ -228,9 +228,9 @@ export default function KpiImportGuideModal({ open, onClose, onSelectFile }: Kpi
     noteTitleRow.font = { bold: true, size: 12, color: { argb: 'FFDC2626' } }
     guideSheet.addRow(['1. File mẫu này hỗ trợ import cả định dạng .xlsx và .csv.'])
     guideSheet.addRow(['2. Nếu import bằng CSV, bạn vui lòng xuất dữ liệu từ tab "KPI Template" ra file .csv (UTF-8).'])
-    guideSheet.addRow(['3. EmployeeCode: Mã nhân viên (tùy chọn, bạn có thể tự map trên giao diện).'])
-    guideSheet.addRow(['4. Trọng số (Weight): Là số từ 1-100, tổng trọng số của một nhân sự nên là 100%.'])
-    guideSheet.addRow(['5. OrgUnitCode: Mã phòng ban. Hệ thống sẽ gán KPI cho phòng ban đó.'])
+    guideSheet.addRow(['3. EmployeeCode: Mã giảng viên (tùy chọn, bạn có thể tự map trên giao diện).'])
+    guideSheet.addRow(['4. Trọng số (Weight): Là số từ 1-100, tổng trọng số của một giảng viên nên là 100%.'])
+    guideSheet.addRow(['5. OrgUnitCode: Mã khoa. Hệ thống sẽ gán KPI cho khoa đó.'])
     guideSheet.addRow(['6. IsReverseKpi: Đánh dấu KPI Ngược (giá trị càng thấp càng tốt). Nhập true/false hoặc 1/0 hoặc có/không. Để trống = false.'])
     guideSheet.addRow(['7. IsBonusKpi: Đánh dấu KPI Thưởng (tùy chọn, không tính vào tổng 100% trọng số, hoàn thành thì được cộng thêm điểm). Nhập true/false hoặc 1/0 hoặc có/không. Để trống = false.'])
     guideSheet.addRow(['8. Deadline: Hạn chót riêng cho KPI này (sớm hơn ngày kết thúc đợt). Định dạng dd/MM/yyyy hoặc dd/MM/yyyy HH:mm. Để trống = mặc định theo ngày kết thúc đợt.'])
@@ -264,7 +264,7 @@ export default function KpiImportGuideModal({ open, onClose, onSelectFile }: Kpi
             </div>
             <div>
               <h2 className="text-xl font-black text-slate-900 dark:text-white">Import Chỉ tiêu Hàng loạt</h2>
-              <p className="text-sm font-medium text-slate-500">Giao chỉ tiêu cho nhân sự qua Excel/CSV</p>
+              <p className="text-sm font-medium text-slate-500">Giao chỉ tiêu cho giảng viên qua Excel/CSV</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-600 transition-all">
@@ -399,13 +399,13 @@ export default function KpiImportGuideModal({ open, onClose, onSelectFile }: Kpi
               <div className="flex items-start gap-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-900/10 border border-amber-200/50 dark:border-amber-900/30">
                 <Info size={18} className="text-amber-600 shrink-0 mt-0.5" />
                 <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed font-medium">
-                  <strong>EmployeeCode</strong> phải chính xác và nhân viên đó phải thuộc đơn vị bạn quản lý.
+                  <strong>EmployeeCode</strong> phải chính xác và giảng viên đó phải thuộc đơn vị bạn quản lý.
                 </p>
               </div>
               <div className="flex items-start gap-3 p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/10 border border-blue-200/50 dark:border-blue-900/30">
                 <CheckCircle2 size={18} className="text-blue-600 shrink-0 mt-0.5" />
                 <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed font-medium">
-                  Trọng số (Weight) là số nguyên 1-100. Đảm bảo tổng trọng số của nhân viên trong kỳ đạt 100%.
+                  Trọng số (Weight) là số nguyên 1-100. Đảm bảo tổng trọng số của giảng viên trong kỳ đạt 100%.
                 </p>
               </div>
               {enableBsc && (

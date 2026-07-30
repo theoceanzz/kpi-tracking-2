@@ -8,17 +8,17 @@ interface ImportScorecardGuideModalProps {
 }
 
 const SAMPLE_CSV_CONTENT = `Period,ScorecardName,Vision,OrgUnits,PerspectiveCode,Weight,Status,ScoringMode,EmptyPolicy
-Quý 3/2026,Chiến lược Quý 3,Dẫn đầu thị phần khu vực,,DOANH_THU,40,ACTIVE,SHADOW,RENORMALIZE
-Quý 3/2026,,,,HAI_LONG_KH,30,,,
+Quý 3/2026,Chiến lược Quý 3,Dẫn đầu về chất lượng đào tạo,,NGUON_THU,40,ACTIVE,SHADOW,RENORMALIZE
+Quý 3/2026,,,,HAI_LONG_NH,30,,,
 Quý 3/2026,,,,VAN_HANH,20,,,
 Quý 3/2026,,,,DAO_TAO,10,,,`
 
 const COLUMNS = [
   { name: 'Period', required: true, desc: 'Tên kỳ KPI (dùng để tìm kỳ & gom nhóm thẻ điểm)', example: 'Quý 3/2026' },
   { name: 'ScorecardName', required: true, desc: 'Tên thẻ điểm (ghi ở dòng đầu của mỗi kỳ)', example: 'Chiến lược Quý 3' },
-  { name: 'Vision', required: false, desc: 'Tuyên bố chiến lược', example: 'Dẫn đầu thị phần' },
-  { name: 'OrgUnits', required: false, desc: 'Mã phòng ban áp dụng (nhiều mã cách nhau dấu phẩy, ghi ở dòng đầu của mỗi kỳ). Bỏ trống = toàn tổ chức. Có thể chọn ở bảng xem trước.', example: 'IT, MKT' },
-  { name: 'PerspectiveCode', required: true, desc: 'Mã hạng mục (phải đã tạo trong tổ chức)', example: 'DOANH_THU' },
+  { name: 'Vision', required: false, desc: 'Tuyên bố chiến lược', example: 'Dẫn đầu về chất lượng đào tạo' },
+  { name: 'OrgUnits', required: false, desc: 'Mã khoa áp dụng (nhiều mã cách nhau dấu phẩy, ghi ở dòng đầu của mỗi kỳ). Bỏ trống = toàn tổ chức. Có thể chọn ở bảng xem trước.', example: 'CNTT, KTPM' },
+  { name: 'PerspectiveCode', required: true, desc: 'Mã hạng mục (phải đã tạo trong tổ chức)', example: 'NGUON_THU' },
   { name: 'Weight', required: true, desc: 'Trọng số % của hạng mục (tổng mỗi kỳ = 100)', example: '40' },
   { name: 'Status', required: false, desc: 'DRAFT / ACTIVE / ARCHIVED (mặc định DRAFT)', example: 'ACTIVE' },
   { name: 'ScoringMode', required: false, desc: 'SHADOW / OFFICIAL (mặc định SHADOW)', example: 'SHADOW' },
@@ -47,8 +47,8 @@ async function downloadTemplate(type: 'csv' | 'xlsx') {
     { header: 'EmptyPolicy', key: 'EmptyPolicy', width: 16 },
   ]
   worksheet.addRows([
-    ['Quý 3/2026', 'Chiến lược Quý 3', 'Dẫn đầu thị phần khu vực', '', 'DOANH_THU', 40, 'ACTIVE', 'SHADOW', 'RENORMALIZE'],
-    ['Quý 3/2026', '', '', '', 'HAI_LONG_KH', 30, '', '', ''],
+    ['Quý 3/2026', 'Chiến lược Quý 3', 'Dẫn đầu về chất lượng đào tạo', '', 'NGUON_THU', 40, 'ACTIVE', 'SHADOW', 'RENORMALIZE'],
+    ['Quý 3/2026', '', '', '', 'HAI_LONG_NH', 30, '', '', ''],
     ['Quý 3/2026', '', '', '', 'VAN_HANH', 20, '', '', ''],
     ['Quý 3/2026', '', '', '', 'DAO_TAO', 10, '', '', ''],
   ])
@@ -73,7 +73,7 @@ async function downloadTemplate(type: 'csv' | 'xlsx') {
 const STEPS = [
   { num: '01', title: 'Tải file mẫu', desc: 'Tải file mẫu có cấu trúc chuẩn.' },
   { num: '02', title: 'Điền thông tin', desc: 'Mỗi kỳ là một nhóm dòng; điền các hạng mục + trọng số (tổng 100%).' },
-  { num: '03', title: 'Chọn đơn vị & Import', desc: 'Chọn file, sau đó chọn phòng ban áp dụng ở bảng xem trước (bỏ trống = toàn tổ chức) rồi Import.' },
+  { num: '03', title: 'Chọn đơn vị & Import', desc: 'Chọn file, sau đó chọn khoa áp dụng ở bảng xem trước (bỏ trống = toàn tổ chức) rồi Import.' },
 ]
 
 export default function ImportScorecardGuideModal({ open, onClose, onSelectFile }: ImportScorecardGuideModalProps) {
@@ -161,7 +161,7 @@ export default function ImportScorecardGuideModal({ open, onClose, onSelectFile 
               </div>
               <div className="flex items-start gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200/50 dark:border-emerald-900/30">
                 <CheckCircle2 size={16} className="text-emerald-600 mt-0.5 shrink-0" />
-                <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed"><strong>PerspectiveCode</strong> phải là mã <strong>hạng mục</strong> đã tạo. Phòng ban áp dụng được chọn ở bảng xem trước sau khi chọn file. Định dạng import: <strong>.xlsx</strong>.</p>
+                <p className="text-xs text-emerald-800 dark:text-emerald-300 leading-relaxed"><strong>PerspectiveCode</strong> phải là mã <strong>hạng mục</strong> đã tạo. Khoa áp dụng được chọn ở bảng xem trước sau khi chọn file. Định dạng import: <strong>.xlsx</strong>.</p>
               </div>
             </div>
           </div>

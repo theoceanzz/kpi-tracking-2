@@ -23,7 +23,7 @@ interface Message {
 const WELCOME_MSG: Message = {
   id: 'welcome',
   role: 'assistant',
-  content: 'Xin chào! Tôi có thể giúp gì cho bạn? (Ví dụ: "Có bao nhiêu thành viên trong phòng ban xyz?")',
+  content: 'Xin chào! Tôi có thể giúp gì cho bạn? (Ví dụ: "Có bao nhiêu thành viên trong khoa xyz?")',
 }
 
 export default function AiAssistantWidget() {

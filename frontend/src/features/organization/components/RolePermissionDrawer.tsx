@@ -26,20 +26,20 @@ interface RolePermissionDrawerProps {
 
 const PERMISSION_DESCRIPTIONS: Record<string, string> = {
   'DASHBOARD:VIEW': 'Cho phép xem các biểu đồ, số liệu thống kê tổng quan và các khung hiển thị trên trang tổng quan chính',
-  'COMPANY:VIEW': 'Cho phép xem thông tin hồ sơ công ty/tổ chức (tên, địa chỉ, logo, thông tin liên hệ...)',
-  'COMPANY:UPDATE': 'Cho phép chỉnh sửa, cập nhật thông tin hồ sơ công ty/tổ chức',
+  'COMPANY:VIEW': 'Cho phép xem thông tin hồ sơ nhà trường (tên, địa chỉ, logo, thông tin liên hệ...)',
+  'COMPANY:UPDATE': 'Cho phép chỉnh sửa, cập nhật thông tin hồ sơ nhà trường',
   'COMPANY:DELETE': 'Cho phép xoá hoặc lưu trữ tổ chức khỏi hệ thống — chỉ dành cho quản trị cấp cao nhất',
-  'ORG:VIEW': 'Cho phép xem sơ đồ tổ chức, danh sách các đơn vị/phòng ban đầy đủ chi tiết',
-  'ORG:CREATE': 'Cho phép tạo mới đơn vị/phòng ban trong sơ đồ tổ chức',
-  'ORG:UPDATE': 'Cho phép chỉnh sửa thông tin đơn vị/phòng ban (tên, cấp bậc, trưởng đơn vị...)',
-  'ORG:DELETE': 'Cho phép xoá đơn vị/phòng ban khỏi sơ đồ tổ chức',
+  'ORG:VIEW': 'Cho phép xem sơ đồ tổ chức, danh sách các đơn vị/khoa đầy đủ chi tiết',
+  'ORG:CREATE': 'Cho phép tạo mới đơn vị/khoa trong sơ đồ tổ chức',
+  'ORG:UPDATE': 'Cho phép chỉnh sửa thông tin đơn vị/khoa (tên, cấp bậc, trưởng đơn vị...)',
+  'ORG:DELETE': 'Cho phép xoá đơn vị/khoa khỏi sơ đồ tổ chức',
   'ORG:VIEW_TREE': 'Cho phép xem cây sơ đồ tổ chức ở dạng rút gọn (dùng cho bộ lọc, chọn đơn vị nhanh)',
-  'USER:VIEW': 'Cho phép xem danh mục, hồ sơ chi tiết của nhân sự trong tổ chức',
-  'USER:CREATE': 'Cho phép thêm mới tài khoản/hồ sơ nhân sự vào hệ thống',
-  'USER:UPDATE': 'Cho phép chỉnh sửa thông tin cá nhân, chức vụ, đơn vị công tác của nhân sự',
-  'USER:DELETE': 'Cho phép xoá hoặc vô hiệu hoá tài khoản nhân sự',
-  'USER:IMPORT': 'Cho phép nhập danh sách nhân sự hàng loạt từ tệp Excel/CSV',
-  'USER:VIEW_LIST': 'Cho phép xem danh sách nhân sự ở dạng rút gọn, dùng để hiển thị trên trang tổng quan hoặc bộ lọc nhanh',
+  'USER:VIEW': 'Cho phép xem danh mục, hồ sơ chi tiết của giảng viên trong tổ chức',
+  'USER:CREATE': 'Cho phép thêm mới tài khoản/hồ sơ giảng viên vào hệ thống',
+  'USER:UPDATE': 'Cho phép chỉnh sửa thông tin cá nhân, chức vụ, đơn vị công tác của giảng viên',
+  'USER:DELETE': 'Cho phép xoá hoặc vô hiệu hoá tài khoản giảng viên',
+  'USER:IMPORT': 'Cho phép nhập danh sách giảng viên hàng loạt từ tệp Excel/CSV',
+  'USER:VIEW_LIST': 'Cho phép xem danh sách giảng viên ở dạng rút gọn, dùng để hiển thị trên trang tổng quan hoặc bộ lọc nhanh',
   'ROLE:VIEW': 'Cho phép xem danh sách các vai trò hiện có trong tổ chức',
   'ROLE:ASSIGN': 'Cho phép gán một hoặc nhiều vai trò cho người dùng cụ thể',
   'ROLE:CREATE': 'Cho phép tạo mới vai trò cùng danh sách quyền đi kèm',
@@ -48,7 +48,7 @@ const PERMISSION_DESCRIPTIONS: Record<string, string> = {
   'PERMISSION:EDIT': 'Cho phép thiết lập chi tiết, bật/tắt từng quyền cụ thể cho vai trò — quyền quản trị nhạy cảm',
   'PERMISSION:VIEW': 'Cho phép xem danh sách toàn bộ quyền hiện có trong hệ thống',
   'KPI:VIEW': 'Cho phép xem danh mục, chi tiết các chỉ tiêu KPI đã thiết lập trong tổ chức',
-  'KPI:CREATE': 'Cho phép thiết lập mới chỉ tiêu KPI cho đơn vị/nhân sự',
+  'KPI:CREATE': 'Cho phép thiết lập mới chỉ tiêu KPI cho đơn vị/giảng viên',
   'KPI:UPDATE': 'Cho phép chỉnh sửa nội dung, trọng số, mục tiêu của chỉ tiêu KPI đã tạo',
   'KPI:DELETE': 'Cho phép xoá chỉ tiêu KPI khỏi hệ thống',
   'KPI:APPROVE_CRITERIA': 'Cho phép phê duyệt chỉ tiêu KPI do cấp dưới đề xuất trước khi áp dụng',
@@ -62,15 +62,15 @@ const PERMISSION_DESCRIPTIONS: Record<string, string> = {
   'KPI_PERIOD:CREATE': 'Cho phép tạo mới kỳ đánh giá KPI với thời gian bắt đầu/kết thúc xác định',
   'KPI_PERIOD:UPDATE': 'Cho phép cập nhật thông tin, trạng thái của kỳ đánh giá KPI',
   'KPI_PERIOD:DELETE': 'Cho phép xoá kỳ đánh giá KPI khỏi hệ thống',
-  'SUBMISSION:REVIEW': 'Cho phép duyệt/từ chối bài nộp kết quả KPI của nhân viên cấp dưới',
-  'SUBMISSION:REVIEW_KPI': 'Cho phép xem chi tiết bài nộp KPI của nhân viên để phục vụ việc đánh giá',
+  'SUBMISSION:REVIEW': 'Cho phép duyệt/từ chối bài nộp kết quả KPI của giảng viên cấp dưới',
+  'SUBMISSION:REVIEW_KPI': 'Cho phép xem chi tiết bài nộp KPI của giảng viên để phục vụ việc đánh giá',
   'SUBMISSION:CREATE': 'Cho phép nộp báo cáo kết quả thực hiện KPI cá nhân kèm minh chứng/tệp đính kèm',
   'SUBMISSION:VIEW_MY': 'Cho phép xem lại lịch sử các bài nộp báo cáo KPI của chính bản thân',
-  'SUBMISSION:VIEW': 'Cho phép xem toàn bộ bản nộp KPI của tất cả nhân sự trong phạm vi quản lý',
+  'SUBMISSION:VIEW': 'Cho phép xem toàn bộ bản nộp KPI của tất cả giảng viên trong phạm vi quản lý',
   'SUBMISSION:DELETE': 'Cho phép xoá bản nộp KPI đã được gửi lên hệ thống',
   'SUBMISSION:UPDATE': 'Cho phép chỉnh sửa nội dung bản nộp KPI đã tồn tại',
-  'EVALUATION:VIEW': 'Cho phép xem kết quả đánh giá, xếp loại KPI của nhân sự trong phạm vi quản lý',
-  'EVALUATION:CREATE': 'Cho phép thực hiện đánh giá, chấm điểm và xếp loại kết quả KPI cho nhân viên',
+  'EVALUATION:VIEW': 'Cho phép xem kết quả đánh giá, xếp loại KPI của giảng viên trong phạm vi quản lý',
+  'EVALUATION:CREATE': 'Cho phép thực hiện đánh giá, chấm điểm và xếp loại kết quả KPI cho giảng viên',
   'EVALUATION:UPDATE': 'Cho phép chỉnh sửa kết quả đánh giá KPI đã được lập trước đó',
   'EVALUATION:DELETE': 'Cho phép xoá kết quả đánh giá KPI khỏi hệ thống',
   'EVALUATION:VIEW_MY': 'Cho phép xem kết quả đánh giá KPI của chính bản thân người dùng',
@@ -82,8 +82,8 @@ const PERMISSION_DESCRIPTIONS: Record<string, string> = {
   'POLICY:UPDATE': 'Cho phép chỉnh sửa nội dung chính sách/quy định đã ban hành',
   'POLICY:DELETE': 'Cho phép xoá chính sách/quy định khỏi hệ thống',
   'POLICY:ASSIGN': 'Cho phép gán chính sách/quy định áp dụng cho từng vai trò cụ thể',
-  'STATS:VIEW_ORG': 'Cho phép xem số liệu thống kê, báo cáo tổng hợp theo từng đơn vị/phòng ban',
-  'STATS:VIEW_EMPLOYEE': 'Cho phép xem số liệu thống kê kết quả KPI chi tiết theo từng nhân viên',
+  'STATS:VIEW_ORG': 'Cho phép xem số liệu thống kê, báo cáo tổng hợp theo từng đơn vị/khoa',
+  'STATS:VIEW_EMPLOYEE': 'Cho phép xem số liệu thống kê kết quả KPI chi tiết theo từng giảng viên',
   'STATS:VIEW_MY': 'Cho phép xem tiến độ, số liệu thống kê KPI của chính bản thân người dùng',
   'SYSTEM:ADMIN': 'Quyền quản trị toàn hệ thống, cho phép bỏ qua mọi giới hạn phạm vi đơn vị/tổ chức — chỉ cấp cho quản trị viên cao nhất',
   'USER_ROLE:VIEW': 'Cho phép xem danh sách vai trò đang được gán cho từng người dùng',
@@ -91,7 +91,7 @@ const PERMISSION_DESCRIPTIONS: Record<string, string> = {
   'USER_ROLE:REVOKE': 'Cho phép thu hồi (gỡ bỏ) vai trò đã gán khỏi người dùng',
   'ATTACHMENT:UPLOAD': 'Cho phép tải lên tệp đính kèm (minh chứng, tài liệu...) cho các bản nộp KPI',
   'ATTACHMENT:DELETE': 'Cho phép xoá tệp đính kèm đã tải lên hệ thống',
-  'REMINDER:SEND': 'Cho phép gửi thông báo nhắc nhở nhân viên về tiến độ nộp/hoàn thành KPI',
+  'REMINDER:SEND': 'Cho phép gửi thông báo nhắc nhở giảng viên về tiến độ nộp/hoàn thành KPI',
   'ADJUSTMENT:VIEW_MY': 'Cho phép xem các yêu cầu điều chỉnh chỉ tiêu KPI do chính bản thân gửi lên'
 };
 
@@ -188,7 +188,7 @@ export default function RolePermissionDrawer({ role, isOpen, onClose, hierarchyL
     if (!role) return;
 
     let targetType = 'staff';
-    let label = 'Nhân viên';
+    let label = 'Giảng viên';
 
     // Get the set of active role levels for this company
     const activeRoleLevels = Array.from(new Set(hierarchyLevels.map((l: any) => l.roleLevel)) as Set<number>).sort((a: number, b: number) => a - b)

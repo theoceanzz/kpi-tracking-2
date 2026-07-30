@@ -137,7 +137,7 @@ export default function UserFormModal({ open, onClose, editUser }: UserFormModal
       qc.invalidateQueries({ queryKey: ['organization-users'] })
       qc.invalidateQueries({ queryKey: ['org-unit-members'] })
       qc.invalidateQueries({ queryKey: ['stats'] })
-      toast.success('Cập nhật nhân sự thành công')
+      toast.success('Cập nhật giảng viên thành công')
       onClose()
     },
     onError: (error: any) => {
@@ -259,7 +259,7 @@ function CreateUserForm({ onClose, onSubmit, isPending, canAssignRoles, dynamicR
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-[var(--color-card)] rounded-2xl shadow-xl p-6 max-w-md w-full mx-4 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Thêm nhân sự mới</h3>
+          <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Thêm giảng viên mới</h3>
           <button onClick={onClose} className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"><X size={20} /></button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -269,7 +269,7 @@ function CreateUserForm({ onClose, onSubmit, isPending, canAssignRoles, dynamicR
             {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Mã nhân viên</label>
+            <label className="block text-sm font-medium mb-1.5">Mã giảng viên</label>
             <input {...register('employeeCode')} className={inputCls} placeholder="VD: NV001" />
           </div>
           <div>
@@ -489,7 +489,7 @@ function EditUserForm({ editUser, onClose, onSubmit, isPending, canAssignRoles, 
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-[var(--color-card)] rounded-2xl shadow-xl p-6 max-w-md w-full mx-4 animate-in zoom-in-95 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Chỉnh sửa nhân sự</h3>
+          <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Chỉnh sửa giảng viên</h3>
           <button onClick={onClose} className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"><X size={20} /></button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -499,7 +499,7 @@ function EditUserForm({ editUser, onClose, onSubmit, isPending, canAssignRoles, 
             {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Mã nhân viên</label>
+            <label className="block text-sm font-medium mb-1.5">Mã giảng viên</label>
             <input {...register('employeeCode')} className={inputCls} />
           </div>
           <div>

@@ -199,7 +199,7 @@ export default function DirectorDashboard() {
   const tabs: { key: TabView; label: string; icon: any }[] = [
     { key: 'overview', label: 'Tổng quan', icon: BarChart3 },
     { key: 'orgUnits', label: 'Cơ cấu đơn vị', icon: Building2 },
-    { key: 'employees', label: 'Bảng nhân sự', icon: Users },
+    { key: 'employees', label: 'Bảng giảng viên', icon: Users },
   ]
 
   return (
@@ -216,7 +216,7 @@ export default function DirectorDashboard() {
               Hệ thống <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Quản trị Hiệu suất</span>
             </h1>
             <p className="text-slate-500 font-medium text-base max-w-2xl leading-relaxed">
-              Dữ liệu tổng quát về KPIs, bài nộp và đánh giá nhân sự. 
+              Dữ liệu tổng quát về KPIs, bài nộp và đánh giá giảng viên. 
               Cập nhật lúc: {new Date().toLocaleTimeString('vi-VN')}
             </p>
           </div>
@@ -244,8 +244,8 @@ export default function DirectorDashboard() {
       </div>
 
       <div id="tour-dashboard-stats" className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
-        <PremiumStatCard icon={<Building2 size={20} />} label="Phòng ban" value={stats?.totalOrgUnits ?? 0} color="emerald" trend="Active" />
-        <PremiumStatCard icon={<Users size={20} />} label="Nhân sự" value={empStats?.totalElements ?? 0} color="indigo" />
+        <PremiumStatCard icon={<Building2 size={20} />} label="Khoa" value={stats?.totalOrgUnits ?? 0} color="emerald" trend="Active" />
+        <PremiumStatCard icon={<Users size={20} />} label="Giảng viên" value={empStats?.totalElements ?? 0} color="indigo" />
         <PremiumStatCard icon={<Target size={20} />} label="Chỉ tiêu KPI" value={stats?.totalKpiCriteria ?? 0} sub={`${stats?.approvedKpi ?? 0} đã duyệt`} color="blue" />
         <PremiumStatCard icon={<Award size={20} />} label="Đánh giá" value={stats?.totalEvaluations ?? 0} color="purple" />
       </div>
@@ -306,7 +306,7 @@ export default function DirectorDashboard() {
                   )}>
                       <div className="flex items-center gap-2 mb-4 px-2">
                         <div className="w-1 h-4 bg-indigo-500 rounded-full"></div>
-                        <span className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest">Nhân viên đóng góp</span>
+                        <span className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest">Giảng viên đóng góp</span>
                       </div>
                       <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1 custom-scrollbar">
                         {Object.values(groups).flat().filter(m => m.rate > 0).length > 0 ? (
@@ -343,14 +343,14 @@ export default function DirectorDashboard() {
                     <Building2 size={12} />
                     <span className="text-[9px] font-black uppercase tracking-widest">Cơ cấu Đơn vị</span>
                   </div>
-                  <p className="text-base font-black text-slate-900 dark:text-white">{stats?.totalOrgUnits ?? 0} Phòng ban</p>
+                  <p className="text-base font-black text-slate-900 dark:text-white">{stats?.totalOrgUnits ?? 0} Khoa</p>
                 </div>
                 <div className="flex flex-col items-center justify-center space-y-1 px-4">
                   <div className="flex items-center gap-1.5 text-slate-400 mb-1">
                     <Users size={12} />
                     <span className="text-[9px] font-black uppercase tracking-widest">Đối tượng KPI</span>
                   </div>
-                  <p className="text-base font-black text-slate-900 dark:text-white">{(allEmpStats?.content || []).filter(e => e.assignedKpi > 0).length} Nhân sự</p>
+                  <p className="text-base font-black text-slate-900 dark:text-white">{(allEmpStats?.content || []).filter(e => e.assignedKpi > 0).length} Giảng viên</p>
                 </div>
               </div>
             </div>
@@ -456,7 +456,7 @@ export default function DirectorDashboard() {
                         key="pending-kpi"
                         icon={<Clock size={18} />}
                         title={`${stats.pendingKpi} yêu cầu KPI chờ duyệt`}
-                        sub="Ảnh hưởng đến tiến độ toàn công ty"
+                        sub="Ảnh hưởng đến tiến độ toàn trường"
                         color="red"
                         link="/kpi-criteria/pending"
                       />
@@ -741,7 +741,7 @@ function PremiumRankingTable({
         <table className="w-full min-w-[800px] lg:min-w-full">
           <thead>
             <tr className="text-left text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 border-b border-slate-50 dark:border-slate-800/50">
-              <th className="px-10 py-6">Nhân viên</th>
+              <th className="px-10 py-6">Giảng viên</th>
               <th className="px-6 py-6 text-center">Hoàn thành</th>
               <th className="px-6 py-6 text-center">KPI Duyệt</th>
               <th className="px-10 py-6 text-right">Điểm TB</th>
@@ -917,7 +917,7 @@ function OrgUnitsGrid({ units, averageScores }: { units: OrgUnitStats[], average
                       <h4 className="font-black text-slate-900 dark:text-white text-lg leading-tight group-hover:text-indigo-600 transition-colors">{unit.orgUnitName}</h4>
                       <div className="flex items-center gap-2 mt-1">
                         <Users size={14} className="text-slate-400" />
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{unit.memberCount} Nhân viên</span>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{unit.memberCount} Giảng viên</span>
                       </div>
                     </div>
                   </div>
@@ -984,7 +984,7 @@ function EmployeesExecutiveTable({
                <Users size={20} />
              </div>
              <div>
-               <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 dark:text-white">Quản lý Nhân sự</h3>
+               <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 dark:text-white">Quản lý Giảng viên</h3>
                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-0.5">Thống kê hiệu suất cá nhân</p>
              </div>
           </div>
@@ -1032,7 +1032,7 @@ function EmployeesExecutiveTable({
           <table className="w-full min-w-[800px] lg:min-w-full text-left">
             <thead>
                <tr className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 border-b border-slate-50 dark:border-slate-800/50">
-                  <th className="px-10 py-6">Nhân viên</th>
+                  <th className="px-10 py-6">Giảng viên</th>
                   <th className="px-6 py-6 text-center">Đơn vị</th>
                   <th className="px-6 py-6 text-center">Tiến độ Hoàn thành</th>
                   <th className="px-10 py-6 text-right">Thao tác</th>

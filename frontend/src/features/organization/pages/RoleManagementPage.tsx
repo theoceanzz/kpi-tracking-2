@@ -210,7 +210,7 @@ export default function RoleManagementPage() {
               {mainTitle} <span className="text-indigo-200">{lastWord}</span>
             </h1>
             <p className="text-indigo-100/80 font-medium mt-3 max-w-xl text-lg">
-              Thiết lập hệ thống phân cấp và ma trận quyền hạn cho toàn bộ nhân sự trong tổ chức của bạn.
+              Thiết lập hệ thống phân cấp và ma trận quyền hạn cho toàn bộ giảng viên trong tổ chức của bạn.
             </p>
           </div>
           
@@ -641,7 +641,7 @@ export default function RoleManagementPage() {
                   <input
                     type="text"
                     className="w-full px-5 py-3.5 md:px-8 md:py-5 bg-gray-50 border-2 border-transparent rounded-2xl md:rounded-3xl outline-none focus:bg-white focus:border-indigo-600 transition-all font-black text-base md:text-lg placeholder:text-gray-300 shadow-inner"
-                    placeholder="VD: TRƯỞNG PHÒNG MARKETING"
+                    placeholder="VD: TRƯỞNG KHOA CÔNG NGHỆ THÔNG TIN"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
@@ -735,7 +735,7 @@ export default function RoleManagementPage() {
         onClose={() => setDeleteConfirm({ isOpen: false, role: null })}
         onConfirm={handleConfirmDelete}
         title="Xác nhận xoá vai trò"
-        description={`Bạn có chắc chắn muốn xoá vai trò "${deleteConfirm.role?.name}" khỏi hệ thống? Tất cả nhân sự thuộc vai trò này sẽ bị ảnh hưởng.`}
+        description={`Bạn có chắc chắn muốn xoá vai trò "${deleteConfirm.role?.name}" khỏi hệ thống? Tất cả giảng viên thuộc vai trò này sẽ bị ảnh hưởng.`}
         confirmLabel="Vẫn xoá vai trò"
         loading={deleteMutation.isPending}
       />

@@ -434,7 +434,7 @@ public class OrgUnitStatisticService {
     @Transactional(readOnly = true)
     public Map<String, Object> getMemberStatistics(UUID targetUnitId, Boolean includeChildUnits, String positionName, String startDate, String endDate) {
         boolean subtree = includeChildUnits != null && includeChildUnits;
-        // Lọc nhóm theo TÊN chức vụ (vd "trưởng phòng") — khỏi bắt model search_positions trước.
+        // Lọc nhóm theo TÊN chức vụ (vd "trưởng khoa") — khỏi bắt model search_positions trước.
         String posName = (positionName != null && !positionName.isBlank()) ? positionName.trim().toLowerCase() : null;
         Instant start = parseDate(startDate, Instant.EPOCH);
         Instant end = parseEndDate(endDate, Instant.now());
@@ -891,7 +891,7 @@ public class OrgUnitStatisticService {
 
         List<Map<String, Object>> series = new ArrayList<>();
         if ("avg_performance".equals(metricKey)) {
-            // Hiệu suất = hiệu suất ĐÁNH GIÁ (điểm đánh giá của quản lý/nhân sự theo đợt),
+            // Hiệu suất = hiệu suất ĐÁNH GIÁ (điểm đánh giá của quản lý/giảng viên theo đợt),
             // nên chuỗi được tính theo TỪNG ĐỢT KPI (không theo tháng/quý; granularity bị bỏ qua),
             // khớp với bảng xếp hạng & biểu đồ ở phần thống kê.
             OrgUnit unit = orgUnitRepository.findById(unitId)
@@ -1018,15 +1018,15 @@ public class OrgUnitStatisticService {
         // Lọc theo chức vụ/CẤP đơn vị NGAY trên tập theo scope để trả lời "xếp hạng <chức vụ> theo ..."
         // trong 1 lần gọi (thay vì model phải liệt kê đơn vị -> tìm trưởng -> ... rồi tự gộp).
         //  - managersOnly = quản lý (role.rank <= 1) của đơn vị KHÔNG PHẢI cấp gốc. Role.rank chỉ nói LOẠI
-        //    chức (0=trưởng, 1=phó, 2=nhân viên) chứ không nói CẤP, nên nếu chỉ lọc rank<=1 thì chủ tịch/CEO
-        //    (trưởng của đơn vị gốc) cũng lọt vào danh sách "trưởng phòng". Cấp đơn vị mới là tín hiệu đúng.
+        //    chức (0=trưởng, 1=phó, 2=giảng viên) chứ không nói CẤP, nên nếu chỉ lọc rank<=1 thì chủ tịch/CEO
+        //    (trưởng của đơn vị gốc) cũng lọt vào danh sách "trưởng khoa". Cấp đơn vị mới là tín hiệu đúng.
         //  - unitTypeName = giữ người quản lý/thuộc đơn vị có loại cấp khớp (vd "Phòng") theo OrgHierarchyLevel.
-        //  - positionFilter = giữ người có tên chức vụ khớp (không phân biệt hoa/thường), vd "trưởng phòng".
+        //  - positionFilter = giữ người có tên chức vụ khớp (không phân biệt hoa/thường), vd "trưởng khoa".
         boolean onlyManagers = Boolean.TRUE.equals(managersOnly);
         String pf = (positionFilter != null && !positionFilter.isBlank()) ? positionFilter.trim().toLowerCase() : null;
         String utf = (unitTypeName != null && !unitTypeName.isBlank()) ? unitTypeName.trim().toLowerCase() : null;
 
-        // Cấp GỐC của tổ chức (levelOrder nhỏ nhất) — trưởng của cấp này là chủ tịch/CEO, không phải trưởng phòng.
+        // Cấp GỐC của tổ chức (levelOrder nhỏ nhất) — trưởng của cấp này là chủ tịch/CEO, không phải trưởng khoa.
         Integer rootLevelOrder = null;
         if (onlyManagers) {
             List<OrgHierarchyLevel> levels = orgHierarchyLevelRepository.findByOrganizationIdOrderByLevelOrderAsc(orgId);
@@ -1034,7 +1034,7 @@ public class OrgUnitStatisticService {
         }
 
         // Nạp MỘT lần vai trò + đơn vị (kèm cấp) của cả tập user: dùng cho cả việc lọc và việc trả kèm
-        // đơn vị/chức vụ ở mỗi dòng (khỏi bắt model chain thêm tool để biết "họ quản lý phòng nào").
+        // đơn vị/chức vụ ở mỗi dòng (khỏi bắt model chain thêm tool để biết "họ quản lý khoa nào").
         boolean filtering = onlyManagers || pf != null || utf != null;
         Map<UUID, UserRoleOrgUnit> uroByUser = new HashMap<>();
         Map<UUID, List<UserRoleOrgUnit>> allUrosByUser = new HashMap<>();
@@ -1124,7 +1124,7 @@ public class OrgUnitStatisticService {
                 score = count;
             }
 
-            // Đơn vị + chức vụ đại diện: trả luôn để trả lời "ai thấp nhất VÀ họ quản lý phòng nào"
+            // Đơn vị + chức vụ đại diện: trả luôn để trả lời "ai thấp nhất VÀ họ quản lý khoa nào"
             // trong 1 lần gọi, thay vì model tự đoán.
             UserRoleOrgUnit info = uroByUser.get(u.getId());
             OrgUnit infoUnit = info != null ? safeRef(info::getOrgUnit) : null;
@@ -1139,7 +1139,7 @@ public class OrgUnitStatisticService {
             entry.put("email", u.getEmail());
             entry.put("orgUnitName", infoUnit != null ? infoUnit.getName() : null);
             entry.put("positionName", infoRole != null ? infoRole.getName() : null);
-            // Người KIÊM NHIỆM (vd vừa là trưởng phòng ở đơn vị này, vừa là nhân viên ở đơn vị
+            // Người KIÊM NHIỆM (vd vừa là trưởng khoa ở đơn vị này, vừa là giảng viên ở đơn vị
             // khác): trả HẾT vai trò, nếu không thì chỉ còn một chức vụ đại diện và model có
             // khoảng trống để đoán bừa cái còn lại. Chỉ thêm khi thực sự có từ 2 vai trò khác tên.
             List<String> positions = distinctPositions(allUrosByUser.get(u.getId()));
@@ -1174,7 +1174,7 @@ public class OrgUnitStatisticService {
         return "average_performance".equalsIgnoreCase(metric) || "average_rating".equalsIgnoreCase(metric);
     }
 
-    /** rank của vai trò (0=trưởng, 1=phó, 2=nhân viên); thiếu thì coi như thấp nhất. */
+    /** rank của vai trò (0=trưởng, 1=phó, 2=giảng viên); thiếu thì coi như thấp nhất. */
     private int roleRankOf(UserRoleOrgUnit uro) {
         Role r = safeRef(uro::getRole);
         return (r != null && r.getRank() != null) ? r.getRank() : Integer.MAX_VALUE;
@@ -1182,7 +1182,7 @@ public class OrgUnitStatisticService {
 
     /**
      * Mọi vai trò KHÁC TÊN của một người kèm đơn vị tương ứng, sắp theo vai trò cao trước
-     * (vd ["Trưởng phòng — Phòng vận hành", "Nhân viên — KeyPerson"]).
+     * (vd ["Trưởng khoa — Khoa Đào tạo", "Giảng viên — KeyPerson"]).
      * Gộp theo TÊN vai trò, nên người có nhiều phân công cùng một chức vụ (rất phổ biến: vừa
      * thuộc đơn vị gốc vừa thuộc phòng) chỉ ra MỘT mục và không bị thêm field thừa.
      */
@@ -1201,7 +1201,7 @@ public class OrgUnitStatisticService {
         return new ArrayList<>(byRoleName.values());
     }
 
-    /** levelOrder của đơn vị trong phân công; càng LỚN càng cụ thể (0 = cấp gốc/công ty). */
+    /** levelOrder của đơn vị trong phân công; càng LỚN càng cụ thể (0 = cấp gốc/nhà trường). */
     private int levelOrderOf(UserRoleOrgUnit uro) {
         OrgUnit u = safeRef(uro::getOrgUnit);
         OrgHierarchyLevel l = (u != null) ? safeRef(u::getOrgHierarchyLevel) : null;
@@ -1216,10 +1216,10 @@ public class OrgUnitStatisticService {
     }
 
     /**
-     * Một người có thể có NHIỀU phân công (vd vừa ở đơn vị gốc, vừa ở phòng cụ thể) — chọn cái
+     * Một người có thể có NHIỀU phân công (vd vừa ở đơn vị gốc, vừa ở khoa cụ thể) — chọn cái
      * đại diện đúng cho bảng xếp hạng, theo thứ tự ưu tiên:
-     *   1. nằm trong subtree đang xếp hạng (hỏi "phòng X" thì phải hiện phòng X, không phải đơn vị gốc)
-     *   2. vai trò cao hơn (rank nhỏ hơn) — trưởng phòng thắng nhân viên
+     *   1. nằm trong subtree đang xếp hạng (hỏi "khoa X" thì phải hiện khoa X, không phải đơn vị gốc)
+     *   2. vai trò cao hơn (rank nhỏ hơn) — trưởng khoa thắng giảng viên
      *   3. đơn vị CỤ THỂ hơn (levelOrder lớn hơn) — tránh hiện đơn vị gốc khi họ còn phân công ở phòng
      * Nếu chỉ so rank thì hai phân công cùng rank sẽ hoà và giữ bừa dòng DB đến trước.
      */
@@ -1237,7 +1237,7 @@ public class OrgUnitStatisticService {
 
     /**
      * Một phân công (user × vai trò × đơn vị) có khớp bộ lọc chức vụ/cấp đơn vị không.
-     * managersOnly loại quản lý ở CẤP GỐC vì đó là chủ tịch/CEO chứ không phải trưởng phòng.
+     * managersOnly loại quản lý ở CẤP GỐC vì đó là chủ tịch/CEO chứ không phải trưởng khoa.
      */
     private boolean matchesRoleFilter(UserRoleOrgUnit uro, boolean onlyManagers, Integer rootLevelOrder, String pf, String utf) {
         Role role = safeRef(uro::getRole);

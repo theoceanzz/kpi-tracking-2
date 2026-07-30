@@ -5,7 +5,7 @@ Người dùng sẽ cung cấp DỮ LIỆU TỪ CÔNG CỤ (JSON thật từ h�
 BƯỚC 1 — Tự rút ra 3–5 LƯU Ý ngắn gọn từ dữ liệu (đơn vị/cá nhân/kỳ nào nổi bật, số liệu nào đáng chú ý, xu hướng tăng/giảm). Chỉ suy luận trong đầu, KHÔNG in các lưu ý ra.
 
 BƯỚC 2 — Dựa trên các lưu ý đó, sinh ĐÚNG 10 câu hỏi, chia 2 nhóm:
-- "technical" (5 câu): đào sâu kỹ thuật — nguyên nhân, truy vết chi tiết, theo sprint/kỳ, so sánh DỌC theo thời gian.
+- "technical" (5 câu): đào sâu kỹ thuật — nguyên nhân, truy vết chi tiết, theo đợt/kỳ, so sánh DỌC theo thời gian.
 - "management" (5 câu): góc quản trị — trách nhiệm, quyết định cần ra, hành động, so sánh NGANG giữa các đơn vị/cá nhân.
 
 QUY TẮC BẮT BUỘC:

@@ -19,7 +19,7 @@ public class EmailService {
     @Value("${app.mail.from}")
     private String fromEmail;
 
-    @Value("${app.frontend-url:${app.cors.allowed-origins:http://localhost:3000}}")
+    @Value("${app.frontend-url:${app.cors.allowed-origins:http://localhost:3001}}")
     private String frontendUrl;
 
     @Async
@@ -27,7 +27,7 @@ public class EmailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(fromEmail, "KeyGo System");
+            helper.setFrom(fromEmail, "KeyLearn System");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(htmlBody, true); // true indicates HTML
@@ -62,7 +62,7 @@ public class EmailService {
                "    <div class='header'><h1>" + title + "</h1></div>" +
                "    <div class='body'>" + content + "</div>" +
                "    <div class='footer'>" +
-               "      <p>© 2026 KeyGo Performance Tracking. Mọi quyền được bảo lưu.</p>" +
+               "      <p>© 2026 KeyLearn Performance Tracking. Mọi quyền được bảo lưu.</p>" +
                "      <p style='margin-top: 8px;'>Email này được gửi tự động, vui lòng không phản hồi.</p>" +
                "    </div>" +
                "  </div>" +
@@ -87,9 +87,9 @@ public class EmailService {
 
     @Async
     public void sendVerifyEmail(String to, String verifyEmailToken) {
-        String subject = "Xác nhận Tham gia Mạng lưới KeyGo";
+        String subject = "Xác nhận Tham gia Mạng lưới KeyLearn";
         String content = "<p>Chào mừng bạn đã gia nhập,</p>" +
-                         "<p>Để hoàn tất thủ tục đăng ký và kích hoạt tài khoản trên hệ thống KeyGo, vui lòng sử dụng mã OTP dưới đây:</p>" +
+                         "<p>Để hoàn tất thủ tục đăng ký và kích hoạt tài khoản trên hệ thống KeyLearn, vui lòng sử dụng mã OTP dưới đây:</p>" +
                          "<div class='token-container'>" +
                          "  <span class='token-label'>Mã OTP kích hoạt</span>" +
                          "  <div class='token-value'>" + verifyEmailToken + "</div>" +
@@ -100,34 +100,34 @@ public class EmailService {
 
     @Async
     public void sendWelcomeAndVerifyEmail(String to, String fullName, String verifyEmailToken) {
-        String subject = "Chào mừng tới KeyGo - Xác thực Tài khoản";
+        String subject = "Chào mừng tới KeyLearn - Xác thực Tài khoản";
         String content = "<p>Xin chào <b>" + fullName + "</b>,</p>" +
-                         "<p>Chúc mừng! Hồ sơ và dữ liệu hệ thống của công ty đã được khởi tạo thành công trên nền tảng KeyGo.</p>" +
+                         "<p>Chúc mừng! Hồ sơ và dữ liệu hệ thống của nhà trường đã được khởi tạo thành công trên nền tảng KeyLearn.</p>" +
                          "<p>Để bắt đầu trải nghiệm, vui lòng xác thực tài khoản của bạn bằng mã OTP bên dưới:</p>" +
                          "<div class='token-container'>" +
                          "  <span class='token-label'>Mã OTP xác thực</span>" +
                          "  <div class='token-value'>" + verifyEmailToken + "</div>" +
                          "</div>" +
-                         "<p>Sau khi xác thực, bạn có thể đăng nhập để quản lý KPI và trao quyền cho đội ngũ của mình.</p>";
+                         "<p>Sau khi xác thực, bạn có thể đăng nhập để quản lý KPI và trao quyền cho đội ngũ giảng viên của mình.</p>";
         sendEmail(to, subject, buildHtmlTemplate("Chào mừng & Xác thực", content));
     }
 
     @Async
     public void sendWelcomeEmail(String to, String fullName) {
-        String subject = "Chào mừng tới Hệ sinh thái KeyGo";
+        String subject = "Chào mừng tới Hệ sinh thái KeyLearn";
         String content = "<p>Xin chào <b>" + fullName + "</b>,</p>" +
-                         "<p>Chúc mừng bạn! Hồ sơ và dữ liệu hệ thống của công ty đã được khởi tạo thành công trên nền tảng KeyGo.</p>" +
-                         "<p>Giờ đây, bạn có toàn quyền truy cập để <b>quản lý luồng công việc</b>, <b>trao quyền đội ngũ</b> và <b>đo lường kết quả dữ liệu</b> tức thì.</p>" +
+                         "<p>Chúc mừng bạn! Hồ sơ và dữ liệu hệ thống của nhà trường đã được khởi tạo thành công trên nền tảng KeyLearn.</p>" +
+                         "<p>Giờ đây, bạn có toàn quyền truy cập để <b>quản lý luồng công việc</b>, <b>trao quyền đội ngũ giảng viên</b> và <b>đo lường kết quả dữ liệu</b> tức thì.</p>" +
                          "<p>Đội ngũ phân tích của chúng tôi luôn túc trực để hỗ trợ quá trình trải nghiệm.</p>" +
-                         "<p>Trân trọng,<br><b>Ban Giám đốc KeyGo</b></p>";
+                         "<p>Trân trọng,<br><b>Ban Điều hành KeyLearn</b></p>";
         sendEmail(to, subject, buildHtmlTemplate("Phát triển Thành công", content));
     }
 
     @Async
     public void sendAccountDetailsEmail(String to, String fullName, String password) {
-        String subject = "Thông tin Truy cập Hệ thống KeyGo";
+        String subject = "Thông tin Truy cập Hệ thống KeyLearn";
         String content = "<p>Xin chào <b>" + fullName + "</b>,</p>" +
-                         "<p>Tài khoản của bạn đã được khởi tạo thành công trên hệ thống quản trị KeyGo. Dưới đây là thông tin đăng nhập cá nhân của bạn:</p>" +
+                         "<p>Tài khoản của bạn đã được khởi tạo thành công trên hệ thống quản trị KeyLearn. Dưới đây là thông tin đăng nhập cá nhân của bạn:</p>" +
                          "<div style='background-color: #f1f5f9; border-radius: 12px; padding: 24px; margin: 24px 0; border: 1px solid #e2e8f0;'>" +
                          "  <p style='margin-bottom: 8px;'><strong>Email:</strong> " + to + "</p>" +
                          "  <p style='margin: 0;'><strong>Mật khẩu:</strong> <code style='background: #e2e8f0; padding: 2px 6px; border-radius: 4px;'>" + password + "</code></p>" +

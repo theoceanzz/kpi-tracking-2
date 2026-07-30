@@ -95,9 +95,9 @@ export interface ScorecardResponse {
   vision?: string
   kpiPeriodId: string
   kpiPeriodName?: string
-  /** Các phòng ban áp dụng; rỗng = toàn tổ chức. */
+  /** Các khoa áp dụng; rỗng = toàn tổ chức. */
   orgUnits?: ScorecardOrgUnitResponse[]
-  /** Nhãn gộp tên phòng ban (tiện hiển thị). */
+  /** Nhãn gộp tên khoa (tiện hiển thị). */
   orgUnitName?: string | null
   status: BscScorecardStatus
   scoringMode: BscScoringMode
@@ -119,7 +119,7 @@ export interface ScorecardRequest {
   name: string
   vision?: string
   kpiPeriodId: string
-  /** Các phòng ban áp dụng; rỗng/bỏ trống = toàn tổ chức. */
+  /** Các khoa áp dụng; rỗng/bỏ trống = toàn tổ chức. */
   orgUnitIds?: string[]
   status?: BscScorecardStatus
   scoringMode?: BscScoringMode

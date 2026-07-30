@@ -4,14 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-KeyGo is a multi-tenant SaaS KPI tracking platform. Organizations manage hierarchical units, define KPI criteria, collect employee submissions, and run manager/HR evaluation workflows. The system also supports OKR management, customizable dashboards, and AI-assisted suggestions.
+KeyLearn is a multi-tenant SaaS KPI tracking platform for schools (universities, colleges, K-12). Each school manages hierarchical units (cơ sở → khoa → bộ môn), defines KPI criteria, collects lecturer submissions, and runs department-head/HR evaluation workflows. The system also supports OKR management, customizable dashboards, and AI-assisted suggestions.
+
+All user-facing Vietnamese copy uses school terminology: nhà trường/trường (not doanh nghiệp/công ty), khoa (not phòng ban), bộ môn, giảng viên (not nhân viên), Hiệu trưởng (not Giám đốc), Trưởng khoa (not Trưởng phòng), cơ sở (not chi nhánh). Keep new strings consistent with this vocabulary.
 
 ## Commands
 
 ### Frontend (`/frontend`)
 
 ```bash
-npm run dev       # Dev server at http://localhost:3000
+npm run dev       # Dev server at http://localhost:3001
 npm run build     # TypeScript check + Vite bundle
 npm run lint      # ESLint
 npm run preview   # Preview production build
@@ -28,7 +30,7 @@ mvn flyway:migrate          # Run pending DB migrations
 ### Full Stack (Docker)
 
 ```bash
-docker-compose up           # Starts frontend (nginx:80), backend (:8081), PostgreSQL (:5432)
+docker-compose up           # Starts frontend2 (nginx:80), backend2 (:8082), PostgreSQL (host :5433)
 ```
 
 ## Architecture
@@ -53,7 +55,7 @@ Key service file sizes reflect complexity — `KpiCriteriaService` (~53KB) and `
 
 Feature-based module structure under `src/features/`. Each feature owns its own components, hooks, API calls, and types.
 
-- **API layer**: Axios instance with centralized config. All calls go through `/api/v1` (proxied to `localhost:8081` in dev via `vite.config.ts`)
+- **API layer**: Axios instance with centralized config. All calls go through `/api/v1` (proxied to `localhost:8082` in dev via `vite.config.ts`)
 - **Server state**: TanStack React Query v5 — don't use local state for server data
 - **Global state**: Zustand stores in `src/store/` (auth, theme, sidebar, uploads)
 - **Routing**: React Router v7 in `src/router/`. Protected routes via `ProtectedRoute` and `PermissionRoute` wrappers
@@ -77,7 +79,9 @@ Backend reads `backend/.env` locally and `application-prod.yaml` in production (
 
 Frontend reads `frontend/.env`; `VITE_API_BASE_URL` defaults to `/api/v1`.
 
-Database defaults: PostgreSQL on `localhost:5432`, user `postgres`, password `123456` (local dev only).
+Database defaults: PostgreSQL on `localhost:5432`, database `kpitracking2`, user `postgres`, password `123456` (local dev only). In Docker the DB service is `kpitracking-db-2`, published on host port `5433`.
+
+Deployment is kept separate from the KeyGo project: Docker/Compose resources are suffixed (`frontend2`, `backend2`, `kpitracking-db-2`, `app-network2`, `postgres_data_2`), the backend listens on `8082`, and Traefik routes `keylearn.vn`.
 
 ## Key Conventions
 

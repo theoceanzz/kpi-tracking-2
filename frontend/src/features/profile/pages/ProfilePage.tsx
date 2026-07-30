@@ -273,7 +273,7 @@ function ProfileInfoTab({ user, onUserUpdate }: { user: any; onUserUpdate: (u: a
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-in fade-in duration-300">
             <InfoField icon={User} iconColor="text-indigo-500" iconBg="bg-indigo-50 dark:bg-indigo-900/20" label="Họ và tên" value={user.fullName} />
-            <InfoField icon={User} iconColor="text-indigo-600" iconBg="bg-indigo-100 dark:bg-indigo-900/30" label="Mã nhân viên" value={user.employeeCode || 'Chưa cập nhật'} />
+            <InfoField icon={User} iconColor="text-indigo-600" iconBg="bg-indigo-100 dark:bg-indigo-900/30" label="Mã giảng viên" value={user.employeeCode || 'Chưa cập nhật'} />
             <InfoField icon={Mail} iconColor="text-blue-500" iconBg="bg-blue-50 dark:bg-blue-900/20" label="Địa chỉ Email" value={user.email} />
             <InfoField icon={Phone} iconColor="text-emerald-500" iconBg="bg-emerald-50 dark:bg-emerald-900/20" label="Số điện thoại" value={formatPhoneNumber(user.phone) || 'Chưa cập nhật'} />
             <InfoField icon={Building2} iconColor="text-amber-500" iconBg="bg-amber-50 dark:bg-amber-900/20" label="Đơn vị" value={`${user.memberships?.[0]?.orgUnitName || 'Chưa cập nhật'}${user.memberships?.[0]?.unitTypeLabel ? ` (${user.memberships[0].unitTypeLabel})` : ''}`} />

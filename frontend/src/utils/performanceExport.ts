@@ -2,7 +2,7 @@ import ExcelJS from 'exceljs'
 import { format } from 'date-fns'
 import { EmployeeKpiStats } from '@/types/stats'
 
-export async function exportPerformanceToExcel(data: EmployeeKpiStats[], title: string = 'BÁO CÁO HIỆU SUẤT NHÂN VIÊN') {
+export async function exportPerformanceToExcel(data: EmployeeKpiStats[], title: string = 'BÁO CÁO HIỆU SUẤT GIẢNG VIÊN') {
   const workbook = new ExcelJS.Workbook()
   const worksheet = workbook.addWorksheet('Performance')
 
@@ -25,10 +25,10 @@ export async function exportPerformanceToExcel(data: EmployeeKpiStats[], title: 
   // 2. Define Columns
   const headerRow = worksheet.addRow([
     'STT',
-    'Mã Nhân viên',
+    'Mã Giảng viên',
     'Họ và Tên',
     'Chức vụ',
-    'Phòng ban',
+    'Khoa',
     'KPI Giao',
     'KPI Đạt',
     'Điểm TB',
@@ -96,7 +96,7 @@ export async function exportPerformanceToExcel(data: EmployeeKpiStats[], title: 
     { width: 15 }, // Mã NV
     { width: 25 }, // Họ Tên
     { width: 15 }, // Chức vụ
-    { width: 20 }, // Phòng ban
+    { width: 20 }, // Khoa
     { width: 10 }, // KPI Giao
     { width: 10 }, // KPI Đạt
     { width: 10 }, // Điểm TB
@@ -151,7 +151,7 @@ export async function exportDetailedPerformanceToExcel(
     'Mã NV',
     'Họ và Tên',
     'Chức vụ',
-    'Phòng ban'
+    'Khoa'
   ]
 
   if (enableOkr) {
@@ -171,8 +171,8 @@ export async function exportDetailedPerformanceToExcel(
   // Add hierarchical evaluation columns
   const evalHeaders: string[] = []
   if (userRoleLevel >= 4 || userRoleLevel <= 2) evalHeaders.push('Trưởng nhóm chấm')
-  if (userRoleLevel <= 3) evalHeaders.push('Trưởng phòng chấm')
-  if (userRoleLevel <= 2) evalHeaders.push('Giám đốc chấm')
+  if (userRoleLevel <= 3) evalHeaders.push('Trưởng khoa chấm')
+  if (userRoleLevel <= 2) evalHeaders.push('Hiệu trưởng chấm')
 
   const headerRow = worksheet.addRow([...baseHeaders, ...evalHeaders])
 
@@ -278,7 +278,7 @@ export async function exportDetailedPerformanceToExcel(
     { width: 12 }, // Mã NV
     { width: 22 }, // Họ Tên
     { width: 15 }, // Chức vụ
-    { width: 18 }  // Phòng ban
+    { width: 18 }  // Khoa
   ]
 
   if (enableOkr) {

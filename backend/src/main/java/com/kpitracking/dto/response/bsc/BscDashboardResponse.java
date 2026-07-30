@@ -13,7 +13,7 @@ public class BscDashboardResponse {
     private String vision;
     private UUID kpiPeriodId;
     private String kpiPeriodName;
-    /** Phòng ban áp dụng thẻ điểm; NULL = mặc định toàn tổ chức. */
+    /** Khoa áp dụng thẻ điểm; NULL = mặc định toàn tổ chức. */
     private UUID orgUnitId;
     private String orgUnitName;
     private BscScoringMode scoringMode;

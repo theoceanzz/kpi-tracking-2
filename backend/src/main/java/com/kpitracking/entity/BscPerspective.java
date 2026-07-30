@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Một HẠNG MỤC BSC (nhãn UI: "Hạng mục"; tên bảng/entity giữ nguyên để tránh churn) cấu hình theo tổ chức.
  * VD: Công tác giảng dạy, Nghiên cứu khoa học, Cố vấn học tập… Org tự thêm/đổi tên/sắp xếp, tái dùng qua nhiều kỳ.
- * Mỗi hạng mục PHẢI gán vào đúng 1 trong 4 {@link BscFixedPerspective} cố định (Tài chính, Khách hàng,
+ * Mỗi hạng mục PHẢI gán vào đúng 1 trong 4 {@link BscFixedPerspective} cố định (Tài chính, Người học,
  * Quy trình nội bộ, Học hỏi & phát triển) — đây là tầng phân loại (nhóm cha) để gộp hiển thị.
  */
 @Entity

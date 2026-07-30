@@ -149,7 +149,7 @@ export default function HeadDashboard() {
                     Chào {user?.fullName?.split(' ').pop()}!
                   </h1>
                   <p className="text-slate-500 dark:text-slate-400 text-xs font-medium whitespace-nowrap">
-                     Quản lý <span className="text-blue-600 dark:text-blue-400 font-bold">{stats?.totalUsers ?? 0} nhân sự</span> thuộc phòng/team.
+                     Quản lý <span className="text-blue-600 dark:text-blue-400 font-bold">{stats?.totalUsers ?? 0} giảng viên</span> thuộc phòng/team.
                   </p>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function HeadDashboard() {
 
         {/* ===== TOP INDICATORS (Smaller) ===== */}
         <div id="tour-dashboard-stats" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard label="Tổng nhân sự" value={stats?.totalUsers ?? 0} sub={unitName} icon={Users} color="blue" />
+          <StatCard label="Tổng giảng viên" value={stats?.totalUsers ?? 0} sub={unitName} icon={Users} color="blue" />
           <StatCard label="KPI Chờ duyệt" value={stats?.pendingKpi ?? 0} sub="Cần xử lý ngay" icon={Target} color="indigo" link={primaryMembership?.roleRank === 0 ? "/kpi-criteria" : undefined} alert={(stats?.pendingKpi ?? 0) > 0} />
           <StatCard label="Báo cáo mới" value={pendingSub} sub="Chờ đánh giá" icon={Clock} color="amber" link={primaryMembership?.roleRank === 1 ? "/evaluations" : "/submissions/org-unit"} alert={pendingSub > 0} />
           <StatCard label="Vi phạm Deadline" value={lateEmployeesCount} sub="Trễ hạn nộp" icon={AlertCircle} color="rose" alert={lateEmployeesCount > 0} />

@@ -13,8 +13,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * Đánh giá tổng hợp của một PHÒNG BAN theo một KỲ (đã chốt/nháp).
- * Điểm là snapshot gộp từ điểm kỳ của các nhân viên trong phòng.
+ * Đánh giá tổng hợp của một KHOA theo một KỲ (đã chốt/nháp).
+ * Điểm là snapshot gộp từ điểm kỳ của các giảng viên trong khoa.
  */
 @Entity
 @Table(name = "cycle_unit_evaluations")

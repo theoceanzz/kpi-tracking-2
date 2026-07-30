@@ -238,7 +238,7 @@ export default function BscManagementPage() {
             <div className="flex flex-col items-center justify-center p-20 bg-white dark:bg-slate-900 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800 text-center">
               <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center text-indigo-600 mb-4"><Target size={32} /></div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white">Chưa có thẻ điểm nào</h3>
-              <p className="text-slate-500 max-w-sm mt-2">Tạo thẻ điểm cho một kỳ (theo phòng ban hoặc toàn tổ chức), gán trọng số cho các hạng mục (tổng 100%) để theo dõi dashboard cân bằng.</p>
+              <p className="text-slate-500 max-w-sm mt-2">Tạo thẻ điểm cho một kỳ (theo khoa hoặc toàn tổ chức), gán trọng số cho các hạng mục (tổng 100%) để theo dõi dashboard cân bằng.</p>
             </div>
           )}
         </div>

@@ -206,7 +206,7 @@ export default function KpiReviewModal({ open, onClose, kpi, onEdit }: KpiReview
                 <Building2 size={14} /> Thông tin đơn vị
               </h5>
               <div className="space-y-3">
-                <InfoRow label="Phòng ban" value={kpi.orgUnitName ?? '—'} />
+                <InfoRow label="Khoa" value={kpi.orgUnitName ?? '—'} />
                 <InfoRow label="Đợt đánh giá" value={kpi.kpiPeriod?.name ?? '—'} />
               </div>
             </div>

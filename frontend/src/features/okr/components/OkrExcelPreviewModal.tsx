@@ -44,7 +44,7 @@ const rowSchema = z.object({
   KeyResultDescription: z.string().optional(),
   KeyResultTarget: z.string().optional(),
   KeyResultUnit: z.string().optional(),
-  OrgUnitCode: z.string().min(1, 'Mã phòng ban là bắt buộc'),
+  OrgUnitCode: z.string().min(1, 'Mã khoa là bắt buộc'),
 })
 
 export default function OkrExcelPreviewModal({ open, file, onClose, onImport, isImporting }: OkrExcelPreviewModalProps) {
@@ -357,7 +357,7 @@ export default function OkrExcelPreviewModal({ open, file, onClose, onImport, is
                         <th className="px-4 py-3 min-w-[150px]">Ngày kết thúc</th>
                         <th className="px-4 py-3 min-w-[150px]">Mã KR <span className="text-rose-500">*</span></th>
                         <th className="px-4 py-3 min-w-[250px]">Tên KR <span className="text-rose-500">*</span></th>
-                        <th className="px-4 py-3 min-w-[300px]">Phòng ban</th>
+                        <th className="px-4 py-3 min-w-[300px]">Khoa</th>
                         <th className="px-4 py-3 min-w-[180px]">Target KR</th>
                         <th className="px-4 py-3 min-w-[150px]">Đơn vị KR</th>
                         <th className="px-4 py-3 w-16 text-center">Xóa</th>
@@ -447,7 +447,7 @@ export default function OkrExcelPreviewModal({ open, file, onClose, onImport, is
                                   <span className="truncate max-w-[200px]">
                                     {(() => {
                                       const codes = (row.OrgUnitCode || '').split(',').map(c => c.trim()).filter(Boolean)
-                                      if (codes.length === 0) return 'Chọn phòng ban'
+                                      if (codes.length === 0) return 'Chọn khoa'
                                       if (codes.length === 1) return allOrgUnits.find(u => u.code === codes[0])?.name || codes[0]
                                       return `Đã chọn ${codes.length} đơn vị`
                                     })()}

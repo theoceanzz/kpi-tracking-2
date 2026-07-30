@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.UUID;
 
-/** Phòng ban gắn với thẻ điểm (id + tên) — 1 thẻ điểm áp dụng cho nhiều phòng ban. */
+/** Khoa gắn với thẻ điểm (id + tên) — 1 thẻ điểm áp dụng cho nhiều khoa. */
 @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 public class ScorecardOrgUnitResponse {
     private UUID id;

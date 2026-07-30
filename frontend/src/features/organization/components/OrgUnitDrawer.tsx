@@ -87,20 +87,20 @@ export function OrgUnitDrawer({ orgId, drawerState, onClose, hierarchyLevels }: 
     const roleLevel = role.level
     if (roleLevel === undefined || roleLevel === null) return false
     
-    // Trường hợp 1: Công ty có 2 phân cấp (vd: Công ty -> Team)
+    // Trường hợp 1: Nhà trường có 2 phân cấp (vd: Trường -> Bộ môn)
     if (totalLevels === 2) {
       if (isRoot) return roleLevel === 2 || roleLevel === 4
       if (isBottom) return roleLevel === 4
     }
     
-    // Trường hợp 2: Công ty có 3 phân cấp (vd: Công ty -> Phòng -> Team)
+    // Trường hợp 2: Nhà trường có 3 phân cấp (vd: Trường -> Khoa -> Bộ môn)
     if (totalLevels === 3) {
       if (isRoot) return roleLevel === 2 || roleLevel === 4
       if (isMiddle) return roleLevel === 3
       if (isBottom) return roleLevel === 4
     }
 
-    // Trường hợp 3: Công ty có 4 phân cấp
+    // Trường hợp 3: Nhà trường có 4 phân cấp
     if (totalLevels === 4) {
       if (isRoot) return roleLevel === 1 || roleLevel === 4
       if (calculatedLevel === minDepth + 1) return roleLevel === 2
@@ -108,7 +108,7 @@ export function OrgUnitDrawer({ orgId, drawerState, onClose, hierarchyLevels }: 
       if (isBottom) return roleLevel === 4
     }
     
-    // Trường hợp 4: Công ty có 5 phân cấp
+    // Trường hợp 4: Nhà trường có 5 phân cấp
     if (totalLevels === 5) {
       if (isRoot) return roleLevel === 0 || roleLevel === 4
       if (calculatedLevel === minDepth + 1) return roleLevel === 1
@@ -322,7 +322,7 @@ export function OrgUnitDrawer({ orgId, drawerState, onClose, hierarchyLevels }: 
               <input 
                 type="text" 
                 {...register('name')}
-                placeholder="VD: Phòng Kỹ thuật, Chi nhánh Hà Nội..."
+                placeholder="VD: Phòng Kỹ thuật, Cơ sở Hà Nội..."
                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none border-gray-300 transition-all font-medium"
               />
               {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
@@ -334,7 +334,7 @@ export function OrgUnitDrawer({ orgId, drawerState, onClose, hierarchyLevels }: 
                 type="text" 
                 {...register('code')}
                 disabled={drawerState.mode === 'create-root'}
-                placeholder="VD: PKT, ACC, HR..."
+                placeholder="VD: CNTT, KTPM, KT..."
                 className={`w-full px-3 py-2 border rounded-lg outline-none transition-all ${drawerState.mode === 'create-root' ? 'bg-gray-50 text-gray-500 border-gray-200' : 'border-gray-300 focus:ring-2 focus:ring-blue-500 font-medium'}`}
               />
               {errors.code && <p className="text-xs text-red-500 mt-1">{errors.code.message}</p>}
@@ -346,7 +346,7 @@ export function OrgUnitDrawer({ orgId, drawerState, onClose, hierarchyLevels }: 
                 type="text" 
                 {...register('unitTypeName')}
                 disabled={drawerState.mode === 'edit' || drawerState.mode === 'create-child'}
-                placeholder="VD: Công ty, Phòng ban..."
+                placeholder="VD: Trường, Khoa..."
                 className={`w-full px-3 py-2 border rounded-lg outline-none transition-all ${drawerState.mode !== 'create-root' ? 'bg-gray-50 text-gray-500 border-gray-200' : 'border-gray-300 focus:ring-2 focus:ring-blue-500'}`}
               />
               {errors.unitTypeName && <p className="text-xs text-red-500 mt-1">{errors.unitTypeName.message}</p>}

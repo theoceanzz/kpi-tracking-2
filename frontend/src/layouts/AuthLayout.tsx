@@ -23,16 +23,16 @@ export default function AuthLayout() {
             <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-xl shadow-black/20">
               <Target className="text-cyan-400" size={24} />
             </div>
-            <span className="font-extrabold text-2xl tracking-tight text-white">KeyGo</span>
+            <span className="font-extrabold text-2xl tracking-tight text-white">KeyLearn</span>
           </Link>
 
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6">
             Key Insights.<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">Go Smarter.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">Learn Smarter.</span>
           </h1>
-          
+
           <p className="text-lg text-indigo-100/80 mb-12 leading-relaxed max-w-md">
-            Nền tảng quản trị mục tiêu & hiệu suất hiện đại
+            Nền tảng quản trị mục tiêu & hiệu suất dành cho trường học
           </p>
 
           <div className="space-y-4">

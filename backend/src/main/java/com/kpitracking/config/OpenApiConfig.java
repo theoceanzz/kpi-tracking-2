@@ -18,12 +18,12 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("KeyGo API")
+                        .title("KeyLearn API")
                         .version("1.0.0")
-                        .description("KeyGo SaaS Multi-Tenant System API Documentation")
+                        .description("KeyLearn SaaS Multi-Tenant System API Documentation")
                         .contact(new Contact()
-                                .name("KeyGo Team")
-                                .email("support@keygo.com")))
+                                .name("KeyLearn Team")
+                                .email("support@keylearn.vn")))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,

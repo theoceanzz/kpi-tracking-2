@@ -397,7 +397,7 @@ export default function OrgUnitKpiDrawer({
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
             <div className="flex flex-wrap items-center gap-2">
               {data?.periodName && <ContextBadge color="slate" label={`Đợt: ${data.periodName}`} />}
-              {data?.orgUnitName && <ContextBadge color="slate" label={`Phòng ban: ${data.orgUnitName}`} />}
+              {data?.orgUnitName && <ContextBadge color="slate" label={`Khoa: ${data.orgUnitName}`} />}
               {data?.weight != null && <ContextBadge color="slate" label={`Trọng số: ${data.weight}`} />}
               {data?.unit && <ContextBadge color="slate" label={`Đơn vị đo: ${data.unit}`} />}
             </div>

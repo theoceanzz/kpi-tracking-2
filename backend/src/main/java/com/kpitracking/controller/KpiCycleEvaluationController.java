@@ -27,7 +27,7 @@ public class KpiCycleEvaluationController {
                 kpiCycleEvaluationService.getUserCycleEvaluation(cycleId, userId)));
     }
 
-    /** Lưu điểm chốt kỳ (nhập tay) cho một nhân viên. */
+    /** Lưu điểm chốt kỳ (nhập tay) cho một giảng viên. */
     @PutMapping("/users/{userId}")
     @PreAuthorize("hasAuthority('CYCLE_EVAL:FINALIZE')")
     public ResponseEntity<ApiResponse<CycleUserEvaluationResponse>> saveUserScore(
@@ -61,7 +61,7 @@ public class KpiCycleEvaluationController {
                 kpiCycleEvaluationService.finalizeUnitCycle(cycleId, orgUnitId, comment)));
     }
 
-    /** Mở khoá đánh giá kỳ của phòng ban để chỉnh lại điểm. */
+    /** Mở khoá đánh giá kỳ của khoa để chỉnh lại điểm. */
     @PostMapping("/units/{orgUnitId}/reopen")
     @PreAuthorize("hasAuthority('CYCLE_EVAL:FINALIZE')")
     public ResponseEntity<ApiResponse<CycleUnitEvaluationResponse>> reopenUnit(

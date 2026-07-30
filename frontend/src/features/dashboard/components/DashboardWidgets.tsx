@@ -71,7 +71,7 @@ export function DeptRankingCard({ units }: { units: OrgUnitStats[] }) {
     <section className="bg-white dark:bg-slate-900 rounded-[28px] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
         <Trophy size={18} className="text-amber-500" />
-        <h3 className="font-black text-sm">Xếp hạng Phòng ban</h3>
+        <h3 className="font-black text-sm">Xếp hạng Khoa</h3>
       </div>
       <div className="divide-y divide-slate-50 dark:divide-slate-800">
         {ranked.length === 0 ? (
@@ -124,7 +124,7 @@ export function EmployeeRankingTable({ employees, title, showOrgUnit, page = 0, 
       <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
         <Star size={18} className="text-amber-500" />
         <h3 className="font-black text-sm">{title}</h3>
-        {totalElements != null && <span className="ml-auto text-[10px] font-black text-slate-400 uppercase tracking-widest">{totalElements} nhân sự</span>}
+        {totalElements != null && <span className="ml-auto text-[10px] font-black text-slate-400 uppercase tracking-widest">{totalElements} giảng viên</span>}
       </div>
       {ranked.length === 0 ? (
         <p className="p-6 text-center text-sm text-slate-400">Chưa có dữ liệu</p>
@@ -134,7 +134,7 @@ export function EmployeeRankingTable({ employees, title, showOrgUnit, page = 0, 
             <thead>
               <tr className="text-left text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 dark:border-slate-800">
                 <th className="px-5 py-3 w-8">#</th>
-                <th className="px-3 py-3">Nhân viên</th>
+                <th className="px-3 py-3">Giảng viên</th>
                 {showOrgUnit && <th className="px-3 py-3">Đơn vị</th>}
                 <th className="px-3 py-3 text-center">Hoàn thành</th>
                 <th className="px-3 py-3 text-center">Duyệt</th>
@@ -229,7 +229,7 @@ export function NeedsImprovementSection({ employees, page = 0, totalPages = 1, o
     <section className="bg-white dark:bg-slate-900 rounded-[28px] border border-red-200 dark:border-red-900/30 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-red-100 dark:border-red-900/20 bg-red-50/50 dark:bg-red-900/5 flex items-center gap-2">
         <AlertTriangle size={18} className="text-red-500" />
-        <h3 className="font-black text-sm text-red-700 dark:text-red-400">Nhân viên cần cải thiện</h3>
+        <h3 className="font-black text-sm text-red-700 dark:text-red-400">Giảng viên cần cải thiện</h3>
         <span className="ml-auto text-[10px] font-black px-2 py-0.5 rounded-md bg-red-100 text-red-600">{totalElements ?? atRisk.length} người</span>
       </div>
       <div className="divide-y divide-slate-50 dark:divide-slate-800">

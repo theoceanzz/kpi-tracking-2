@@ -33,7 +33,7 @@ public class OrgUnitKpiAnalyticsService {
     private final PermissionChecker permissionChecker;
     private final EvaluationService evaluationService;
 
-    /** ID MỌI nhân sự trong phạm vi (subtree) — để tính hiệu suất đánh giá cấp đơn vị (khớp thẻ Ma trận). */
+    /** ID MỌI giảng viên trong phạm vi (subtree) — để tính hiệu suất đánh giá cấp đơn vị (khớp thẻ Ma trận). */
     private java.util.Set<UUID> memberIdsInScope(UUID orgUnitId) {
         List<OrgUnit> units = resolveOrgUnitSubtree(orgUnitId);
         if (units.isEmpty()) return java.util.Collections.emptySet();
@@ -297,7 +297,7 @@ public class OrgUnitKpiAnalyticsService {
             }
         }
 
-        // Hiệu suất TB = TB đánh giá của MỌI nhân sự trong phạm vi đơn vị (subtree) — cùng cách với thẻ
+        // Hiệu suất TB = TB đánh giá của MỌI giảng viên trong phạm vi đơn vị (subtree) — cùng cách với thẻ
         // "Ma trận xếp loại" (đếm đánh giá theo đơn vị), KHÔNG chỉ giới hạn người được giao KPI. Nhờ vậy
         // hai nơi hiển thị cùng một con số (tránh lệch khi có người có đánh giá nhưng chưa được giao KPI).
         Double evalPerf = evaluationService.averagePerformance(

@@ -53,7 +53,7 @@ export default function OrgUnitTreeSidebar({ nodes, selectedId, onSelect, onAfte
     [nodes, query, searching]
   )
 
-  // Tổng số nhân sự của mỗi đơn vị GỒM cả đơn vị con (roll-up) — hiển thị ở cây.
+  // Tổng số giảng viên của mỗi đơn vị GỒM cả đơn vị con (roll-up) — hiển thị ở cây.
   const rollup = useMemo(() => {
     const map = new Map<string, number>()
     const walk = (n: OrgUnitTreeResponse): number => {
@@ -99,7 +99,7 @@ export default function OrgUnitTreeSidebar({ nodes, selectedId, onSelect, onAfte
             {n.memberCount != null && (
               <span
                 className="ml-auto shrink-0 text-[10px] font-bold text-slate-400 flex items-center gap-0.5"
-                title="Tổng số nhân sự (gồm cả đơn vị con)"
+                title="Tổng số giảng viên (gồm cả đơn vị con)"
               >
                 <Users size={10} />{rollup.get(n.id) ?? n.memberCount}
               </span>

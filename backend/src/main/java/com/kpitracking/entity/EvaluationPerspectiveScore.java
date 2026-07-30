@@ -33,7 +33,7 @@ public class EvaluationPerspectiveScore {
     @Column(name = "weight_percentage")
     private Double weightPercentage;
 
-    /** Điểm thô viễn cảnh (0..150). NULL = nhân viên không có KPI nào trong viễn cảnh. */
+    /** Điểm thô viễn cảnh (0..150). NULL = giảng viên không có KPI nào trong viễn cảnh. */
     @Column(name = "raw_score")
     private Double rawScore;
 

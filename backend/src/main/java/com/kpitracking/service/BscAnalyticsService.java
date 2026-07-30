@@ -248,7 +248,7 @@ public class BscAnalyticsService {
     }
 
     // ============================================================
-    // 5) Xếp hạng nhân sự theo điểm BSC + breakdown viễn cảnh
+    // 5) Xếp hạng giảng viên theo điểm BSC + breakdown viễn cảnh
     // ============================================================
 
     @Transactional(readOnly = true)
@@ -257,7 +257,7 @@ public class BscAnalyticsService {
         var s = scopeResolver.resolve(orgUnitId, periodIds);
         if (s.isEmpty()) return emptyRanking(page, size);
 
-        // breakdown viễn cảnh theo nhân sự
+        // breakdown viễn cảnh theo giảng viên
         Map<UUID, Map<String, Double>> breakdown = new LinkedHashMap<>();
         Map<UUID, PerspectiveMeta> metas = new LinkedHashMap<>();
         for (Object[] r : perspectiveScoreRepository.aggregateByUserAndPerspective(s.unitIds(), s.periodIds())) {

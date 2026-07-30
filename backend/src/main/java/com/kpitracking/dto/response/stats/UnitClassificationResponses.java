@@ -21,7 +21,7 @@ public class UnitClassificationResponses {
         private String orgUnitName;
         /** Bộ mức thành viên (cao → thấp): name + color. */
         private List<LevelInfo> levels;
-        private int totalMembers;       // tổng nhân sự subtree
+        private int totalMembers;       // tổng giảng viên subtree
         private int evaluatedMembers;   // số người có đánh giá ở kỳ hiện tại
         private String currentPeriodName;
         /** Phân bố người theo mức ở kỳ hiện tại. */

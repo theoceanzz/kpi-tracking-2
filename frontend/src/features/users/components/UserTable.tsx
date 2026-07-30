@@ -57,7 +57,7 @@ export default function UserTable({ users, orgUnitMap, rootUnitId, onRowClick, o
     return (
        <div className="flex flex-col items-center justify-center p-12 bg-slate-50 dark:bg-slate-900/50 rounded-2xl">
           <UserIcon size={32} className="text-slate-400 mb-4" />
-          <p className="font-bold text-slate-600 dark:text-slate-300">Không có dữ liệu nhân sự</p>
+          <p className="font-bold text-slate-600 dark:text-slate-300">Không có dữ liệu giảng viên</p>
        </div>
     )
   }
@@ -72,7 +72,7 @@ export default function UserTable({ users, orgUnitMap, rootUnitId, onRowClick, o
           <tr className="border-b border-slate-200 dark:border-slate-800">
             <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] whitespace-nowrap">Thông tin</th>
             <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] whitespace-nowrap">Mã NV</th>
-            <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] whitespace-nowrap">Mã phòng ban</th>
+            <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] whitespace-nowrap">Mã khoa</th>
             <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] whitespace-nowrap">Vai trò</th>
             <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] hidden md:table-cell whitespace-nowrap">Đơn vị</th>
             <th className="py-4 px-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-muted-foreground)] hidden sm:table-cell whitespace-nowrap">Liên lạc</th>

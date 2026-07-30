@@ -24,8 +24,8 @@ export default function RegisterPage() {
     resolver: zodResolver(registerSchema),
     defaultValues: {
       hierarchyLevels: [
-        { unitTypeName: 'Chi nhánh', managerRoleLabel: 'Giám đốc' },
-        { unitTypeName: 'Nhóm', managerRoleLabel: 'Trưởng nhóm' },
+        { unitTypeName: 'Khoa', managerRoleLabel: 'Trưởng khoa' },
+        { unitTypeName: 'Bộ môn', managerRoleLabel: 'Trưởng bộ môn' },
       ]
     }
   })
@@ -250,7 +250,7 @@ export default function RegisterPage() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Tên công ty */}
+        {/* Tên trường */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
             <label className="text-sm font-bold text-[var(--color-foreground)]">Tên tổ chức <span className="text-red-500">*</span></label>
@@ -258,7 +258,7 @@ export default function RegisterPage() {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Building2 size={18} className="text-[var(--color-muted-foreground)]" />
               </div>
-              <input {...register('organizationName')} className={inputCls} placeholder="VD: Tập đoàn Công nghệ Ánh Trăng" />
+              <input {...register('organizationName')} className={inputCls} placeholder="VD: Trường Đại học Ánh Trăng" />
             </div>
             {errors.organizationName && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.organizationName.message}</p>}
           </div>
@@ -417,7 +417,7 @@ export default function RegisterPage() {
                 Thiết lập sau
               </h4>
               <p className="text-[11px] text-[var(--color-muted-foreground)] leading-relaxed">
-                Sử dụng cấu trúc mặc định (2 cấp: Chi nhánh & Team). Có thể chỉnh sửa sau trong cài đặt.
+                Sử dụng cấu trúc mặc định (2 cấp: Cơ sở & Team). Có thể chỉnh sửa sau trong cài đặt.
               </p>
             </button>
 
@@ -482,7 +482,7 @@ export default function RegisterPage() {
                         <input 
                           {...register(`hierarchyLevels.${index}.unitTypeName`)} 
                           className="w-full px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] text-sm focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none transition-all"
-                          placeholder={index === 0 ? "VD: Chi nhánh" : "VD: Team, Tổ..."}
+                          placeholder={index === 0 ? "VD: Cơ sở" : "VD: Team, Tổ..."}
                         />
                         {errors.hierarchyLevels?.[index]?.unitTypeName && (
                           <p className="text-red-500 text-[10px] font-medium">{errors.hierarchyLevels[index]?.unitTypeName?.message}</p>
@@ -496,7 +496,7 @@ export default function RegisterPage() {
                         <input 
                           {...register(`hierarchyLevels.${index}.managerRoleLabel`)} 
                           className="w-full px-3 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] text-sm focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none transition-all disabled:opacity-50"
-                          placeholder={index === fields.length - 1 ? "Cấp nhân viên thực thi" : "VD: Giám đốc, Trưởng phòng..."}
+                          placeholder={index === fields.length - 1 ? "Cấp giảng viên thực thi" : "VD: Trưởng khoa, Trưởng bộ môn..."}
                         />
                       </div>
                     </div>

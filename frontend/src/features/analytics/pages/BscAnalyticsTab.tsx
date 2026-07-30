@@ -292,7 +292,7 @@ export default function BscAnalyticsTab() {
                   <button key={l} onClick={() => setVsLevel(l)} className={cn(
                     'text-[11px] font-bold px-2.5 py-1 rounded-md transition-colors',
                     vsLevel === l ? 'bg-white dark:bg-slate-700 text-indigo-600 shadow-sm' : 'text-slate-500'
-                  )}>{l === 'UNIT' ? 'Theo đơn vị' : 'Theo nhân sự'}</button>
+                  )}>{l === 'UNIT' ? 'Theo đơn vị' : 'Theo giảng viên'}</button>
                 ))}
               </div>
             }
@@ -331,7 +331,7 @@ export default function BscAnalyticsTab() {
         </Card>
       </div>
 
-      {/* ── Xếp hạng nhân sự theo điểm BSC ───────────────────────────────── */}
+      {/* ── Xếp hạng giảng viên theo điểm BSC ───────────────────────────────── */}
       <Card>
         <SectionTitle
           icon={<Medal size={14} className="text-amber-500" />}
@@ -345,13 +345,13 @@ export default function BscAnalyticsTab() {
               ))}
             </div>
           }
-        >Xếp hạng nhân sự theo điểm BSC</SectionTitle>
+        >Xếp hạng giảng viên theo điểm BSC</SectionTitle>
         <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full text-left">
             <thead className="bg-slate-50 dark:bg-slate-800/50">
               <tr className="text-[11px] font-black uppercase text-slate-500">
                 <th className="px-4 py-3 w-10">#</th>
-                <th className="px-4 py-3">Nhân sự</th>
+                <th className="px-4 py-3">Giảng viên</th>
                 <th className="px-4 py-3 text-right whitespace-nowrap">Điểm BSC</th>
                 <th className="px-4 py-3 text-right whitespace-nowrap">Điểm HT</th>
                 <th className="px-4 py-3">Breakdown hạng mục</th>
@@ -397,7 +397,7 @@ export default function BscAnalyticsTab() {
             onPageChange={setRankPage}
             totalElements={ranking?.totalElements ?? 0}
             size={RANK_PAGE_SIZE}
-            itemLabel="nhân sự"
+            itemLabel="giảng viên"
           />
         )}
       </Card>

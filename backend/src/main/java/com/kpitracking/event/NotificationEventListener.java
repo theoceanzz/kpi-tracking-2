@@ -69,7 +69,7 @@ public class NotificationEventListener {
         User submitter = submission.getSubmittedBy();
 
         String title = "Báo cáo KPI mới cần duyệt";
-        String message = String.format("Nhân viên %s vừa nộp báo cáo cho chỉ tiêu KPI '%s'. Giá trị đạt được: %s. Vui lòng vào hệ thống để kiểm tra và duyệt.",
+        String message = String.format("Giảng viên %s vừa nộp báo cáo cho chỉ tiêu KPI '%s'. Giá trị đạt được: %s. Vui lòng vào hệ thống để kiểm tra và duyệt.",
                 submitter.getFullName(), kpi.getName(), submission.getActualValue());
 
         UUID orgId = getOrgId(submission);

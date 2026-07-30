@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * Điểm CHỐT KỲ của một nhân viên (người đánh giá nhập/chỉnh tay).
+ * Điểm CHỐT KỲ của một giảng viên (người đánh giá nhập/chỉnh tay).
  * Mặc định gợi ý = trung bình điểm QLTT các đợt trong kỳ.
  */
 @Entity

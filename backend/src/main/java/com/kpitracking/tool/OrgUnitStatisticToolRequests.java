@@ -7,14 +7,14 @@ public final class OrgUnitStatisticToolRequests {
     private OrgUnitStatisticToolRequests() {}
 
     // LƯU Ý: chỉ khai báo tham số mà tool THẬT SỰ dùng. Tham số thừa vẫn được model truyền vào
-    // rồi bị lờ đi âm thầm (vd hỏi "nhân viên phòng IT trong tháng 7" -> ngày bị bỏ, model tưởng
+    // rồi bị lờ đi âm thầm (vd hỏi "giảng viên phòng IT trong tháng 7" -> ngày bị bỏ, model tưởng
     // đã lọc), đồng thời phình schema gửi lại ở MỖI vòng gọi tool.
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetOrgHierarchyRequest() {}
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetOrgUnitDetailRequest(
-            @JsonProperty(required = false) String unitName,  // tên đơn vị đích (vd "Phòng truyền thông"); mặc định = đơn vị hiện tại
+            @JsonProperty(required = false) String unitName,  // tên đơn vị đích (vd "Khoa Truyền thông"); mặc định = đơn vị hiện tại
             @JsonProperty(required = false) String unitId
     ) {}
 
@@ -31,7 +31,7 @@ public final class OrgUnitStatisticToolRequests {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetMembersRequest(
-            @JsonProperty(required = false) String unitName,  // tên đơn vị đích (vd "phòng IT"); mặc định = đơn vị hiện tại
+            @JsonProperty(required = false) String unitName,  // tên đơn vị đích (vd "khoa CNTT"); mặc định = đơn vị hiện tại
             @JsonProperty(required = false) String unitId,
             @JsonProperty(required = false) Boolean includeChildUnits,
             @JsonProperty(required = false) String positionId,
@@ -44,7 +44,7 @@ public final class OrgUnitStatisticToolRequests {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetOrgUnitStatisticsRequest(
-            @JsonProperty(required = false) String unitName,  // tên đơn vị đích (vd "phòng IT"); mặc định = đơn vị hiện tại
+            @JsonProperty(required = false) String unitName,  // tên đơn vị đích (vd "khoa CNTT"); mặc định = đơn vị hiện tại
             @JsonProperty(required = false) String unitId,
             @JsonProperty(required = false) Boolean includeChildUnits,
             @JsonProperty(required = false) String positionName,  // lọc nhóm theo tên chức vụ (khỏi search_positions)
@@ -61,7 +61,7 @@ public final class OrgUnitStatisticToolRequests {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetKpisRequest(
-            @JsonProperty(required = false) String unitName,   // tên đơn vị đích (vd "phòng IT"); mặc định = đơn vị hiện tại
+            @JsonProperty(required = false) String unitName,   // tên đơn vị đích (vd "khoa CNTT"); mặc định = đơn vị hiện tại
             @JsonProperty(required = false) String unitId,     // hoặc UUID đơn vị đích
             @JsonProperty(required = false) String ownerId,
             @JsonProperty(required = false) String assignedById,
@@ -78,7 +78,7 @@ public final class OrgUnitStatisticToolRequests {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetKpiSummaryRequest(
-            @JsonProperty(required = false) String unitName,   // tên đơn vị đích (vd "phòng IT"); mặc định = đơn vị hiện tại
+            @JsonProperty(required = false) String unitName,   // tên đơn vị đích (vd "khoa CNTT"); mặc định = đơn vị hiện tại
             @JsonProperty(required = false) String unitId,     // hoặc UUID đơn vị đích
             @JsonProperty(required = false) String ownerId,
             @JsonProperty(required = false) String assignedById,
@@ -193,7 +193,7 @@ public final class OrgUnitStatisticToolRequests {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record GetTimeSeriesRequest(
-            @JsonProperty(required = false) String unitName,     // tên đơn vị đích (vd "phòng IT"); mặc định = đơn vị hiện tại
+            @JsonProperty(required = false) String unitName,     // tên đơn vị đích (vd "khoa CNTT"); mặc định = đơn vị hiện tại
             @JsonProperty(required = false) String unitId,
             @JsonProperty(required = false) String metric,       // completion | avg_performance
             @JsonProperty(required = false) String granularity,  // MONTH | QUARTER | YEAR

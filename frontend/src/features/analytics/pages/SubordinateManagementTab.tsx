@@ -19,7 +19,7 @@ const CONFIG_REPORT_NAME = '__SUBORDINATE_DASHBOARD_CONFIG__'
 const DEFAULT_WIDGETS: DashboardWidget[] = [
   { i: 'sub-trend', type: 'SUB_TREND', title: 'Xu hướng mục tiêu theo thời gian', x: 0, y: 0, w: 12, h: 15, visible: true },
   { i: 'sub-detail', type: 'SUB_DETAIL', title: 'Chi tiết mục tiêu', x: 0, y: 15, w: 12, h: 20, visible: true },
-  { i: 'sub-member', type: 'SUB_MEMBER', title: 'Nhân sự & vai trò theo đơn vị', x: 0, y: 35, w: 12, h: 11, visible: true },
+  { i: 'sub-member', type: 'SUB_MEMBER', title: 'Giảng viên & vai trò theo đơn vị', x: 0, y: 35, w: 12, h: 11, visible: true },
   { i: 'sub-unit-perf', type: 'SUB_UNIT_PERF', title: 'Hiệu suất & Tiến độ đơn vị', x: 0, y: 46, w: 12, h: 13, visible: true },
 ]
 // Loại FE → enum WidgetType hợp lệ ở DB (không cần migration).
@@ -72,7 +72,7 @@ export default function SubordinateManagementTab() {
     queryFn: () => statsApi.getSubordinateComboChart(dateRange.from, dateRange.to, onlyApproved, periodId, periodIdTo, groupBy)
   })
 
-  // Cấu trúc nhân sự / vai trò (theo đơn vị của user + đơn vị con) — không phụ thuộc thời gian.
+  // Cấu trúc giảng viên / vai trò (theo đơn vị của user + đơn vị con) — không phụ thuộc thời gian.
   const { data: summary } = useSummaryStats()
 
   // ── Tuỳ chỉnh giao diện (lưới widget dùng chung) ──────────────────────────
@@ -97,7 +97,7 @@ export default function SubordinateManagementTab() {
         </ChartWrapper>
       )
       case 'SUB_MEMBER': return (
-        <ChartWrapper title="Nhân sự & vai trò theo đơn vị" icon={<Users size={20} className="text-purple-600" />} widget={w} onTogglePin={handleTogglePin} isEditMode={isEditMode}>
+        <ChartWrapper title="Giảng viên & vai trò theo đơn vị" icon={<Users size={20} className="text-purple-600" />} widget={w} onTogglePin={handleTogglePin} isEditMode={isEditMode}>
           <MemberRoleChart data={summary?.roleDistribution} />
         </ChartWrapper>
       )
@@ -164,14 +164,14 @@ export default function SubordinateManagementTab() {
           isLoading={atRiskQuery.isLoading}
         />
         <ObjectiveMetricCard
-          title="Tổng nhân sự"
+          title="Tổng giảng viên"
           value={personnelQuery.data?.count ?? 0}
           icon={<Users size={20} />}
           isLoading={personnelQuery.isLoading}
         />
       </div>
 
-      {/* Lưới widget tuỳ chỉnh: Xu hướng + Chi tiết + Nhân sự/vai trò + Hiệu suất đơn vị */}
+      {/* Lưới widget tuỳ chỉnh: Xu hướng + Chi tiết + Giảng viên/vai trò + Hiệu suất đơn vị */}
       <DashboardCustomizeChrome api={dash} renderWidget={renderWidget} catalog={CATALOG} />
     </div>
   )

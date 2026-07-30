@@ -27,7 +27,7 @@ interface Row {
   Status?: string
   ScoringMode?: string
   EmptyPolicy?: string
-  /** Mã phòng ban áp dụng (phân tách dấu phẩy); rỗng = toàn tổ chức. Đồng bộ theo kỳ. */
+  /** Mã khoa áp dụng (phân tách dấu phẩy); rỗng = toàn tổ chức. Đồng bộ theo kỳ. */
   OrgUnitCodes?: string
   _errors?: Record<string, string>
 }
@@ -56,7 +56,7 @@ export default function ScorecardExcelPreviewModal({ open, file, onClose, onImpo
   const [loading, setLoading] = useState(false)
   const [didInitUnits, setDidInitUnits] = useState(false)
 
-  // Mặc định TÍCH HẾT các đơn vị cho dòng nào chưa có phòng ban (chạy 1 lần sau khi nạp cây đơn vị).
+  // Mặc định TÍCH HẾT các đơn vị cho dòng nào chưa có khoa (chạy 1 lần sau khi nạp cây đơn vị).
   useEffect(() => {
     if (didInitUnits || flatOrgUnits.length === 0 || data.length === 0) return
     const allCodes = flatOrgUnits.map(u => u.code).join(', ')
@@ -65,7 +65,7 @@ export default function ScorecardExcelPreviewModal({ open, file, onClose, onImpo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flatOrgUnits, data, didInitUnits])
 
-  // Tick phòng ban trên 1 dòng ⇒ áp cho MỌI dòng cùng kỳ (mỗi kỳ = 1 thẻ điểm). Tick gốc ⇒ chọn/bỏ toàn bộ.
+  // Tick khoa trên 1 dòng ⇒ áp cho MỌI dòng cùng kỳ (mỗi kỳ = 1 thẻ điểm). Tick gốc ⇒ chọn/bỏ toàn bộ.
   const toggleUnitInGroup = (row: Row, unitCode: string) => {
     const current = (row.OrgUnitCodes || '').split(',').map(c => c.trim()).filter(Boolean)
     const rootCode = flatOrgUnits[0]?.code
@@ -85,7 +85,7 @@ export default function ScorecardExcelPreviewModal({ open, file, onClose, onImpo
   }
   const unitLabel = (row: Row) => {
     const codes = (row.OrgUnitCodes || '').split(',').map(c => c.trim()).filter(Boolean)
-    if (codes.length === 0) return 'Chọn phòng ban'
+    if (codes.length === 0) return 'Chọn khoa'
     if (codes.length >= flatOrgUnits.length && flatOrgUnits.length > 0) return 'Tất cả đơn vị'
     if (codes.length === 1) return flatOrgUnits.find(u => u.code === codes[0])?.name || codes[0]
     return `Đã chọn ${codes.length} đơn vị`
@@ -243,7 +243,7 @@ export default function ScorecardExcelPreviewModal({ open, file, onClose, onImpo
                         <th className="px-4 py-3 min-w-[180px]">Kỳ <span className="text-rose-500">*</span></th>
                         <th className="px-4 py-3 min-w-[170px]">Tên thẻ điểm <span className="text-rose-500">*</span></th>
                         <th className="px-4 py-3 min-w-[180px]">Vision</th>
-                        <th className="px-4 py-3 min-w-[200px]">Phòng ban</th>
+                        <th className="px-4 py-3 min-w-[200px]">Khoa</th>
                         <th className="px-4 py-3 min-w-[160px]">Mã hạng mục <span className="text-rose-500">*</span></th>
                         <th className="px-4 py-3 min-w-[110px]">Trọng số % <span className="text-rose-500">*</span></th>
                         <th className="px-4 py-3 min-w-[140px]">Trạng thái</th>

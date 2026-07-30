@@ -88,7 +88,7 @@ public class MatrixAnalyticsService {
         return out;
     }
 
-    /** Dựng heatmap: trục từ cấu hình ma trận của org, đếm số nhân sự mỗi ô. Null nếu org chưa cấu hình. */
+    /** Dựng heatmap: trục từ cấu hình ma trận của org, đếm số giảng viên mỗi ô. Null nếu org chưa cấu hình. */
     private Heatmap buildHeatmap(AnalyticsScopeResolver.Scope s) {
         if (s.orgId() == null) return null;
         Organization org = organizationRepository.findById(s.orgId()).orElse(null);

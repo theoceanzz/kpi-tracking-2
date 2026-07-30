@@ -181,7 +181,7 @@ export default function ScorecardFormModal({ isOpen, onClose, organizationId, sc
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Phạm vi áp dụng (phòng ban)</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Phạm vi áp dụng (khoa)</label>
             <Popover>
               <PopoverTrigger asChild disabled={!!scorecard}>
                 <button type="button" disabled={!!scorecard}
@@ -216,7 +216,7 @@ export default function ScorecardFormModal({ isOpen, onClose, organizationId, sc
             <p className="text-[10px] font-medium text-slate-400 ml-1">
               {scorecard
                 ? 'Không đổi được phạm vi của thẻ điểm đã tạo.'
-                : 'Một thẻ điểm có thể áp dụng cho NHIỀU đơn vị (giống OKR). Bỏ trống = áp dụng toàn tổ chức. Tick đơn vị gốc để chọn toàn bộ. Nhân viên dùng thẻ điểm chứa đơn vị của họ; nếu không có sẽ kế thừa đơn vị cha.'}
+                : 'Một thẻ điểm có thể áp dụng cho NHIỀU đơn vị (giống OKR). Bỏ trống = áp dụng toàn tổ chức. Tick đơn vị gốc để chọn toàn bộ. Giảng viên dùng thẻ điểm chứa đơn vị của họ; nếu không có sẽ kế thừa đơn vị cha.'}
             </p>
           </div>
 

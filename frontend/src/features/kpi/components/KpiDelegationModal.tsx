@@ -141,7 +141,7 @@ export default function KpiDelegationModal({ open, onClose, kpi }: KpiDelegation
         <div className="flex items-center justify-between mb-8">
           <div className="space-y-1">
             <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Giao việc & Ủy quyền</h3>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Phân bổ chỉ tiêu cho nhân sự cấp dưới</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Phân bổ chỉ tiêu cho giảng viên cấp dưới</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors text-slate-400 hover:text-slate-900">
             <X size={24} />
@@ -157,7 +157,7 @@ export default function KpiDelegationModal({ open, onClose, kpi }: KpiDelegation
                 {kpi.hasChildren && kpi.delegatedToNames && kpi.delegatedToNames.length > 0 
                   ? `Đã giao cho: ${kpi.delegatedToNames.join(', ')}`
                   : delegatedStaffCount > 0 
-                    ? `Đã chọn ${delegatedStaffCount} nhân sự`
+                    ? `Đã chọn ${delegatedStaffCount} giảng viên`
                     : 'Chưa giao cho ai'}
               </span>
             </div>

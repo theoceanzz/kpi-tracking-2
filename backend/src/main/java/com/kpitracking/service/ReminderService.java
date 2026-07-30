@@ -29,7 +29,7 @@ public class ReminderService {
                 .orElseThrow(() -> new ResourceNotFoundException("KPI", "id", kpiCriteriaId));
 
         User employee = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Nhân viên", "id", userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Giảng viên", "id", userId));
 
         // 1. Create In-app Notification
         String title = "Nhắc nhở nộp báo cáo KPI";
@@ -37,7 +37,7 @@ public class ReminderService {
         notificationService.createNotification(criteria.getOrgUnit(), employee, title, message, "KPI_REMINDER", kpiCriteriaId);
 
         // 2. Send Email
-        String emailSubject = "[KeyGo] Nhắc nhở nộp báo cáo KPI: " + criteria.getName();
+        String emailSubject = "[KeyLearn] Nhắc nhở nộp báo cáo KPI: " + criteria.getName();
         String emailContent = String.format(
                 "<p>Xin chào <b>%s</b>,</p>" +
                 "<p>Bạn nhận được lời nhắc nộp báo cáo cho chỉ tiêu KPI: <b>%s</b> thuộc đợt <b>%s</b>.</p>" +

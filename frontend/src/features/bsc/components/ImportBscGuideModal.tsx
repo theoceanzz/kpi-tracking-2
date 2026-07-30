@@ -8,16 +8,16 @@ interface ImportBscGuideModalProps {
 }
 
 const SAMPLE_CSV_CONTENT = `Code,Name,FixedPerspective,Description,Color,DisplayOrder,Status
-DOANH_THU,Doanh thu,FINANCIAL,Các chỉ tiêu về doanh thu & lợi nhuận,#2563eb,1,ACTIVE
-HAI_LONG_KH,Sự hài lòng khách hàng,CUSTOMER,Đo lường trải nghiệm & giữ chân khách hàng,#f59e0b,2,ACTIVE
+NGUON_THU,Nguồn thu,FINANCIAL,Các chỉ tiêu về nguồn thu & học phí,#2563eb,1,ACTIVE
+HAI_LONG_NH,Sự hài lòng của người học,CUSTOMER,Đo lường trải nghiệm & tỷ lệ sinh viên gắn bó,#f59e0b,2,ACTIVE
 VAN_HANH,Hiệu quả vận hành,INTERNAL_PROCESS,Tối ưu quy trình nội bộ,#10b981,3,ACTIVE
-DAO_TAO,Đào tạo & phát triển,LEARNING_GROWTH,Nâng cao năng lực nhân sự,#8b5cf6,4,ACTIVE`
+DAO_TAO,Đào tạo & phát triển,LEARNING_GROWTH,Nâng cao năng lực giảng viên,#8b5cf6,4,ACTIVE`
 
 const COLUMNS = [
-  { name: 'Code', required: true, desc: 'Mã hạng mục (chỉ chữ, số, gạch dưới). Dùng để đối soát & cập nhật.', example: 'DOANH_THU' },
-  { name: 'Name', required: true, desc: 'Tên hạng mục', example: 'Doanh thu' },
+  { name: 'Code', required: true, desc: 'Mã hạng mục (chỉ chữ, số, gạch dưới). Dùng để đối soát & cập nhật.', example: 'NGUON_THU' },
+  { name: 'Name', required: true, desc: 'Tên hạng mục', example: 'Nguồn thu' },
   { name: 'FixedPerspective', required: false, desc: 'Viễn cảnh cố định của hạng mục: FINANCIAL, CUSTOMER, INTERNAL_PROCESS, LEARNING_GROWTH. Bỏ trống mặc định INTERNAL_PROCESS.', example: 'FINANCIAL' },
-  { name: 'Description', required: false, desc: 'Mô tả hạng mục', example: 'Các chỉ tiêu về doanh thu' },
+  { name: 'Description', required: false, desc: 'Mô tả hạng mục', example: 'Các chỉ tiêu về nguồn thu' },
   { name: 'Color', required: false, desc: 'Màu hiển thị dạng hex #RRGGBB', example: '#2563eb' },
   { name: 'DisplayOrder', required: false, desc: 'Thứ tự hiển thị (số). Để trống hệ thống tự đánh số.', example: '1' },
   { name: 'Status', required: false, desc: 'Trạng thái: ACTIVE hoặc INACTIVE (mặc định ACTIVE)', example: 'ACTIVE' },
@@ -47,10 +47,10 @@ async function downloadTemplate(type: 'csv' | 'xlsx') {
     { header: 'Status', key: 'Status', width: 14 },
   ]
   worksheet.addRows([
-    ['DOANH_THU', 'Doanh thu', 'FINANCIAL', 'Các chỉ tiêu về doanh thu & lợi nhuận', '#2563eb', 1, 'ACTIVE'],
-    ['HAI_LONG_KH', 'Sự hài lòng khách hàng', 'CUSTOMER', 'Đo lường trải nghiệm & giữ chân khách hàng', '#f59e0b', 2, 'ACTIVE'],
+    ['NGUON_THU', 'Nguồn thu', 'FINANCIAL', 'Các chỉ tiêu về nguồn thu & học phí', '#2563eb', 1, 'ACTIVE'],
+    ['HAI_LONG_NH', 'Sự hài lòng của người học', 'CUSTOMER', 'Đo lường trải nghiệm & tỷ lệ sinh viên gắn bó', '#f59e0b', 2, 'ACTIVE'],
     ['VAN_HANH', 'Hiệu quả vận hành', 'INTERNAL_PROCESS', 'Tối ưu quy trình nội bộ', '#10b981', 3, 'ACTIVE'],
-    ['DAO_TAO', 'Đào tạo & phát triển', 'LEARNING_GROWTH', 'Nâng cao năng lực nhân sự', '#8b5cf6', 4, 'ACTIVE'],
+    ['DAO_TAO', 'Đào tạo & phát triển', 'LEARNING_GROWTH', 'Nâng cao năng lực giảng viên', '#8b5cf6', 4, 'ACTIVE'],
   ])
 
   const headerRow = worksheet.getRow(1)

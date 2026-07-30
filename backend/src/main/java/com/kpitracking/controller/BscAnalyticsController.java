@@ -75,7 +75,7 @@ public class BscAnalyticsController {
 
     @GetMapping("/rankings")
     @PreAuthorize("hasAuthority('BSC:MANAGE')")
-    @Operation(summary = "Xếp hạng nhân sự theo điểm BSC + breakdown viễn cảnh")
+    @Operation(summary = "Xếp hạng giảng viên theo điểm BSC + breakdown viễn cảnh")
     public ResponseEntity<ApiResponse<RankingResponse>> getRankings(
             @RequestParam(required = false) UUID orgUnitId,
             @RequestParam(required = false) UUID periodId,

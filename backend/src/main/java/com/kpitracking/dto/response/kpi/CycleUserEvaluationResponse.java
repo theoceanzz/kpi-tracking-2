@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
-/** Điểm đánh giá theo kỳ của MỘT nhân viên (trung bình các đợt), 2 phía self/QLTT. */
+/** Điểm đánh giá theo kỳ của MỘT giảng viên (trung bình các đợt), 2 phía self/QLTT. */
 @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 public class CycleUserEvaluationResponse {
     private UUID userId;
@@ -14,7 +14,7 @@ public class CycleUserEvaluationResponse {
     private UUID orgUnitId;
     private String orgUnitName;
     private CycleEvaluationMode mode;
-    /** Điểm nhân viên tự đánh giá (TB các đợt), null nếu chưa có. */
+    /** Điểm giảng viên tự đánh giá (TB các đợt), null nếu chưa có. */
     private Double selfScore;
     /** Điểm cán bộ QLTT đánh giá (TB các đợt), null nếu chưa có. */
     private Double managerScore;
@@ -35,9 +35,9 @@ public class CycleUserEvaluationResponse {
     private String evaluatedByName;
     private java.time.Instant evaluatedAt;
 
-    /** true nếu nhân viên thuộc một đơn vị đã CHỐT ⇒ không được chỉnh điểm. */
+    /** true nếu giảng viên thuộc một đơn vị đã CHỐT ⇒ không được chỉnh điểm. */
     private boolean locked;
-    /** Tên đơn vị đã chốt đang khoá nhân viên này (để biết cần mở khoá ở đâu). */
+    /** Tên đơn vị đã chốt đang khoá giảng viên này (để biết cần mở khoá ở đâu). */
     private String lockedByUnitName;
 
     /** Chi tiết từng đợt trong kỳ. */

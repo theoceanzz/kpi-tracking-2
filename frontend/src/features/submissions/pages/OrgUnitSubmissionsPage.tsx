@@ -43,7 +43,7 @@ export default function OrgUnitSubmissionsPage() {
   const isManager = useMemo(() => user?.memberships?.some(m => m.roleRank === 0), [user])
 
   const { data: customLabels = {} } = useSidebarSettings(orgId!)
-  const rawTitle = ((customLabels as Record<string, string>)['/submissions/org-unit'] || 'Đánh giá Nhân viên')
+  const rawTitle = ((customLabels as Record<string, string>)['/submissions/org-unit'] || 'Đánh giá Giảng viên')
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
@@ -253,13 +253,13 @@ export default function OrgUnitSubmissionsPage() {
                     {mainTitle} <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">{lastWord}</span>
                   </h1>
                   <p className="text-slate-500 dark:text-slate-400 font-medium text-sm max-w-xl leading-relaxed">
-                    Theo dõi tiến độ nộp KPI và đánh giá kết quả của đội ngũ nhân sự trong kỳ.
+                    Theo dõi tiến độ nộp KPI và đánh giá kết quả của đội ngũ giảng viên trong kỳ.
                   </p>
                 </div>
               </div>
 
               <div id="tour-approve-stats" className="grid grid-cols-3 gap-2 sm:gap-3 w-full sm:w-auto">
-                <StatChip label="Nhân sự" value={stats.totalEmployees} color="indigo" />
+                <StatChip label="Giảng viên" value={stats.totalEmployees} color="indigo" />
                 <StatChip label="Chờ duyệt" value={stats.totalPending} color="amber" />
                 <StatChip label="Đã đánh giá" value={stats.totalEvaluated} color="emerald" />
               </div>
@@ -275,7 +275,7 @@ export default function OrgUnitSubmissionsPage() {
               <input 
                 value={search}
                 onChange={e => { setSearch(e.target.value); setPage(0) }}
-                placeholder="Tìm nhân viên..." 
+                placeholder="Tìm giảng viên..." 
                 className="w-full pl-12 pr-4 h-13 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 text-sm font-medium focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/50 outline-none transition-all placeholder:text-slate-400"
               />
             </div>
@@ -326,8 +326,8 @@ export default function OrgUnitSubmissionsPage() {
         ) : employees.length === 0 ? (
           <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-[40px] border border-dashed border-slate-300 dark:border-slate-700 p-24 shadow-sm text-center">
             <EmptyState 
-              title="Không có nhân sự" 
-              description="Chưa có nhân sự nào trong danh sách." 
+              title="Không có giảng viên" 
+              description="Chưa có giảng viên nào trong danh sách." 
             />
           </div>
         ) : (
@@ -341,7 +341,7 @@ export default function OrgUnitSubmissionsPage() {
                       onClick={() => handleSort('fullName')}
                     >
                       <div className="flex items-center gap-2">
-                        Nhân viên
+                        Giảng viên
                         <SortIcon column="fullName" current={sortConfig} />
                       </div>
                     </th>
@@ -392,7 +392,7 @@ export default function OrgUnitSubmissionsPage() {
                                   return <span className="text-[10px] text-slate-400 font-medium">{evaluation.userRoleName}</span>
                                 }
                                 const memberships = [...(emp.memberships || [])]
-                                if (memberships.length === 0) return <span className="text-[10px] text-slate-400 font-medium">Nhân viên</span>
+                                if (memberships.length === 0) return <span className="text-[10px] text-slate-400 font-medium">Giảng viên</span>
                                 const levels = memberships.map((m: any) => m.levelOrder ?? m.roleLevel ?? 0)
                                 const minLevel = Math.min(...levels)
                                 const hasDeeperLevel = levels.some(l => l > minLevel)
@@ -416,7 +416,7 @@ export default function OrgUnitSubmissionsPage() {
                                   return 0
                                 })[0]
                                 return (
-                                  <span className="text-[10px] text-slate-400 font-medium">{bestMembership?.roleName || 'Nhân viên'}</span>
+                                  <span className="text-[10px] text-slate-400 font-medium">{bestMembership?.roleName || 'Giảng viên'}</span>
                                 )
                               })()}
                             </div>
@@ -441,11 +441,11 @@ export default function OrgUnitSubmissionsPage() {
                               </span>
                             </div>
                           ) : hasSubmissionByUserId.has(emp.id) ? (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50" title="Nhân viên đã nộp bài nhưng bạn chưa chấm điểm">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50" title="Giảng viên đã nộp bài nhưng bạn chưa chấm điểm">
                               <span className="text-[10px] font-black uppercase tracking-widest">Chưa chấm</span>
                             </div>
                           ) : isPeriodEnded ? (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50" title="Nhân viên chưa nộp bài nào và đợt đã kết thúc">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/50" title="Giảng viên chưa nộp bài nào và đợt đã kết thúc">
                               <span className="text-[10px] font-black uppercase tracking-widest">Chưa làm</span>
                             </div>
                           ) : (
@@ -500,7 +500,7 @@ export default function OrgUnitSubmissionsPage() {
                         </div>
                         <div className="min-w-0">
                           <span className="text-sm font-bold text-slate-900 dark:text-white block truncate">{emp.fullName}</span>
-                          <span className="text-[10px] text-slate-400 font-medium">{evaluation?.userRoleName || 'Nhân viên'}</span>
+                          <span className="text-[10px] text-slate-400 font-medium">{evaluation?.userRoleName || 'Giảng viên'}</span>
                         </div>
                       </div>
                       <ChevronRight size={18} className="text-slate-400 shrink-0" />
@@ -524,7 +524,7 @@ export default function OrgUnitSubmissionsPage() {
                           </span>
                         </div>
                       ) : hasSubmissionByUserId.has(emp.id) ? (
-                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50" title="Nhân viên đã nộp bài nhưng bạn chưa chấm điểm">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50" title="Giảng viên đã nộp bài nhưng bạn chưa chấm điểm">
                           <span className="text-[10px] font-black uppercase tracking-widest">Chưa chấm</span>
                         </div>
                       ) : isPeriodEnded ? (

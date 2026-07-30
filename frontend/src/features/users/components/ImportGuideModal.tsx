@@ -8,21 +8,21 @@ interface ImportGuideModalProps {
 }
 
 const SAMPLE_CSV_CONTENT = `Email,FullName,EmployeeCode,Phone,Role,Password,OrgUnitCode
-hai@keyperson.com,Hải,KP001,0972867825,STAFF,Haikp123@,
-nghia@keyperson.com,Nghĩa,KP002,0325614226,STAFF,Nghiakp123@,
-xuan@keyperson.com,Xuân,KP003,0354744854,STAFF,Xuankp123@,HN01
-khoa@keyperson.com,Khoa,KP004,0342719583,STAFF,Khoakp123@,
-duc@keyperson.com,Đức,KP005,0972458591,STAFF,Duckp123@,HCM01
-phuonganh@keyperson.com,Phương Anh,KP006,0968078673,STAFF,Phuonganhkp123@,`
+hai@truong.edu.vn,Hải,GV001,0972867825,STAFF,Haigv123@,
+nghia@truong.edu.vn,Nghĩa,GV002,0325614226,STAFF,Nghiagv123@,
+xuan@truong.edu.vn,Xuân,GV003,0354744854,STAFF,Xuangv123@,CNTT
+khoa@truong.edu.vn,Khoa,GV004,0342719583,STAFF,Khoagv123@,
+duc@truong.edu.vn,Đức,GV005,0972458591,STAFF,Ducgv123@,KTPM
+phuonganh@truong.edu.vn,Phương Anh,GV006,0968078673,STAFF,Phuonganhgv123@,`
 
 const COLUMNS = [
-  { name: 'Email', required: true, desc: 'Email đăng nhập, phải là duy nhất trong hệ thống', example: 'abc@company.com' },
+  { name: 'Email', required: true, desc: 'Email đăng nhập, phải là duy nhất trong hệ thống', example: 'abc@truong.edu.vn' },
   { name: 'FullName', required: true, desc: 'Họ và tên đầy đủ', example: 'Nguyễn Văn A' },
-  { name: 'EmployeeCode', required: false, desc: 'Mã số nhân viên', example: 'NV001' },
+  { name: 'EmployeeCode', required: false, desc: 'Mã số giảng viên', example: 'GV001' },
   { name: 'Phone', required: false, desc: 'Số điện thoại (có thể để trống)', example: '0901000001' },
   { name: 'Role', required: false, desc: 'Vai trò: DIRECTOR, HEAD, DEPUTY, LEADER, STAFF (mặc định STAFF)', example: 'STAFF' },
   { name: 'Password', required: false, desc: 'Mật khẩu đăng nhập (nếu trống sẽ tự động tạo)', example: '123456aA' },
-  { name: 'OrgUnitCode', required: false, desc: 'Mã đơn vị để gán nhân sự (vd: HN01). Nếu trống sẽ chỉ gán vào công ty.', example: 'HN01' },
+  { name: 'OrgUnitCode', required: false, desc: 'Mã đơn vị để gán giảng viên (vd: CNTT). Nếu trống sẽ chỉ gán vào cấp trường.', example: 'CNTT' },
 ]
 
 async function downloadTemplate(type: 'csv' | 'xlsx') {
@@ -39,7 +39,7 @@ async function downloadTemplate(type: 'csv' | 'xlsx') {
 
   // Professional XLSX using ExcelJS
   const workbook = new ExcelJS.Workbook()
-  const worksheet = workbook.addWorksheet('Danh sách nhân sự')
+  const worksheet = workbook.addWorksheet('Danh sách giảng viên')
 
   // Define columns
   worksheet.columns = [
@@ -120,10 +120,10 @@ async function downloadTemplate(type: 'csv' | 'xlsx') {
   const noteTitleRow = guideSheet.addRow(['LƯU Ý CHUNG CHO IMPORT EXCEL & CSV'])
   noteTitleRow.font = { bold: true, size: 12, color: { argb: 'FFDC2626' } }
   guideSheet.addRow(['1. File mẫu này hỗ trợ import cả định dạng .xlsx và .csv.'])
-  guideSheet.addRow(['2. Nếu import bằng CSV, bạn vui lòng xuất dữ liệu từ tab "Danh sách nhân sự" ra file .csv (UTF-8).'])
+  guideSheet.addRow(['2. Nếu import bằng CSV, bạn vui lòng xuất dữ liệu từ tab "Danh sách giảng viên" ra file .csv (UTF-8).'])
   guideSheet.addRow(['3. Email là duy nhất, không được trùng với tài khoản đã có trên hệ thống.'])
   guideSheet.addRow(['4. Password có thể để trống. Hệ thống sẽ tự tạo mật khẩu mạnh và gửi email cho người dùng.'])
-  guideSheet.addRow(['5. OrgUnitCode là mã phòng ban. Nếu trống, nhân sự sẽ thuộc cấp toàn công ty.'])
+  guideSheet.addRow(['5. OrgUnitCode là mã khoa. Nếu trống, giảng viên sẽ thuộc cấp toàn trường.'])
 
   // Generate and download
   const buffer = await workbook.xlsx.writeBuffer()
@@ -138,7 +138,7 @@ async function downloadTemplate(type: 'csv' | 'xlsx') {
 
 const STEPS = [
   { num: '01', title: 'Tải file mẫu', desc: 'Nhấn nút bên dưới để tải về file CSV mẫu có sẵn header chuẩn.' },
-  { num: '02', title: 'Điền thông tin', desc: 'Mở file bằng Excel hoặc Google Sheets, điền thông tin nhân sự theo từng dòng.' },
+  { num: '02', title: 'Điền thông tin', desc: 'Mở file bằng Excel hoặc Google Sheets, điền thông tin giảng viên theo từng dòng.' },
   { num: '03', title: 'Lưu & Upload', desc: 'Lưu file ở định dạng .csv hoặc .xlsx, sau đó nhấn "Chọn file & Import" bên dưới.' },
 ]
 
@@ -162,7 +162,7 @@ export default function ImportGuideModal({ open, onClose, onSelectFile }: Import
               <FileSpreadsheet size={24} className="text-emerald-600" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-slate-900 dark:text-white">Import Nhân sự Hàng loạt</h2>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white">Import Giảng viên Hàng loạt</h2>
               <p className="text-sm font-medium text-slate-500">Hỗ trợ định dạng .csv và .xlsx</p>
             </div>
           </div>
@@ -282,7 +282,7 @@ export default function ImportGuideModal({ open, onClose, onSelectFile }: Import
               <div className="flex items-start gap-3 p-3 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-200/50 dark:border-blue-900/30">
                 <Info size={16} className="text-blue-600 mt-0.5 shrink-0" />
                 <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
-                  Bạn có thể <strong>tự đặt mật khẩu</strong> trong file import. Nếu để trống, hệ thống sẽ tự động tạo ngẫu nhiên và gửi qua email cho nhân sự.
+                  Bạn có thể <strong>tự đặt mật khẩu</strong> trong file import. Nếu để trống, hệ thống sẽ tự động tạo ngẫu nhiên và gửi qua email cho giảng viên.
                 </p>
               </div>
               <div className="flex items-start gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200/50 dark:border-emerald-900/30">

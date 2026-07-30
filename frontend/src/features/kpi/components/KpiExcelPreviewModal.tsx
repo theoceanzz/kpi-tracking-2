@@ -64,9 +64,9 @@ const kpiRowSchema = z.object({
   Deadline: z.string().refine(val => !val || /^\d{1,2}\/\d{1,2}\/\d{4}( \d{1,2}:\d{2})?$/.test(val), 'Định dạng: dd/MM/yyyy hoặc dd/MM/yyyy HH:mm').optional().nullable(),
   Unit: z.string().min(1, 'Đơn vị là bắt buộc'),
   Frequency: z.string().refine(val => frequencyOptions.includes(val.toUpperCase()), 'Tần suất không hợp lệ'),
-  EmployeeCode: z.string().min(1, 'Mã nhân viên là bắt buộc'),
+  EmployeeCode: z.string().min(1, 'Mã giảng viên là bắt buộc'),
   Period: z.string().min(1, 'Đợt KPI là bắt buộc'),
-  OrgUnit: z.string().min(1, 'Phòng ban là bắt buộc'),
+  OrgUnit: z.string().min(1, 'Khoa là bắt buộc'),
 })
 
 // Qualitative KPIs have no numeric target/unit — those fields are not validated.
@@ -79,9 +79,9 @@ const qualitativeKpiRowSchema = z.object({
   }, 'Trọng số phải từ 1-100'),
   Deadline: z.string().refine(val => !val || /^\d{1,2}\/\d{1,2}\/\d{4}( \d{1,2}:\d{2})?$/.test(val), 'Định dạng: dd/MM/yyyy hoặc dd/MM/yyyy HH:mm').optional().nullable(),
   Frequency: z.string().refine(val => frequencyOptions.includes(val.toUpperCase()), 'Tần suất không hợp lệ'),
-  EmployeeCode: z.string().min(1, 'Mã nhân viên là bắt buộc'),
+  EmployeeCode: z.string().min(1, 'Mã giảng viên là bắt buộc'),
   Period: z.string().min(1, 'Đợt KPI là bắt buộc'),
-  OrgUnit: z.string().min(1, 'Phòng ban là bắt buộc'),
+  OrgUnit: z.string().min(1, 'Khoa là bắt buộc'),
 })
 
 const QUANTITATIVE_CRITICAL_FIELDS = ['Name', 'Weight', 'TargetValue', 'Unit', 'Frequency', 'EmployeeCode', 'Period']
@@ -359,7 +359,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
           errors['OrgUnit'] = `Đơn vị '${rawOrgValue}' không tồn tại trong hệ thống`
         } else {
           item.OrgUnit = ''
-          errors['OrgUnit'] = `Phòng ban là bắt buộc`
+          errors['OrgUnit'] = `Khoa là bắt buộc`
         }
 
         const rowWithFallback = validateRow(item)
@@ -417,7 +417,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
         })
 
         if (mismatchedCodes.length > 0) {
-          errors['EmployeeCode'] = `Nhân viên ${mismatchedCodes.join(', ')} không thuộc ${row.OrgUnit}`
+          errors['EmployeeCode'] = `Giảng viên ${mismatchedCodes.join(', ')} không thuộc ${row.OrgUnit}`
         }
       }
     }
@@ -618,7 +618,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
     if (invalidEmps.length > 0) {
       setLoading(false)
       const errorMsg = invalidEmps.map(v => `${v.name} / ${(v as any).orgName || ''} [${v.periodName}] (${v.total.toFixed(1)}%)`).join(', ')
-      toast.error(`Tổng trọng số mỗi nhân viên phải đạt 100%. Kiểm tra: ${errorMsg}`)
+      toast.error(`Tổng trọng số mỗi giảng viên phải đạt 100%. Kiểm tra: ${errorMsg}`)
       return
     }
 
@@ -758,7 +758,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
                     onClick={() => setIsEmpTableOpen(!isEmpTableOpen)}
                     className="flex items-center gap-3 group"
                   >
-                    <h4 className="text-[10px] font-black text-slate-400 group-hover:text-indigo-600 transition-colors uppercase tracking-[0.2em] px-1">Chi tiết trọng số theo nhân viên</h4>
+                    <h4 className="text-[10px] font-black text-slate-400 group-hover:text-indigo-600 transition-colors uppercase tracking-[0.2em] px-1">Chi tiết trọng số theo giảng viên</h4>
                     <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
                       {isEmpTableOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                     </div>
@@ -770,7 +770,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
                         <table className="w-full text-sm text-left">
                           <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 text-slate-400 font-black uppercase text-[9px] tracking-widest">
                             <tr>
-                              <th className="px-6 py-4">Nhân viên</th>
+                              <th className="px-6 py-4">Giảng viên</th>
                               <th className="px-6 py-4">Đợt / Đơn vị</th>
                               <th className="px-6 py-4 text-center">Hiện tại</th>
                               <th className="px-6 py-4 text-center">Excel</th>
@@ -877,7 +877,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
 
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1 flex flex-col">
-                      <span>Phòng ban {bulkOrgUnits.length > 0 && <span className="text-indigo-600">({bulkOrgUnits.length})</span>}</span>
+                      <span>Khoa {bulkOrgUnits.length > 0 && <span className="text-indigo-600">({bulkOrgUnits.length})</span>}</span>
                       {enableOkr && <span className="text-[9px] text-indigo-500 italic lowercase font-bold">* Chỉ chọn 1 do đang bật OKR</span>}
                     </label>
                     <div className="relative" ref={bulkOrgDropdownRef}>
@@ -890,7 +890,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
                         className="w-full px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 shadow-sm text-sm font-bold text-left flex items-center justify-between relative z-50"
                       >
                         <span className={cn(bulkOrgUnits.length === 0 ? 'text-slate-400' : 'text-slate-900 dark:text-white')}>
-                          {bulkOrgUnits.length === 0 ? '-- Chọn phòng ban --' : `${bulkOrgUnits.length} phòng ban đã chọn`}
+                          {bulkOrgUnits.length === 0 ? '-- Chọn khoa --' : `${bulkOrgUnits.length} khoa đã chọn`}
                         </span>
                         <ChevronDown size={14} className={cn('text-slate-400 transition-transform', isBulkOrgOpen && 'rotate-180')} />
                       </button>
@@ -946,7 +946,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Mã nhân viên (S)</label>
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Mã giảng viên (S)</label>
                     <div className="relative group/search">
                       <input 
                         value={bulkEmpCode}
@@ -1024,7 +1024,7 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
                           ))
                         })()}
                         {allUsers.length === 0 && (
-                          <p className="p-3 text-center text-xs text-slate-400 font-bold uppercase">Không có dữ liệu nhân viên</p>
+                          <p className="p-3 text-center text-xs text-slate-400 font-bold uppercase">Không có dữ liệu giảng viên</p>
                         )}
                       </div>
                     </div>
@@ -1056,9 +1056,9 @@ export default function KpiExcelPreviewModal({ open, file, kpiType, onClose, onI
                         <th className="px-5 py-4 min-w-[120px]">KPI Thưởng</th>
                         {!isQualitative && <th className="px-5 py-4 min-w-[150px]">Đơn vị <span className="text-rose-500">*</span></th>}
                         <th className="px-5 py-4 min-w-[180px]">Tần suất <span className="text-rose-500">*</span></th>
-                        <th className="px-5 py-4 min-w-[160px]">Mã nhân viên <span className="text-rose-500">*</span></th>
+                        <th className="px-5 py-4 min-w-[160px]">Mã giảng viên <span className="text-rose-500">*</span></th>
                         <th className="px-5 py-4 min-w-[220px]">Đợt KPI <span className="text-rose-500">*</span></th>
-                        <th className="px-5 py-4 min-w-[300px]">Phòng ban / Đơn vị <span className="text-rose-500">*</span></th>
+                        <th className="px-5 py-4 min-w-[300px]">Khoa / Đơn vị <span className="text-rose-500">*</span></th>
                         {enableOkr && (
                           <>
                             <th className="px-5 py-4 min-w-[200px]">Mã Mục tiêu</th>
@@ -1555,7 +1555,7 @@ function UnitWeightStatus({ unitId, unitName, periodId, periodName, excelWeight 
             <Scale size={16} />
           </div>
           <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Phòng ban</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Khoa</p>
             <p className="text-sm font-black text-slate-900 dark:text-white truncate max-w-[120px]">{unitName}</p>
           </div>
         </div>

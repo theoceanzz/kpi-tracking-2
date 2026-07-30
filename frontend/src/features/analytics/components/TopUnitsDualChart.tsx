@@ -123,7 +123,7 @@ export default function TopUnitsDualChart({ data }: Props) {
       {/* RIGHT — Performance Rate (horizontal) */}
       <div className="bg-white dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-white/10 p-5 shadow-sm flex flex-col">
         <div className="flex items-center justify-between mb-1">
-          <h4 className="text-sm font-bold text-slate-700 dark:text-slate-200">Hiệu suất Phòng ban</h4>
+          <h4 className="text-sm font-bold text-slate-700 dark:text-slate-200">Hiệu suất Khoa</h4>
         </div>
         <div className="w-full h-[300px]">
           <ResponsiveContainer width="100%" height="100%">

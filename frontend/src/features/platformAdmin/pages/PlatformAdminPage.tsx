@@ -108,7 +108,7 @@ export default function PlatformAdminPage() {
     <div className="p-4 md:p-6 space-y-6 max-w-screen-xl mx-auto">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Quản trị nền tảng</h1>
-        <p className="text-sm text-gray-500 mt-1">Thống kê toàn hệ thống và quản lý các công ty</p>
+        <p className="text-sm text-gray-500 mt-1">Thống kê toàn hệ thống và quản lý các trường</p>
       </div>
 
       {/* Stats */}
@@ -121,7 +121,7 @@ export default function PlatformAdminPage() {
       ) : stats ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
           <StatCard
-            label="Tổng công ty"
+            label="Tổng số trường"
             value={stats.totalOrgs}
             sub={`Đang hoạt động: ${stats.orgsByStatus?.ACTIVE ?? 0}`}
             icon={Building2}
@@ -147,7 +147,7 @@ export default function PlatformAdminPage() {
             color="bg-amber-50 text-amber-600"
           />
           <StatCard
-            label="Công ty bật AI"
+            label="Trường bật AI"
             value={stats.orgsWithAiEnabled}
             sub={`Tổng: ${stats.totalOrgs}`}
             icon={Bot}
@@ -179,8 +179,8 @@ export default function PlatformAdminPage() {
       {/* Organizations table */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h2 className="font-semibold text-gray-800">Danh sách công ty</h2>
-          <span className="text-sm text-gray-400">{orgsPage?.totalElements ?? 0} công ty</span>
+          <h2 className="font-semibold text-gray-800">Danh sách trường</h2>
+          <span className="text-sm text-gray-400">{orgsPage?.totalElements ?? 0} trường</span>
         </div>
 
         {loadingOrgs ? (
@@ -253,7 +253,7 @@ export default function PlatformAdminPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50 text-gray-500 text-xs uppercase">
-                    <th className="px-4 py-3 text-left font-medium">Tên công ty</th>
+                    <th className="px-4 py-3 text-left font-medium">Tên trường</th>
                     <th className="px-4 py-3 text-left font-medium">Mã</th>
                     <th className="px-4 py-3 text-left font-medium">Trạng thái</th>
                     <th className="px-4 py-3 text-right font-medium">Người dùng</th>

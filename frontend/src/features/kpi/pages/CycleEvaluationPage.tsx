@@ -195,7 +195,7 @@ export default function CycleEvaluationPage() {
                     Đánh Giá <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600">Kỳ</span>
                   </h1>
                   <p className="text-slate-500 dark:text-slate-400 font-medium text-sm max-w-xl leading-relaxed">
-                    Tổng hợp điểm theo kỳ (trung bình các đợt) cho nhân viên và phòng ban.
+                    Tổng hợp điểm theo kỳ (trung bình các đợt) cho giảng viên và khoa.
                   </p>
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function CycleEvaluationPage() {
               <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Tìm nhân viên..."
+                placeholder="Tìm giảng viên..."
                 className="w-full pl-12 pr-4 h-13 py-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 text-sm font-medium focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/50 outline-none transition-all placeholder:text-slate-400"
               />
             </div>
@@ -313,7 +313,7 @@ export default function CycleEvaluationPage() {
                       onClick={() => setShowFinalize(true)}
                       className="flex items-center justify-center gap-2 px-6 h-11 rounded-2xl bg-emerald-600 text-white text-[11px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-500/20 active:scale-95 whitespace-nowrap"
                     >
-                      <Lock size={14} /> Chốt đánh giá phòng ban
+                      <Lock size={14} /> Chốt đánh giá khoa
                     </button>
                   )
                 )}
@@ -340,7 +340,7 @@ export default function CycleEvaluationPage() {
         {/* Content Section */}
         {!cycleId || !orgUnitId ? (
           <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-[40px] border border-dashed border-slate-300 dark:border-slate-700 p-24 shadow-sm text-center">
-            <EmptyState title="Chọn kỳ và phòng ban" description="Hãy chọn một kỳ đánh giá và một phòng ban để xem tổng hợp." />
+            <EmptyState title="Chọn kỳ và khoa" description="Hãy chọn một kỳ đánh giá và một khoa để xem tổng hợp." />
           </div>
         ) : isLoading ? (
           <div className="bg-white dark:bg-slate-900 rounded-[32px] p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
@@ -349,8 +349,8 @@ export default function CycleEvaluationPage() {
         ) : members.length === 0 ? (
           <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-md rounded-[40px] border border-dashed border-slate-300 dark:border-slate-700 p-24 shadow-sm text-center">
             <EmptyState
-              title="Không có nhân sự"
-              description={search ? 'Không tìm thấy nhân viên phù hợp.' : 'Phòng ban này chưa có nhân sự để tổng hợp.'}
+              title="Không có giảng viên"
+              description={search ? 'Không tìm thấy giảng viên phù hợp.' : 'Khoa này chưa có giảng viên để tổng hợp.'}
             />
           </div>
         ) : (
@@ -361,10 +361,10 @@ export default function CycleEvaluationPage() {
                 <thead>
                   <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                     <th className="px-3 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 whitespace-nowrap cursor-pointer hover:text-emerald-600 transition-colors" onClick={() => handleSort('userName')}>
-                      <div className="flex items-center gap-2">Nhân viên <SortIcon column="userName" current={sortConfig} /></div>
+                      <div className="flex items-center gap-2">Giảng viên <SortIcon column="userName" current={sortConfig} /></div>
                     </th>
                     <th className="px-3 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center whitespace-nowrap cursor-pointer hover:text-emerald-600 transition-colors" onClick={() => handleSort('selfScore')}>
-                      <div className="flex items-center justify-center gap-2">Nhân viên tự đánh giá <SortIcon column="selfScore" current={sortConfig} /></div>
+                      <div className="flex items-center justify-center gap-2">Giảng viên tự đánh giá <SortIcon column="selfScore" current={sortConfig} /></div>
                     </th>
                     <th className="px-3 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center whitespace-nowrap cursor-pointer hover:text-emerald-600 transition-colors" onClick={() => handleSort('managerScore')}>
                       <div className="flex items-center justify-center gap-2">Cán bộ QLTT đánh giá <SortIcon column="managerScore" current={sortConfig} /></div>
@@ -391,7 +391,7 @@ export default function CycleEvaluationPage() {
                             </div>
                             <div>
                               <span className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors block whitespace-nowrap">{m.userName}</span>
-                              <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap">{m.orgUnitName || 'Nhân viên'}</span>
+                              <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap">{m.orgUnitName || 'Giảng viên'}</span>
                             </div>
                           </div>
                         </td>
@@ -449,7 +449,7 @@ export default function CycleEvaluationPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className="text-sm font-bold text-slate-900 dark:text-white block truncate">{m.userName}</span>
-                      <span className="text-[10px] text-slate-400 font-medium">{m.orgUnitName || 'Nhân viên'}</span>
+                      <span className="text-[10px] text-slate-400 font-medium">{m.orgUnitName || 'Giảng viên'}</span>
                     </div>
                     <ChevronRight size={18} className="text-slate-400" />
                   </div>
@@ -473,7 +473,7 @@ export default function CycleEvaluationPage() {
           </div>
         )}
 
-        {/* Modal chấm điểm chốt kỳ của 1 nhân viên */}
+        {/* Modal chấm điểm chốt kỳ của 1 giảng viên */}
         {activeMember && (
           <UserScoreModal
             member={activeMember}
@@ -498,14 +498,14 @@ export default function CycleEvaluationPage() {
                   <Lock size={22} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-slate-900 dark:text-white">Chốt đánh giá phòng ban</h3>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-white">Chốt đánh giá khoa</h3>
                   <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-0.5">Điểm sẽ được lưu snapshot</p>
                 </div>
               </div>
               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Nhận xét (tuỳ chọn)</label>
               <textarea
                 value={comment} onChange={e => setComment(e.target.value)} rows={3}
-                placeholder="Nhận xét tổng thể cho phòng ban trong kỳ..."
+                placeholder="Nhận xét tổng thể cho khoa trong kỳ..."
                 className="w-full mt-2 px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 text-sm font-medium outline-none focus:ring-4 focus:ring-emerald-500/10 resize-none"
               />
               <div className="flex gap-3 mt-6">
@@ -522,7 +522,7 @@ export default function CycleEvaluationPage() {
   )
 }
 
-/** Modal xem chi tiết & nhập điểm chốt kỳ cho một nhân viên. */
+/** Modal xem chi tiết & nhập điểm chốt kỳ cho một giảng viên. */
 function UserScoreModal({
   member, maxScore, canEdit, lockedByUnitName, isSaving, onClose, onSave,
 }: {
@@ -589,7 +589,7 @@ function UserScoreModal({
             <div>
               <h3 className="text-xl font-black text-slate-900 dark:text-white">{member.userName}</h3>
               <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mt-0.5">
-                {member.orgUnitName || 'Nhân viên'} · Chế độ {MODE_LABEL[member.mode]}
+                {member.orgUnitName || 'Giảng viên'} · Chế độ {MODE_LABEL[member.mode]}
               </p>
             </div>
           </div>
@@ -597,7 +597,7 @@ function UserScoreModal({
           {/* Điểm tham chiếu */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Nhân viên tự đánh giá</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Giảng viên tự đánh giá</span>
               <span className="text-2xl font-black text-slate-700 dark:text-slate-200 tracking-tighter">
                 {sideDisplay(member.selfScore)}
               </span>
@@ -728,7 +728,7 @@ function UserScoreModal({
             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-1">Nhận xét</label>
             <textarea
               value={comment} onChange={e => setComment(e.target.value)} rows={3} disabled={!canEdit}
-              placeholder="Nhận xét cho nhân viên trong kỳ này..."
+              placeholder="Nhận xét cho giảng viên trong kỳ này..."
               className="w-full px-4 py-3 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 text-sm font-medium outline-none focus:ring-4 focus:ring-emerald-500/10 resize-none disabled:opacity-70"
             />
           </div>
@@ -756,7 +756,7 @@ function UserScoreModal({
   )
 }
 
-/** Chi tiết điểm từng đợt trong kỳ của một nhân viên. */
+/** Chi tiết điểm từng đợt trong kỳ của một giảng viên. */
 function PeriodBreakdownTable({ member, maxScore }: { member: CycleUserEvaluation; maxScore: number }) {
   if (!member.periodBreakdown?.length) {
     return <p className="text-xs text-slate-400 italic px-1 py-2">Kỳ này chưa có đợt nào được gán.</p>

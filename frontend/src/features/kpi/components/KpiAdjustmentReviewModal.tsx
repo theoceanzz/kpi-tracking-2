@@ -231,7 +231,7 @@ export default function KpiAdjustmentReviewModal({ open, onClose, request }: Kpi
                       className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
                       placeholder="Ví dụ: 100"
                     />
-                    <p className="text-[10px] text-slate-400 mt-1">Nhân viên sẽ được tính KPI này đạt đúng tỷ lệ % nhập ở đây (0-150), thay cho số liệu thực tế.</p>
+                    <p className="text-[10px] text-slate-400 mt-1">Giảng viên sẽ được tính KPI này đạt đúng tỷ lệ % nhập ở đây (0-150), thay cho số liệu thực tế.</p>
                   </div>
                 )}
                 <div>
@@ -243,7 +243,7 @@ export default function KpiAdjustmentReviewModal({ open, onClose, request }: Kpi
                     onChange={(e) => setNote(e.target.value)}
                     rows={3}
                     className="w-full px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/20 resize-none transition-all"
-                    placeholder="Nhập ghi chú cho nhân viên..."
+                    placeholder="Nhập ghi chú cho giảng viên..."
                   />
                 </div>
                 <div className="flex gap-3">

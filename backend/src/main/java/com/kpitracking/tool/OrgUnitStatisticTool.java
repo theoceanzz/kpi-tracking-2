@@ -173,7 +173,7 @@ public class OrgUnitStatisticTool {
     private record UnitRef(UUID id, Map<String, Object> clarification) {}
 
     /**
-     * Tìm đơn vị theo tên trong tổ chức, ƯU TIÊN khớp CHÍNH XÁC tên (vd có phòng cha "Sales")
+     * Tìm đơn vị theo tên trong tổ chức, ƯU TIÊN khớp CHÍNH XÁC tên (vd có đơn vị cha "Sales")
      * để tránh mơ hồ giả; nếu không có khớp chính xác thì trả toàn bộ kết quả khớp gần đúng.
      */
     private List<Map<String, Object>> unitMatchPool(String name, UUID orgId) {
@@ -451,7 +451,7 @@ public class OrgUnitStatisticTool {
 
     // ── 2. get_org_unit_detail ───────────────────────────────────────────────
 
-    @Tool(name = "get_org_unit_detail", description = "View detailed info of an org unit, including its managers (dùng để trả lời 'ai chịu trách nhiệm đơn vị X'). Pass unitName (e.g. 'Phòng truyền thông') to target a unit by name — resolved in-tool, NO search_org_units first. Defaults to your CURRENT unit (so ALWAYS pass unitName when the user names a specific unit).")
+    @Tool(name = "get_org_unit_detail", description = "View detailed info of an org unit, including its managers (dùng để trả lời 'ai chịu trách nhiệm đơn vị X'). Pass unitName (e.g. 'Khoa Truyền thông') to target a unit by name — resolved in-tool, NO search_org_units first. Defaults to your CURRENT unit (so ALWAYS pass unitName when the user names a specific unit).")
     public String getOrgUnitDetail(GetOrgUnitDetailRequest request, ToolContext context) {
         try {
             UnitRef u = resolveUnit(request.unitId(), request.unitName(), context);
@@ -481,7 +481,7 @@ public class OrgUnitStatisticTool {
 
     // ── 4. get_members ───────────────────────────────────────────────────────
 
-    @Tool(name = "get_members", description = "List and count members/users inside an organizational unit, supporting subtree searches and position/role filtering. Pass unitName (e.g. 'phòng IT') to target a unit by name; defaults to your CURRENT unit. To filter by position, PREFER positionName (e.g. 'trưởng phòng') — resolved in-tool, no need to search_positions first; positionId (UUID) also accepted.")
+    @Tool(name = "get_members", description = "List and count members/users inside an organizational unit, supporting subtree searches and position/role filtering. Pass unitName (e.g. 'khoa CNTT') to target a unit by name; defaults to your CURRENT unit. To filter by position, PREFER positionName (e.g. 'trưởng khoa') — resolved in-tool, no need to search_positions first; positionId (UUID) also accepted.")
     public String getMembers(GetMembersRequest request, ToolContext context) {
         try {
             UnitRef u = resolveUnit(request.unitId(), request.unitName(), context);
@@ -500,7 +500,7 @@ public class OrgUnitStatisticTool {
 
     // ── 5. get_org_unit_statistics ───────────────────────────────────────────
 
-    @Tool(name = "get_org_unit_statistics", description = "Get aggregated KPI performance statistics (progress, performance, ratings, count of KPIs) for a group of members. Pass unitName (e.g. 'phòng IT') to target a unit by name; defaults to your CURRENT unit. Optional positionName (e.g. 'trưởng phòng') restricts the group to members holding that position — resolved in-tool, no search_positions needed.")
+    @Tool(name = "get_org_unit_statistics", description = "Get aggregated KPI performance statistics (progress, performance, ratings, count of KPIs) for a group of members. Pass unitName (e.g. 'khoa CNTT') to target a unit by name; defaults to your CURRENT unit. Optional positionName (e.g. 'trưởng khoa') restricts the group to members holding that position — resolved in-tool, no search_positions needed.")
     public String getOrgUnitStatistics(GetOrgUnitStatisticsRequest request, ToolContext context) {
         try {
             UnitRef u = resolveUnit(request.unitId(), request.unitName(), context);
@@ -548,7 +548,7 @@ public class OrgUnitStatisticTool {
 
     // ── 7. get_kpis ──────────────────────────────────────────────────────────
 
-    @Tool(name = "get_kpis", description = "List/filter KPI criteria (pagination/sorting). Each KPI: name, periodName, progress (% of target reached) — use to compare KPI health. Defaults to your CURRENT unit; pass unitName (e.g. 'phòng IT') to target another unit's subtree. Returns NO IDs; resolve a KPI's UUID via search_kpis before get_kpi_detail/get_submission_history.")
+    @Tool(name = "get_kpis", description = "List/filter KPI criteria (pagination/sorting). Each KPI: name, periodName, progress (% of target reached) — use to compare KPI health. Defaults to your CURRENT unit; pass unitName (e.g. 'khoa CNTT') to target another unit's subtree. Returns NO IDs; resolve a KPI's UUID via search_kpis before get_kpi_detail/get_submission_history.")
     public String getKpis(GetKpisRequest request, ToolContext context) {
         try {
             if (request.ownerId() != null && !request.ownerId().isBlank())
@@ -574,7 +574,7 @@ public class OrgUnitStatisticTool {
 
     // ── 8. get_kpi_summary ───────────────────────────────────────────────────
 
-    @Tool(name = "get_kpi_summary", description = "Get aggregate statistics of KPIs matching the specified filter criteria. Defaults to your CURRENT unit; pass unitName (e.g. 'phòng IT') to target another unit's subtree.")
+    @Tool(name = "get_kpi_summary", description = "Get aggregate statistics of KPIs matching the specified filter criteria. Defaults to your CURRENT unit; pass unitName (e.g. 'khoa CNTT') to target another unit's subtree.")
     public String getKpiSummary(GetKpiSummaryRequest request, ToolContext context) {
         try {
             if (request.ownerId() != null && !request.ownerId().isBlank())
@@ -630,7 +630,7 @@ public class OrgUnitStatisticTool {
 
     // ── 11. get_kpi_periods ──────────────────────────────────────────────────
 
-    @Tool(name = "get_kpi_periods", description = "List and detail KPI periods (participants count, KPIs count, average progress/performance). Defaults to ALL periods of the organization; pass unitName (e.g. 'phòng IT') to list ONLY periods that unit PARTICIPATES in, with counts scoped to that unit.")
+    @Tool(name = "get_kpi_periods", description = "List and detail KPI periods (participants count, KPIs count, average progress/performance). Defaults to ALL periods of the organization; pass unitName (e.g. 'khoa CNTT') to list ONLY periods that unit PARTICIPATES in, with counts scoped to that unit.")
     public String getKpiPeriods(GetKpiPeriodsRequest request, ToolContext context) {
         try {
             UUID orgId = getOrgId(context);
@@ -667,7 +667,7 @@ public class OrgUnitStatisticTool {
 
     // ── 13. rank_members ─────────────────────────────────────────────────────
 
-    @Tool(name = "rank_members", description = "Rank users by metric -> [rank, userId, fullName, email, orgUnitName, positionName, score]. userId IS included: pass it straight to get_user_summary/get_submission_history — do NOT call search_users first. orgUnitName/positionName are on every row — NEVER guess or infer them from other rows. A person holding SEVERAL roles also gets a 'positions' array (e.g. [Truong phong - Phong van hanh, Nhan vien - KeyPerson]); when present you MUST state all of them, do not report only one. Metrics: average_progress, total_progress, average_performance (ĐIỂM ĐÁNH GIÁ; startDate/endDate = đợt phủ khoảng đó, không nêu -> mọi đợt), late_submission_count, missing_submission_count, submission_count. Với 2 metric đánh giá, người CHƯA có đánh giá bị LOẠI (không phải điểm 0, không phải 'thấp nhất'). Scopes: organization | unit | kpi. scope is OPTIONAL: passing unitName/unitId ALONE already means ranking inside that unit (scope is inferred), so you never need to remember scope='unit'. Omitting all of them = whole organization. For a unit pass unitName (e.g. 'phong van hanh') OR unitId - resolved in-tool, NO search_org_units first; passing NEITHER silently falls back to your CURRENT unit, so ALWAYS pass unitName when the user names a unit. For scope=kpi pass kpiId. Filters: managersOnly=true = trưởng/phó đơn vị DƯỚI cấp gốc (loại chủ tịch/CEO của đơn vị gốc); unitTypeName = loại cấp đơn vị (vd 'Phòng'); positionFilter (alias: positionName) = tên chức vụ (vd 'trưởng phòng'). Trả lời 'xếp hạng/so sánh <chức vụ> theo điểm đánh giá' trong MỘT lần gọi.")
+    @Tool(name = "rank_members", description = "Rank users by metric -> [rank, userId, fullName, email, orgUnitName, positionName, score]. userId IS included: pass it straight to get_user_summary/get_submission_history — do NOT call search_users first. orgUnitName/positionName are on every row — NEVER guess or infer them from other rows. A person holding SEVERAL roles also gets a 'positions' array (e.g. [Truong phong - Phong van hanh, Nhan vien - KeyPerson]); when present you MUST state all of them, do not report only one. Metrics: average_progress, total_progress, average_performance (ĐIỂM ĐÁNH GIÁ; startDate/endDate = đợt phủ khoảng đó, không nêu -> mọi đợt), late_submission_count, missing_submission_count, submission_count. Với 2 metric đánh giá, người CHƯA có đánh giá bị LOẠI (không phải điểm 0, không phải 'thấp nhất'). Scopes: organization | unit | kpi. scope is OPTIONAL: passing unitName/unitId ALONE already means ranking inside that unit (scope is inferred), so you never need to remember scope='unit'. Omitting all of them = whole organization. For a unit pass unitName (e.g. 'phong van hanh') OR unitId - resolved in-tool, NO search_org_units first; passing NEITHER silently falls back to your CURRENT unit, so ALWAYS pass unitName when the user names a unit. For scope=kpi pass kpiId. Filters: managersOnly=true = trưởng/phó đơn vị DƯỚI cấp gốc (loại chủ tịch/CEO của đơn vị gốc); unitTypeName = loại cấp đơn vị (vd 'Phòng'); positionFilter (alias: positionName) = tên chức vụ (vd 'trưởng khoa'). Trả lời 'xếp hạng/so sánh <chức vụ> theo điểm đánh giá' trong MỘT lần gọi.")
     public String rankMembers(RankMembersRequest request, ToolContext context) {
         try {
             if ("kpi".equals(request.scope()) && request.kpiId() != null && !request.kpiId().isBlank()) {
@@ -725,7 +725,7 @@ public class OrgUnitStatisticTool {
     @Tool(name = "rank_org_units", description = "Rank the org units inside a parent unit subtree by metric. Pass unitName to rank the units inside THAT unit (e.g. 'cac phong trong khoi Van hanh') - resolved in-tool; defaults to your CURRENT unit, so ALWAYS pass unitName when the user names a parent unit. Ranks → [rank, orgUnitName, score] (no IDs; use search_org_units for UUID). Metrics: average_progress (weighted avg % of target reached across the unit's KPIs), average_performance (ĐIỂM ĐÁNH GIÁ trung bình của đơn vị theo từng đợt - KHONG phai % muc tieu), member_count. (average_rating is accepted as an alias of average_performance.)")
     public String rankOrgUnits(RankOrgUnitsRequest request, ToolContext context) {
         try {
-            // Không có unitName/unitId thì xếp hạng trong đơn vị hiện tại — hỏi "các phòng trong
+            // Không có unitName/unitId thì xếp hạng trong đơn vị hiện tại — hỏi "các khoa trong
             // khối X" mà thiếu tham số này sẽ âm thầm xếp hạng nhầm subtree.
             UnitRef unit = resolveUnit(request.unitId(), request.unitName(), context);
             if (unit.clarification() != null) return respond(context, "rank_org_units", unit.clarification());
@@ -740,7 +740,7 @@ public class OrgUnitStatisticTool {
 
     // ── 15. get_kpi_risk_analysis ────────────────────────────────────────────
 
-    @Tool(name = "get_kpi_risk_analysis", description = "Analyze and identify at-risk, overdue, or stagnant KPIs within a unit's subtree. Defaults to your CURRENT unit; pass unitName (e.g. 'phòng vận hành') to target another unit.")
+    @Tool(name = "get_kpi_risk_analysis", description = "Analyze and identify at-risk, overdue, or stagnant KPIs within a unit's subtree. Defaults to your CURRENT unit; pass unitName (e.g. 'khoa Đào tạo') to target another unit.")
     public String getKpiRiskAnalysis(GetKpiRiskAnalysisRequest request, ToolContext context) {
         try {
             UnitRef u = resolveUnit(request.unitId(), request.unitName(), context);
@@ -771,7 +771,7 @@ public class OrgUnitStatisticTool {
 
     // ── get_time_series ──────────────────────────────────────────────────────
 
-    @Tool(name = "get_time_series", description = "Trend of a KPI metric over time for an org unit subtree + anomaly points. Use for trends/evolution over months/quarters/years (e.g. 'xu hướng hiệu suất 6 tháng qua'). Metrics: completion (sum actual / sum target %), avg_performance (avg actual/target %). Granularity: MONTH (default) | QUARTER | YEAR. lookback = most recent N periods (default 6). Pass unitName (e.g. 'phòng IT') to target a unit by name; defaults to your CURRENT unit. Returns { metric, granularity, series:[{period,value}], anomalyPoints:[{period,value,deltaPct,type}] }; type = SPIKE (>+20%) or DROP (<-15%).")
+    @Tool(name = "get_time_series", description = "Trend of a KPI metric over time for an org unit subtree + anomaly points. Use for trends/evolution over months/quarters/years (e.g. 'xu hướng hiệu suất 6 tháng qua'). Metrics: completion (sum actual / sum target %), avg_performance (avg actual/target %). Granularity: MONTH (default) | QUARTER | YEAR. lookback = most recent N periods (default 6). Pass unitName (e.g. 'khoa CNTT') to target a unit by name; defaults to your CURRENT unit. Returns { metric, granularity, series:[{period,value}], anomalyPoints:[{period,value,deltaPct,type}] }; type = SPIKE (>+20%) or DROP (<-15%).")
     public String getTimeSeries(GetTimeSeriesRequest request, ToolContext context) {
         try {
             UnitRef u = resolveUnit(request.unitId(), request.unitName(), context);

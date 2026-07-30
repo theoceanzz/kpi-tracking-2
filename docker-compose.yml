@@ -1,26 +1,26 @@
 version: '3.8'
 
 services:
-  frontend:
+  frontend2:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     depends_on:
-      - backend
+      - backend2
     restart: unless-stopped
     networks:
-      - app-network
+      - app-network2
       - coolify
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`keygo.vn`)"
-      - "traefik.http.routers.frontend.entrypoints=https"
-      - "traefik.http.routers.frontend.tls=true"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend2.rule=Host(`keylearn.vn`)"
+      - "traefik.http.routers.frontend2.entrypoints=https"
+      - "traefik.http.routers.frontend2.tls=true"
+      - "traefik.http.routers.frontend2.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend2.loadbalancer.server.port=80"
       - "traefik.docker.network=coolify"
 
-  backend:
+  backend2:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -28,7 +28,7 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
 
       # Database
-      - DB_URL=jdbc:postgresql://kpitracking-db:5432/kpitracking
+      - DB_URL=jdbc:postgresql://kpitracking-db-2:5432/kpitracking2
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-123456}
 
@@ -39,7 +39,7 @@ services:
 
       # App
       - CORS_ORIGINS=${CORS_ORIGINS:-*}
-      - APP_FRONTEND_URL=${FRONTEND_URL:-https://keygo.vn}
+      - APP_FRONTEND_URL=${FRONTEND_URL:-https://keylearn.vn}
 
       # Cloudinary
       - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
@@ -64,40 +64,40 @@ services:
       - RATE_LIMIT_EMAIL=${RATE_LIMIT_EMAIL:-3}
 
     depends_on:
-      kpitracking-db:
+      kpitracking-db-2:
         condition: service_healthy
 
     restart: unless-stopped
 
     networks:
-      - app-network
+      - app-network2
       - coolify
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=(Host(`keygo.vn`) && PathPrefix(`/api`))"
-      - "traefik.http.routers.backend.entrypoints=https"
-      - "traefik.http.routers.backend.tls=true"
-      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.backend.loadbalancer.server.port=8081"
+      - "traefik.http.routers.backend2.rule=(Host(`keylearn.vn`) && PathPrefix(`/api`))"
+      - "traefik.http.routers.backend2.entrypoints=https"
+      - "traefik.http.routers.backend2.tls=true"
+      - "traefik.http.routers.backend2.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend2.loadbalancer.server.port=8082"
       - "traefik.docker.network=coolify"
 
-  kpitracking-db:
+  kpitracking-db-2:
     image: postgres:15-alpine
 
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
     environment:
-      POSTGRES_DB: kpitracking
+      POSTGRES_DB: kpitracking2
       POSTGRES_USER: ${DB_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-123456}
 
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_2:/var/lib/postgresql/data
 
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d kpitracking"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d kpitracking2"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -105,14 +105,14 @@ services:
     restart: unless-stopped
 
     networks:
-      - app-network
+      - app-network2
 
 networks:
-  app-network:
+  app-network2:
     driver: bridge
 
   coolify:
     external: true
 
 volumes:
-  postgres_data:
+  postgres_data_2:

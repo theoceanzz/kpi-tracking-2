@@ -533,9 +533,9 @@ public class KpiSubmissionService {
         parentSub.setAutoScore(autoScore);
 
         if (parentSub.getId() == null) {
-            parentSub.setNote("Tự động tổng hợp từ kết quả của nhân viên");
+            parentSub.setNote("Tự động tổng hợp từ kết quả của giảng viên");
         } else {
-            parentSub.setNote("Đã cập nhật tự động từ kết quả của nhân viên");
+            parentSub.setNote("Đã cập nhật tự động từ kết quả của giảng viên");
         }
 
         return submissionRepository.save(parentSub);

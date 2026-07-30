@@ -17,16 +17,16 @@ function buildSampleCsv(enableBsc: boolean): string {
     : 'ObjectiveCode,ObjectiveName,ObjectiveDescription,ObjectiveStartDate,ObjectiveEndDate,OrgUnitCode,KeyResultCode,KeyResultName,KeyResultDescription,KeyResultTarget,KeyResultUnit'
   const rows = enableBsc
     ? [
-        'OBJ001,Tăng trưởng doanh thu 20%,Mục tiêu doanh thu quý 1,2024-01-01,2024-03-31,KD_HN,DOANH_THU,KR001,Ký mới 10 hợp đồng lớn,Hợp đồng giá trị >100tr,10,hợp đồng',
-        ',,,,,,,KR002,Upsell khách hàng cũ 15%,,15,%',
-        'OBJ002,Nâng cao chất lượng dịch vụ,,2024-01-01,2024-06-30,NS_HN,HAI_LONG_KH,KR003,Giảm tỷ lệ rời bỏ xuống 5%,,5,%',
-        ',,,,,,,KR004,Tăng điểm CSAT lên 4.5/5,,4.5,điểm',
+        'OBJ001,Tăng tỷ lệ tốt nghiệp đúng hạn 20%,Mục tiêu đào tạo học kỳ 1,2024-01-01,2024-03-31,CNTT,DAO_TAO,KR001,Mở mới 10 học phần đạt chuẩn,Học phần có chuẩn đầu ra rõ ràng,10,học phần',
+        ',,,,,,,KR002,Tăng điểm khảo sát người học 15%,,15,%',
+        'OBJ002,Nâng cao chất lượng giảng dạy,,2024-01-01,2024-06-30,KTPM,HAI_LONG_NH,KR003,Giảm tỷ lệ sinh viên bỏ học xuống 5%,,5,%',
+        ',,,,,,,KR004,Tăng điểm hài lòng người học lên 4.5/5,,4.5,điểm',
       ]
     : [
-        'OBJ001,Tăng trưởng doanh thu 20%,Mục tiêu doanh thu quý 1,2024-01-01,2024-03-31,KD_HN,KR001,Ký mới 10 hợp đồng lớn,Hợp đồng giá trị >100tr,10,hợp đồng',
-        ',,,,,KR002,Upsell khách hàng cũ 15%,,15,%',
-        'OBJ002,Nâng cao chất lượng dịch vụ,,2024-01-01,2024-06-30,NS_HN,KR003,Giảm tỷ lệ rời bỏ xuống 5%,,5,%',
-        ',,,,,KR004,Tăng điểm CSAT lên 4.5/5,,4.5,điểm',
+        'OBJ001,Tăng tỷ lệ tốt nghiệp đúng hạn 20%,Mục tiêu đào tạo học kỳ 1,2024-01-01,2024-03-31,CNTT,KR001,Mở mới 10 học phần đạt chuẩn,Học phần có chuẩn đầu ra rõ ràng,10,học phần',
+        ',,,,,KR002,Tăng điểm khảo sát người học 15%,,15,%',
+        'OBJ002,Nâng cao chất lượng giảng dạy,,2024-01-01,2024-06-30,KTPM,KR003,Giảm tỷ lệ sinh viên bỏ học xuống 5%,,5,%',
+        ',,,,,KR004,Tăng điểm hài lòng người học lên 4.5/5,,4.5,điểm',
       ]
   return [header, ...rows].join('\n')
 }
@@ -34,19 +34,19 @@ function buildSampleCsv(enableBsc: boolean): string {
 function getColumns(enableBsc: boolean) {
   return [
     { name: 'ObjectiveCode', required: true, desc: 'Mã mục tiêu (dùng để đối soát và gom nhóm KR)', example: 'OBJ001' },
-    { name: 'ObjectiveName', required: true, desc: 'Tên mục tiêu', example: 'Tăng trưởng doanh thu' },
-    { name: 'ObjectiveDescription', required: false, desc: 'Mô tả mục tiêu', example: 'Mục tiêu quý 1' },
+    { name: 'ObjectiveName', required: true, desc: 'Tên mục tiêu', example: 'Nâng cao chất lượng đào tạo' },
+    { name: 'ObjectiveDescription', required: false, desc: 'Mô tả mục tiêu', example: 'Mục tiêu học kỳ 1' },
     { name: 'ObjectiveStartDate', required: false, desc: 'Ngày bắt đầu (YYYY-MM-DD)', example: '2024-01-01' },
     { name: 'ObjectiveEndDate', required: false, desc: 'Ngày kết thúc (YYYY-MM-DD)', example: '2024-03-31' },
-    { name: 'OrgUnitCode', required: true, desc: 'Mã phòng ban. Hỗ trợ nhập nhiều mã cách nhau bằng dấu phẩy (PB01,PB02). Nhập mã của Đơn vị gốc để giao cho tất cả đơn vị con.', example: 'KD_HN, NS_HN' },
+    { name: 'OrgUnitCode', required: true, desc: 'Mã khoa. Hỗ trợ nhập nhiều mã cách nhau bằng dấu phẩy (CNTT,KTPM). Nhập mã của Đơn vị gốc để giao cho tất cả đơn vị con.', example: 'CNTT, KTPM' },
     ...(enableBsc ? [
-      { name: 'ObjectivePerspective', required: false, desc: 'Hạng mục BSC của Mục tiêu — nhập mã hoặc tên hạng mục (VD: DOANH_THU hoặc Doanh thu). KPI thuộc mục tiêu sẽ kế thừa hạng mục này.', example: 'DOANH_THU' },
+      { name: 'ObjectivePerspective', required: false, desc: 'Hạng mục BSC của Mục tiêu — nhập mã hoặc tên hạng mục (VD: DAO_TAO hoặc Đào tạo & phát triển). KPI thuộc mục tiêu sẽ kế thừa hạng mục này.', example: 'DAO_TAO' },
     ] : []),
     { name: 'KeyResultCode', required: true, desc: 'Mã kết quả then chốt', example: 'KR001' },
-    { name: 'KeyResultName', required: true, desc: 'Tên kết quả then chốt', example: 'Đạt 1 tỷ VNĐ' },
-    { name: 'KeyResultDescription', required: false, desc: 'Mô tả KR', example: 'Doanh thu từ mảng A' },
-    { name: 'KeyResultTarget', required: false, desc: 'Chỉ tiêu (số)', example: '1000000000' },
-    { name: 'KeyResultUnit', required: false, desc: 'Đơn vị đo lường', example: 'VNĐ' },
+    { name: 'KeyResultName', required: true, desc: 'Tên kết quả then chốt', example: 'Đạt 90% tốt nghiệp đúng hạn' },
+    { name: 'KeyResultDescription', required: false, desc: 'Mô tả KR', example: 'Tính trên toàn khóa' },
+    { name: 'KeyResultTarget', required: false, desc: 'Chỉ tiêu (số)', example: '90' },
+    { name: 'KeyResultUnit', required: false, desc: 'Đơn vị đo lường', example: '%' },
   ]
 }
 
@@ -84,15 +84,15 @@ async function downloadTemplate(type: 'csv' | 'xlsx', enableBsc: boolean) {
 
   // Add data rows (chèn cột hạng mục sau OrgUnitCode khi bật BSC)
   const data = enableBsc ? [
-    ['OBJ001', 'Tăng trưởng doanh thu 20%', 'Mục tiêu doanh thu quý 1', '2024-01-01', '2024-03-31', 'KD_HN', 'DOANH_THU', 'KR001', 'Ký mới 10 hợp đồng lớn', 'Hợp đồng giá trị >100tr', 10, 'hợp đồng'],
-    ['', '', '', '', '', '', '', 'KR002', 'Upsell khách hàng cũ 15%', '', 15, '%'],
-    ['OBJ002', 'Nâng cao chất lượng dịch vụ', '', '2024-01-01', '2024-06-30', 'NS_HN', 'HAI_LONG_KH', 'KR003', 'Giảm tỷ lệ rời bỏ xuống 5%', '', 5, '%'],
-    ['', '', '', '', '', '', '', 'KR004', 'Tăng điểm CSAT lên 4.5/5', '', 4.5, 'điểm'],
+    ['OBJ001', 'Tăng tỷ lệ tốt nghiệp đúng hạn 20%', 'Mục tiêu đào tạo học kỳ 1', '2024-01-01', '2024-03-31', 'CNTT', 'DAO_TAO', 'KR001', 'Mở mới 10 học phần đạt chuẩn', 'Học phần có chuẩn đầu ra rõ ràng', 10, 'hợp đồng'],
+    ['', '', '', '', '', '', '', 'KR002', 'Tăng điểm khảo sát người học 15%', '', 15, '%'],
+    ['OBJ002', 'Nâng cao chất lượng giảng dạy', '', '2024-01-01', '2024-06-30', 'KTPM', 'HAI_LONG_NH', 'KR003', 'Giảm tỷ lệ sinh viên bỏ học xuống 5%', '', 5, '%'],
+    ['', '', '', '', '', '', '', 'KR004', 'Tăng điểm hài lòng người học lên 4.5/5', '', 4.5, 'điểm'],
   ] : [
-    ['OBJ001', 'Tăng trưởng doanh thu 20%', 'Mục tiêu doanh thu quý 1', '2024-01-01', '2024-03-31', 'KD_HN', 'KR001', 'Ký mới 10 hợp đồng lớn', 'Hợp đồng giá trị >100tr', 10, 'hợp đồng'],
-    ['', '', '', '', '', '', 'KR002', 'Upsell khách hàng cũ 15%', '', 15, '%'],
-    ['OBJ002', 'Nâng cao chất lượng dịch vụ', '', '2024-01-01', '2024-06-30', 'NS_HN', 'KR003', 'Giảm tỷ lệ rời bỏ xuống 5%', '', 5, '%'],
-    ['', '', '', '', '', '', 'KR004', 'Tăng điểm CSAT lên 4.5/5', '', 4.5, 'điểm'],
+    ['OBJ001', 'Tăng tỷ lệ tốt nghiệp đúng hạn 20%', 'Mục tiêu đào tạo học kỳ 1', '2024-01-01', '2024-03-31', 'CNTT', 'KR001', 'Mở mới 10 học phần đạt chuẩn', 'Học phần có chuẩn đầu ra rõ ràng', 10, 'hợp đồng'],
+    ['', '', '', '', '', '', 'KR002', 'Tăng điểm khảo sát người học 15%', '', 15, '%'],
+    ['OBJ002', 'Nâng cao chất lượng giảng dạy', '', '2024-01-01', '2024-06-30', 'KTPM', 'KR003', 'Giảm tỷ lệ sinh viên bỏ học xuống 5%', '', 5, '%'],
+    ['', '', '', '', '', '', 'KR004', 'Tăng điểm hài lòng người học lên 4.5/5', '', 4.5, 'điểm'],
   ]
   worksheet.addRows(data)
 

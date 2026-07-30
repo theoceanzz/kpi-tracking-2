@@ -501,7 +501,7 @@ export default function KpiCriteriaPage() {
                 <input 
                   value={search}
                   onChange={e => { setSearch(e.target.value); setPage(0) }}
-                  placeholder="Tìm KPI, nhân viên..." 
+                  placeholder="Tìm KPI, giảng viên..." 
                   className="w-full pl-12 pr-4 h-12 rounded-[20px] border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 text-sm font-medium focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500/50 outline-none transition-all placeholder:text-slate-400 shadow-inner"
                 />
               </div>
@@ -578,7 +578,7 @@ export default function KpiCriteriaPage() {
                     <Select value={selectedOrgUnitId} onValueChange={val => { setSelectedOrgUnitId(val); setSelectedAssigneeId('ALL'); setPage(0) }}>
                       <SelectTrigger className="w-full sm:w-72 h-10 rounded-[16px] border-none bg-white dark:bg-slate-900 shadow-sm font-bold text-xs ring-offset-transparent focus:ring-2 focus:ring-indigo-500/20">
                         <Filter size={14} className="text-emerald-500 mr-2" />
-                        <SelectValue placeholder="Phòng ban..." />
+                        <SelectValue placeholder="Khoa..." />
                       </SelectTrigger>
                       <SelectContent className="rounded-2xl border-slate-200 dark:border-slate-800 shadow-2xl p-2 max-h-[400px]">
                         {flatOrgUnits.map((o: any) => (
@@ -596,10 +596,10 @@ export default function KpiCriteriaPage() {
                     >
                       <SelectTrigger className="w-full h-10 rounded-[16px] border-none bg-white dark:bg-slate-900 shadow-sm font-bold text-xs disabled:opacity-50 ring-offset-transparent focus:ring-2 focus:ring-indigo-500/20 transition-all">
                         <UserCircle2 size={14} className="text-amber-500 mr-2" />
-                        <SelectValue placeholder="Nhân viên..." />
+                        <SelectValue placeholder="Giảng viên..." />
                       </SelectTrigger>
                       <SelectContent className="rounded-2xl border-slate-200 dark:border-slate-800 shadow-2xl p-2 max-h-[400px]">
-                        {!isStaff && <SelectItem value="ALL" className="rounded-xl focus:bg-indigo-50 dark:focus:bg-indigo-900/30 text-xs font-black uppercase">Tất cả nhân viên</SelectItem>}
+                        {!isStaff && <SelectItem value="ALL" className="rounded-xl focus:bg-indigo-50 dark:focus:bg-indigo-900/30 text-xs font-black uppercase">Tất cả giảng viên</SelectItem>}
                         
                         {/* Always show current user for staff, or include in list for managers */}
                         {isStaff && user && (
@@ -1061,7 +1061,7 @@ export default function KpiCriteriaPage() {
           onClose={() => setShowBulkConfirm(false)} 
           onConfirm={handleBulkSubmit} 
           title="Gửi duyệt hàng loạt" 
-          description={`Bạn đang gửi ${selectedKpiIds.length} chỉ tiêu lên hệ thống để phê duyệt. Hãy đảm bảo tổng trọng số của nhân sự đã đạt 100%. Tiếp tục?`} 
+          description={`Bạn đang gửi ${selectedKpiIds.length} chỉ tiêu lên hệ thống để phê duyệt. Hãy đảm bảo tổng trọng số của giảng viên đã đạt 100%. Tiếp tục?`} 
           confirmLabel="Gửi phê duyệt tất cả" 
           loading={bulkSubmitMutation.isPending} 
         />
@@ -1346,7 +1346,7 @@ function KpiTableRow({ kpi, depth = 0, childCount = 0, isCollapsed, onToggleColl
                             if (canSubmit) {
                               onSubmit(); 
                             } else {
-                              toast.error(`Trọng số của nhân viên đang là ${Math.round(assigneeWeight ?? 0)}%, cần đạt 100% để gửi duyệt.`)
+                              toast.error(`Trọng số của giảng viên đang là ${Math.round(assigneeWeight ?? 0)}%, cần đạt 100% để gửi duyệt.`)
                             }
                           }}
                           className={cn(
@@ -1508,7 +1508,7 @@ function KpiCard({ kpi, depth = 0, childCount = 0, isCollapsed, onToggleCollapse
                           if (canSubmit) {
                             onSubmit()
                           } else {
-                            toast.error(`Trọng số của nhân viên đang là ${Math.round(assigneeWeight ?? 0)}%, cần đạt 100% để gửi duyệt.`)
+                            toast.error(`Trọng số của giảng viên đang là ${Math.round(assigneeWeight ?? 0)}%, cần đạt 100% để gửi duyệt.`)
                           }
                         }}
                         className={cn(

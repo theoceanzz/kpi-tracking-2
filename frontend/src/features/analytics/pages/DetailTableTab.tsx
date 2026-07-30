@@ -83,17 +83,17 @@ export default function DetailTableTab() {
 
       {isLoading ? <LoadingSkeleton rows={8} /> : !data || rows.length === 0 ? (
         <div className="bg-white dark:bg-slate-900 rounded-[24px] border border-dashed border-slate-300 dark:border-slate-700 p-16 text-center">
-          <p className="font-bold text-slate-500">Không tìm thấy nhân viên phù hợp.</p>
+          <p className="font-bold text-slate-500">Không tìm thấy giảng viên phù hợp.</p>
         </div>
       ) : (
         <>
-          <p className="text-xs font-bold text-slate-400">{data.totalElements} nhân viên</p>
+          <p className="text-xs font-bold text-slate-400">{data.totalElements} giảng viên</p>
           <div className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
             <div className="hidden md:block overflow-x-auto lg:overflow-x-hidden scrollbar-hide custom-scrollbar">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 dark:border-slate-800">
-                    <SortHeader k="fullName" label="Nhân viên" />
+                    <SortHeader k="fullName" label="Giảng viên" />
                     <th className="px-4 py-3 text-center">Đơn vị</th>
                     <SortHeader k="assignedKpi" label="KPI" center />
                     <SortHeader k="completionRate" label="Tỷ lệ" center />

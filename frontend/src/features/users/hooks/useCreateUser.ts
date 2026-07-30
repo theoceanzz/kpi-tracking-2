@@ -11,10 +11,10 @@ export function useCreateUser() {
       qc.invalidateQueries({ queryKey: ['users'] })
       qc.invalidateQueries({ queryKey: ['organization-users'] })
       qc.invalidateQueries({ queryKey: ['stats'] })
-      toast.success('Tạo nhân sự thành công')
+      toast.success('Tạo giảng viên thành công')
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Tạo nhân sự thất bại'
+      const errorMessage = error?.response?.data?.message || error?.message || 'Tạo giảng viên thất bại'
       toast.error(errorMessage)
     },
   })

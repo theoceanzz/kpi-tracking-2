@@ -13,14 +13,14 @@ export const directorDashboardSteps: Step[] = [
     title: '📊 Chỉ số Sức khỏe Tổ chức',
     content: (
       <div className="space-y-3">
-        <p>Chào mừng Giám đốc! Đây là cái nhìn toàn cảnh về quy mô và hiệu suất hiện tại của toàn doanh nghiệp:</p>
+        <p>Chào mừng Hiệu trưởng! Đây là cái nhìn toàn cảnh về quy mô và hiệu suất hiện tại của toàn trường:</p>
         <ul className="text-[11px] space-y-2 list-disc pl-4 text-slate-500 font-medium">
-          <li><strong className="text-slate-900">Phòng ban:</strong> Tổng số đơn vị đang vận hành trong sơ đồ tổ chức.</li>
-          <li><strong className="text-slate-900">Nhân sự:</strong> Số lượng nhân viên đã được kích hoạt tài khoản trên hệ thống.</li>
+          <li><strong className="text-slate-900">Khoa:</strong> Tổng số đơn vị đang vận hành trong sơ đồ tổ chức.</li>
+          <li><strong className="text-slate-900">Giảng viên:</strong> Số lượng giảng viên đã được kích hoạt tài khoản trên hệ thống.</li>
           <li><strong className="text-slate-900">Chỉ tiêu:</strong> Tổng lượng KPI đang được theo dõi và thực hiện trong kỳ này.</li>
-          <li><strong className="text-slate-900">Đánh giá:</strong> Điểm hiệu suất trung bình của toàn công ty dựa trên kỳ gần nhất.</li>
+          <li><strong className="text-slate-900">Đánh giá:</strong> Điểm hiệu suất trung bình của toàn trường dựa trên kỳ gần nhất.</li>
         </ul>
-        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Theo dõi các chỉ số này hàng ngày để nắm bắt nhịp độ phát triển của công ty.</p>
+        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Theo dõi các chỉ số này hàng ngày để nắm bắt nhịp độ phát triển của nhà trường.</p>
       </div>
     ),
     placement: 'bottom',
@@ -45,7 +45,7 @@ export const directorDashboardSteps: Step[] = [
       <div className="space-y-2">
         <p>Biểu đồ này giúp bạn theo dõi xu hướng hoàn thành mục tiêu theo thời gian thực của toàn bộ tổ chức.</p>
         <p className="text-[11px] text-slate-500">
-          Nhận diện sớm các giai đoạn "nút thắt cổ chai" hoặc các phòng ban đang bị tụt lại phía sau để có những điều chỉnh chiến lược kịp thời trước khi kết thúc kỳ đánh giá.
+          Nhận diện sớm các giai đoạn "nút thắt cổ chai" hoặc các khoa đang bị tụt lại phía sau để có những điều chỉnh chiến lược kịp thời trước khi kết thúc kỳ đánh giá.
         </p>
       </div>
     ),
@@ -58,8 +58,8 @@ export const directorDashboardSteps: Step[] = [
       <div className="space-y-2">
         <p>Chuyển đổi linh hoạt giữa các góc nhìn để quản lý hiệu quả hơn:</p>
         <ul className="text-[11px] space-y-1 list-disc pl-4 text-slate-500">
-          <li><strong>Cơ cấu:</strong> Xem hiệu suất theo từng phòng ban, đơn vị.</li>
-          <li><strong>Nhân sự:</strong> Đi sâu vào từng cá nhân để vinh danh những người xuất sắc nhất.</li>
+          <li><strong>Cơ cấu:</strong> Xem hiệu suất theo từng khoa, đơn vị.</li>
+          <li><strong>Giảng viên:</strong> Đi sâu vào từng cá nhân để vinh danh những người xuất sắc nhất.</li>
         </ul>
       </div>
     ),
@@ -74,11 +74,11 @@ export const headDashboardSteps: Step[] = [
     title: '👥 Hiệu suất Đội ngũ',
     content: (
       <div className="space-y-2">
-        <p>Chào Trưởng đơn vị! Hãy tập trung vào 3 con số ảnh hưởng trực tiếp đến hiệu quả vận hành của bộ phận bạn:</p>
+        <p>Chào Trưởng đơn vị! Hãy tập trung vào 3 con số ảnh hưởng trực tiếp đến hiệu quả vận hành của đơn vị bạn:</p>
         <ul className="text-[11px] space-y-2 list-disc pl-4 text-slate-500 font-medium">
-          <li><strong className="text-slate-900">KPI Chờ duyệt:</strong> Các mục tiêu nhân viên vừa thiết lập, cần bạn kiểm tra và xác nhận tính thực tế.</li>
-          <li><strong className="text-slate-900">Báo cáo mới:</strong> Các kết quả công việc nhân viên vừa nộp, hãy đánh giá chúng ngay.</li>
-          <li><strong className="text-slate-900">Tỷ lệ hoàn thành:</strong> Mức độ bám sát mục tiêu trung bình của cả phòng ban.</li>
+          <li><strong className="text-slate-900">KPI Chờ duyệt:</strong> Các mục tiêu giảng viên vừa thiết lập, cần bạn kiểm tra và xác nhận tính thực tế.</li>
+          <li><strong className="text-slate-900">Báo cáo mới:</strong> Các kết quả công việc giảng viên vừa nộp, hãy đánh giá chúng ngay.</li>
+          <li><strong className="text-slate-900">Tỷ lệ hoàn thành:</strong> Mức độ bám sát mục tiêu trung bình của cả khoa.</li>
         </ul>
       </div>
     ),
@@ -89,8 +89,8 @@ export const headDashboardSteps: Step[] = [
     title: '🎯 Trung tâm Phê duyệt',
     content: (
       <div className="space-y-2">
-        <p>Truy cập nhanh vào trung tâm phê duyệt để <strong>đánh giá các bài nộp</strong> của nhân viên.</p>
-        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Phản hồi nhanh và công tâm từ bạn sẽ giúp nhân viên có thêm động lực hoàn thành các mục tiêu tiếp theo.</p>
+        <p>Truy cập nhanh vào trung tâm phê duyệt để <strong>đánh giá các bài nộp</strong> của giảng viên.</p>
+        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Phản hồi nhanh và công tâm từ bạn sẽ giúp giảng viên có thêm động lực hoàn thành các mục tiêu tiếp theo.</p>
       </div>
     ),
     placement: 'bottom',
@@ -100,7 +100,7 @@ export const headDashboardSteps: Step[] = [
     title: '📈 Theo dõi Tiến độ',
     content: (
       <div className="space-y-2">
-        <p>Biểu đồ này giúp bạn biết phòng ban mình đang ở đâu so với mục tiêu đề ra cho cả kỳ.</p>
+        <p>Biểu đồ này giúp bạn biết khoa mình đang ở đâu so với mục tiêu đề ra cho cả kỳ.</p>
         <p className="text-[11px] text-amber-600 font-bold">Nếu đường biểu đồ đi xuống hoặc đi ngang quá lâu, hãy kiểm tra ngay danh sách các bài nộp đang bị trễ hoặc gặp khó khăn.</p>
       </div>
     ),
@@ -111,8 +111,8 @@ export const headDashboardSteps: Step[] = [
     title: '🏆 Vinh danh & Hỗ trợ',
     content: (
       <div className="space-y-2">
-        <p>Nơi vinh danh những cá nhân xuất sắc nhất và nhận diện sớm các nhân sự đang gặp khó khăn trong công việc.</p>
-        <p className="text-[11px] text-slate-500">Bạn có thể nhấn trực tiếp vào tên từng nhân viên để xem chi tiết lý do tại sao kết quả của họ chưa đạt như kỳ vọng.</p>
+        <p>Nơi vinh danh những cá nhân xuất sắc nhất và nhận diện sớm các giảng viên đang gặp khó khăn trong công việc.</p>
+        <p className="text-[11px] text-slate-500">Bạn có thể nhấn trực tiếp vào tên từng giảng viên để xem chi tiết lý do tại sao kết quả của họ chưa đạt như kỳ vọng.</p>
       </div>
     ),
     placement: 'bottom',
@@ -165,11 +165,11 @@ export const staffDashboardSteps: Step[] = [
 export const companySteps: Step[] = [
   {
     target: '#tour-company-hero',
-    title: '🏢 Bản sắc Doanh nghiệp',
+    title: '🏢 Bản sắc Nhà trường',
     content: (
       <div className="space-y-2">
-        <p>Nơi thiết lập các thông tin cơ bản nhất như Tên công ty, Slogan và Logo thương hiệu.</p>
-        <p className="text-[11px] text-indigo-600 font-bold">⚠️ Những thông tin này sẽ xuất hiện trên mọi báo cáo PDF và các thông báo tự động gửi cho nhân viên.</p>
+        <p>Nơi thiết lập các thông tin cơ bản nhất như Tên trường, Slogan và Logo thương hiệu.</p>
+        <p className="text-[11px] text-indigo-600 font-bold">⚠️ Những thông tin này sẽ xuất hiện trên mọi báo cáo PDF và các thông báo tự động gửi cho giảng viên.</p>
       </div>
     ),
     placement: 'bottom',
@@ -179,10 +179,10 @@ export const companySteps: Step[] = [
     title: '🌳 Phân cấp Tổ chức',
     content: (
       <div className="space-y-2">
-        <p>Xác định các <strong>Cấp bậc (Levels)</strong> trong công ty của bạn.</p>
+        <p>Xác định các <strong>Cấp bậc (Levels)</strong> trong nhà trường của bạn.</p>
         <ul className="text-[11px] space-y-1 list-disc pl-4 text-slate-500">
           <li>Việc phân cấp đúng giúp hệ thống tự động xác định luồng phê duyệt (ai duyệt cho ai).</li>
-          <li><strong>Cấp 0</strong> luôn là cấp cao nhất (ví dụ: Giám đốc/Hội đồng quản trị).</li>
+          <li><strong>Cấp 0</strong> luôn là cấp cao nhất (ví dụ: Hiệu trưởng/Hội đồng trường).</li>
         </ul>
       </div>
     ),
@@ -193,7 +193,7 @@ export const companySteps: Step[] = [
     title: '🏆 Quy chuẩn Xếp loại',
     content: (
       <div className="space-y-2">
-        <p>Định nghĩa các ngưỡng điểm để hệ thống tự động xếp loại hiệu suất cho nhân viên.</p>
+        <p>Định nghĩa các ngưỡng điểm để hệ thống tự động xếp loại hiệu suất cho giảng viên.</p>
         <p className="text-[11px] bg-amber-50 dark:bg-amber-900/20 p-2 rounded-lg text-amber-700 italic border-l-4 border-amber-400">
           Ví dụ: Bạn có thể quy định từ 90-100 điểm là hạng A+, 80-89 điểm là hạng A. Hãy thiết lập thật kỹ vì nó ảnh hưởng đến các chính sách khen thưởng sau này.
         </p>
@@ -221,7 +221,7 @@ export const companySteps: Step[] = [
       <div className="space-y-2">
         <p>Bật tính năng này để cho phép <strong>Phân rã mục tiêu</strong> từ trên xuống dưới.</p>
         <p className="text-[11px] text-slate-500">
-          Khi được bật, Quản lý có thể giao lại chỉ tiêu của mình cho cấp dưới và kết quả của nhân viên sẽ tự động cộng dồn ngược lên cho Quản lý.
+          Khi được bật, Quản lý có thể giao lại chỉ tiêu của mình cho cấp dưới và kết quả của giảng viên sẽ tự động cộng dồn ngược lên cho Quản lý.
         </p>
       </div>
     ),
@@ -236,7 +236,7 @@ export const rolesSteps: Step[] = [
     title: '🛡️ Quản lý Vai trò & Quyền hạn',
     content: (
       <div className="space-y-2">
-        <p>Ma trận chức danh giúp chuẩn hóa tên gọi vị trí trong toàn bộ công ty.</p>
+        <p>Ma trận chức danh giúp chuẩn hóa tên gọi chức danh trong toàn trường.</p>
         <p className="text-[11px] text-slate-500">Tại đây, bạn có thể gán các <strong>quyền hạn (Permissions)</strong> cụ thể cho từng vai trò để kiểm soát ai có thể xem hoặc chỉnh sửa dữ liệu.</p>
       </div>
     ),
@@ -251,7 +251,7 @@ export const rolesSteps: Step[] = [
   {
     target: '#tour-roles-stats',
     title: '📊 Thống kê Vai trò',
-    content: <p>Tổng hợp nhanh số lượng nhân viên đang được gán cho từng nhóm vai trò chính.</p>,
+    content: <p>Tổng hợp nhanh số lượng giảng viên đang được gán cho từng nhóm vai trò chính.</p>,
     placement: 'bottom',
   },
   {
@@ -278,7 +278,7 @@ export const orgStructureSteps: Step[] = [
       <div className="space-y-2">
         <p>Hệ thống cung cấp hai cách nhìn về sơ đồ tổ chức:</p>
         <ul className="text-[11px] space-y-1 list-disc pl-4 text-slate-500">
-          <li><strong>Sơ đồ (Mindmap):</strong> Cái nhìn trực quan về luồng quản lý và sự liên kết giữa các phòng ban.</li>
+          <li><strong>Sơ đồ (Mindmap):</strong> Cái nhìn trực quan về luồng quản lý và sự liên kết giữa các khoa.</li>
           <li><strong>Danh sách:</strong> Phù hợp khi bạn cần tìm kiếm nhanh hoặc chỉnh sửa thông tin hàng loạt.</li>
         </ul>
       </div>
@@ -290,9 +290,9 @@ export const orgStructureSteps: Step[] = [
     title: '🏗️ Xây dựng Bộ máy',
     content: (
       <div className="space-y-2">
-        <p>Tại đây, bạn có thể tạo mới các phòng ban, đơn vị và gán <strong>Trưởng đơn vị</strong> tương ứng.</p>
+        <p>Tại đây, bạn có thể tạo mới các khoa, đơn vị và gán <strong>Trưởng đơn vị</strong> tương ứng.</p>
         <p className="text-[11px] text-amber-600 font-bold italic">
-          💡 Lưu ý quan trọng: Một phòng ban không có Trưởng đơn vị sẽ khiến quy trình phê duyệt KPI tại đó bị tắc nghẽn.
+          💡 Lưu ý quan trọng: Một khoa không có Trưởng đơn vị sẽ khiến quy trình phê duyệt KPI tại đó bị tắc nghẽn.
         </p>
       </div>
     ),
@@ -304,20 +304,20 @@ export const orgStructureSteps: Step[] = [
 export const usersSteps: Step[] = [
   {
     target: '#tour-users-header',
-    title: '👥 Quản trị Nhân sự',
+    title: '👥 Quản trị Giảng viên',
     content: <p>Đây là nơi tập trung quản lý toàn bộ tài khoản người dùng trong hệ thống.</p>,
     placement: 'bottom',
   },
   {
     target: '#tour-users-import',
     title: '📥 Import Excel',
-    content: <p>Nếu công ty có số lượng nhân viên lớn, hãy sử dụng tính năng <strong>Import từ Excel</strong> để tiết kiệm thời gian thiết lập ban đầu.</p>,
+    content: <p>Nếu nhà trường có số lượng giảng viên lớn, hãy sử dụng tính năng <strong>Import từ Excel</strong> để tiết kiệm thời gian thiết lập ban đầu.</p>,
     placement: 'bottom',
   },
   {
     target: '#tour-users-add',
-    title: '➕ Thêm nhân viên mới',
-    content: <p>Dùng để tạo nhanh tài khoản lẻ cho nhân viên mới gia nhập công ty.</p>,
+    title: '➕ Thêm giảng viên mới',
+    content: <p>Dùng để tạo nhanh tài khoản lẻ cho giảng viên mới về trường.</p>,
     placement: 'bottom',
   },
   {
@@ -325,7 +325,7 @@ export const usersSteps: Step[] = [
     title: '🔍 Tìm kiếm & Lọc',
     content: (
       <div className="space-y-2">
-        <p>Bạn có thể lọc nhân viên theo phòng ban, vai trò hoặc trạng thái tài khoản.</p>
+        <p>Bạn có thể lọc giảng viên theo khoa, vai trò hoặc trạng thái tài khoản.</p>
         <p className="text-[11px] text-slate-500 italic">Mẹo: Dễ dàng tìm ra các tài khoản đang bị khóa (Deactivated) để xử lý khi cần.</p>
       </div>
     ),
@@ -336,12 +336,12 @@ export const usersSteps: Step[] = [
     title: '📝 Cấu hình Hồ sơ',
     content: (
       <div className="space-y-2">
-        <p>Nhấn vào từng nhân viên để hoàn thiện hồ sơ của họ:</p>
+        <p>Nhấn vào từng giảng viên để hoàn thiện hồ sơ của họ:</p>
         <ul className="text-[11px] space-y-1 list-disc pl-4 text-slate-500">
-          <li>Gán vào <strong>Phòng ban</strong> cụ thể trong sơ đồ.</li>
+          <li>Gán vào <strong>Khoa</strong> cụ thể trong sơ đồ.</li>
           <li>Cấp <strong>Vai trò</strong> phù hợp với nhiệm vụ của họ.</li>
         </ul>
-        <p className="text-[11px] text-indigo-600 font-bold">⚠️ Bước này là bắt buộc để nhân viên có thể nhận được KPI và tham gia vào hệ thống.</p>
+        <p className="text-[11px] text-indigo-600 font-bold">⚠️ Bước này là bắt buộc để giảng viên có thể nhận được KPI và tham gia vào hệ thống.</p>
       </div>
     ),
     placement: 'bottom',
@@ -353,7 +353,7 @@ export const settingsSteps: Step[] = [
   {
     target: '#tour-settings-header',
     title: '⚙️ Cấu hình Hệ thống',
-    content: <p>Nơi điều chỉnh các thông số kỹ thuật cốt lõi và tùy biến trải nghiệm người dùng cho phù hợp với văn hóa riêng của công ty bạn.</p>,
+    content: <p>Nơi điều chỉnh các thông số kỹ thuật cốt lõi và tùy biến trải nghiệm người dùng cho phù hợp với văn hóa riêng của nhà trường bạn.</p>,
     placement: 'bottom',
   },
   {
@@ -363,7 +363,7 @@ export const settingsSteps: Step[] = [
       <div className="space-y-2">
         <p>Bạn có thể linh hoạt thay đổi tên các mục menu ở Sidebar.</p>
         <p className="text-[11px] bg-indigo-50 dark:bg-indigo-900/20 p-2 rounded-lg text-indigo-700 italic">
-          Ví dụ: Nếu công ty bạn dùng thuật ngữ "Mục tiêu OKR", hãy đổi "KPI của tôi" thành "OKR cá nhân" để tạo sự gần gũi và chuyên nghiệp.
+          Ví dụ: Nếu nhà trường dùng thuật ngữ "Mục tiêu OKR", hãy đổi "KPI của tôi" thành "OKR cá nhân" để tạo sự gần gũi và chuyên nghiệp.
         </p>
       </div>
     ),
@@ -378,8 +378,8 @@ export const kpiCriteriaSteps: Step[] = [
     title: '🎯 Quản lý Chỉ tiêu Tập trung',
     content: (
       <div className="space-y-2">
-        <p>Đây là công cụ lọc mạnh mẽ giúp quản lý dễ dàng tìm kiếm và theo dõi KPI của bất kỳ nhân viên nào trong kỳ đánh giá.</p>
-        <p className="text-[11px] text-slate-500">Bạn có thể lọc theo phòng ban, trạng thái chỉ tiêu hoặc tìm đích danh một nhân viên cụ thể.</p>
+        <p>Đây là công cụ lọc mạnh mẽ giúp quản lý dễ dàng tìm kiếm và theo dõi KPI của bất kỳ giảng viên nào trong kỳ đánh giá.</p>
+        <p className="text-[11px] text-slate-500">Bạn có thể lọc theo khoa, trạng thái chỉ tiêu hoặc tìm đích danh một giảng viên cụ thể.</p>
       </div>
     ),
     placement: 'bottom',
@@ -391,7 +391,7 @@ export const kpiCriteriaSteps: Step[] = [
       <div className="space-y-3">
         <p>Bắt đầu giao KPI cho đội ngũ của bạn. Hãy ghi nhớ nguyên tắc <strong>SMART</strong> (Cụ thể, Đo lường được, Khả thi, Thực tế, Có thời hạn).</p>
         <div className="p-2 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded text-[11px] text-amber-700 font-medium">
-          ⚠️ QUAN TRỌNG: Hãy đảm bảo tổng trọng số (%) của các KPI cho một nhân viên phải đạt đúng 100% để hệ thống tính điểm chính xác.
+          ⚠️ QUAN TRỌNG: Hãy đảm bảo tổng trọng số (%) của các KPI cho một giảng viên phải đạt đúng 100% để hệ thống tính điểm chính xác.
         </div>
       </div>
     ),
@@ -499,8 +499,8 @@ export const orgUnitSubmissionsSteps: Step[] = [
     title: '⚡ Lọc & Ưu tiên',
     content: (
       <div className="space-y-2">
-        <p>Sử dụng bộ lọc để ưu tiên phê duyệt các báo cáo quan trọng hoặc các nhân sự có hạn chót gần nhất.</p>
-        <p className="text-[11px] text-slate-500 italic">💡 Bạn có thể lọc nhanh theo từng phòng ban con để quản lý tập trung hơn.</p>
+        <p>Sử dụng bộ lọc để ưu tiên phê duyệt các báo cáo quan trọng hoặc các giảng viên có hạn chót gần nhất.</p>
+        <p className="text-[11px] text-slate-500 italic">💡 Bạn có thể lọc nhanh theo từng khoa con để quản lý tập trung hơn.</p>
       </div>
     ),
     placement: 'bottom',
@@ -510,9 +510,9 @@ export const orgUnitSubmissionsSteps: Step[] = [
     title: '🔍 Đánh giá Công tâm',
     content: (
       <div className="space-y-3">
-        <p>Khi phê duyệt bài nộp, hãy nhấn vào từng dòng để xem chi tiết <strong>Tài liệu minh chứng</strong> mà nhân viên đã đính kèm.</p>
+        <p>Khi phê duyệt bài nộp, hãy nhấn vào từng dòng để xem chi tiết <strong>Tài liệu minh chứng</strong> mà giảng viên đã đính kèm.</p>
         <div className="p-2 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded text-[11px] text-blue-700 font-medium">
-          💡 Mẹo: Hãy để lại những lời nhận xét (Feedback) chân thành. Phản hồi tích cực hoặc góp ý xây dựng sẽ giúp nhân viên cải thiện hiệu suất rõ rệt trong các đợt tiếp theo.
+          💡 Mẹo: Hãy để lại những lời nhận xét (Feedback) chân thành. Phản hồi tích cực hoặc góp ý xây dựng sẽ giúp giảng viên cải thiện hiệu suất rõ rệt trong các đợt tiếp theo.
         </div>
       </div>
     ),
@@ -527,8 +527,8 @@ export const kpiPeriodsSteps: Step[] = [
     title: '🗓️ Thiết lập Chu kỳ Đánh giá',
     content: (
       <div className="space-y-2">
-        <p>Một "Đợt KPI" đại diện cho một chu kỳ làm việc và đánh giá chính thức của công ty.</p>
-        <p className="text-[11px] text-slate-500">Bạn có thể linh hoạt thiết lập các đợt theo <strong>Tháng, Quý, Năm</strong> hoặc theo các chiến dịch kinh doanh ngắn hạn tùy thuộc vào mô hình vận hành của doanh nghiệp.</p>
+        <p>Một "Đợt KPI" đại diện cho một chu kỳ làm việc và đánh giá chính thức của nhà trường.</p>
+        <p className="text-[11px] text-slate-500">Bạn có thể linh hoạt thiết lập các đợt theo <strong>Tháng, Quý, Năm</strong> hoặc theo các đợt cao điểm chuyên môn tùy thuộc vào mô hình vận hành của nhà trường.</p>
       </div>
     ),
     placement: 'bottom',
@@ -546,7 +546,7 @@ export const kpiPeriodsSteps: Step[] = [
       <div className="space-y-3">
         <p>Tại đây bạn thiết lập mốc <strong>Ngày bắt đầu và Ngày kết thúc</strong> chính thức cho chu kỳ.</p>
         <div className="p-2 bg-indigo-50 dark:bg-indigo-900/20 border-l-4 border-indigo-500 rounded text-[11px] text-indigo-700 italic">
-          💡 Lưu ý: Nhân viên chỉ có thể gửi báo cáo kết quả trong khoảng thời gian hiệu lực này. Hệ thống sẽ tự động nhắc nhở khi sắp đến hạn chót để đảm bảo không ai bị sót việc.
+          💡 Lưu ý: Giảng viên chỉ có thể gửi báo cáo kết quả trong khoảng thời gian hiệu lực này. Hệ thống sẽ tự động nhắc nhở khi sắp đến hạn chót để đảm bảo không ai bị sót việc.
         </div>
       </div>
     ),
@@ -561,8 +561,8 @@ export const kpiPendingSteps: Step[] = [
     title: '🤝 Xét duyệt Mục tiêu',
     content: (
       <div className="space-y-2">
-        <p>Đây là bước quan trọng nhất để đảm bảo nhân viên không đặt mục tiêu quá thấp hoặc quá xa rời thực tế.</p>
-        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Hãy thống nhất và phê duyệt mục tiêu ngay từ đầu kỳ để nhân viên có lộ trình làm việc rõ ràng.</p>
+        <p>Đây là bước quan trọng nhất để đảm bảo giảng viên không đặt mục tiêu quá thấp hoặc quá xa rời thực tế.</p>
+        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Hãy thống nhất và phê duyệt mục tiêu ngay từ đầu kỳ để giảng viên có lộ trình làm việc rõ ràng.</p>
       </div>
     ),
     placement: 'bottom',
@@ -570,7 +570,7 @@ export const kpiPendingSteps: Step[] = [
   {
     target: '#tour-pending-toolbar',
     title: '🏢 Lọc Theo Đơn vị',
-    content: <p>Duyệt theo từng phòng ban để đảm bảo tính công bằng và nhất quán về khối lượng công việc giữa các nhân sự có vị trí tương đương nhau.</p>,
+    content: <p>Duyệt theo từng khoa để đảm bảo tính công bằng và nhất quán về khối lượng công việc giữa các giảng viên có vị trí tương đương nhau.</p>,
     placement: 'bottom',
   },
   {
@@ -578,8 +578,8 @@ export const kpiPendingSteps: Step[] = [
     title: '⚡ Xử lý Nhanh',
     content: (
       <div className="space-y-2">
-        <p>Bạn có thể <strong>Phê duyệt hàng loạt</strong> các KPI đã đạt chuẩn để đẩy nhanh tiến độ thiết lập mục tiêu cho cả bộ phận.</p>
-        <p className="text-[11px] text-slate-500 italic">Mẹo: Chỉ phê duyệt khi bạn đã chắc chắn các chỉ tiêu tuân thủ đúng định hướng của công ty.</p>
+        <p>Bạn có thể <strong>Phê duyệt hàng loạt</strong> các KPI đã đạt chuẩn để đẩy nhanh tiến độ thiết lập mục tiêu cho cả đơn vị.</p>
+        <p className="text-[11px] text-slate-500 italic">Mẹo: Chỉ phê duyệt khi bạn đã chắc chắn các chỉ tiêu tuân thủ đúng định hướng của nhà trường.</p>
       </div>
     ),
     placement: 'bottom',
@@ -593,7 +593,7 @@ export const kpiAdjustmentsSteps: Step[] = [
     title: '🔄 Kiểm soát Thay đổi',
     content: (
       <div className="space-y-2">
-        <p>Trong quá trình làm việc, nếu có những biến động khách quan từ thị trường hoặc tổ chức, nhân viên có thể gửi yêu cầu <strong>điều chỉnh số liệu</strong>.</p>
+        <p>Trong quá trình làm việc, nếu có những biến động khách quan từ thị trường hoặc tổ chức, giảng viên có thể gửi yêu cầu <strong>điều chỉnh số liệu</strong>.</p>
         <p className="text-[11px] text-indigo-600 font-bold">⚠️ Bạn là người quyết định cuối cùng có chấp thuận các thay đổi này hay không.</p>
       </div>
     ),
@@ -610,7 +610,7 @@ export const kpiAdjustmentsSteps: Step[] = [
     title: '📎 Bằng chứng Thay đổi',
     content: (
       <div className="space-y-2">
-        <p>Nhấn vào yêu cầu để xem <strong>Lý do chi tiết</strong> mà nhân viên đưa ra.</p>
+        <p>Nhấn vào yêu cầu để xem <strong>Lý do chi tiết</strong> mà giảng viên đưa ra.</p>
         <p className="text-[11px] bg-amber-50 dark:bg-amber-900/20 p-2 rounded-lg text-amber-700 italic border-l-4 border-amber-400">
           💡 Chỉ chấp thuận khi lý do thực sự hợp lý, khách quan và có minh chứng đi kèm nếu cần thiết.
         </p>
@@ -651,7 +651,7 @@ export const evaluationsSteps: Step[] = [
     content: (
       <div className="space-y-2">
         <p>Đây là "bảng điểm" cuối cùng phản ánh nỗ lực của bạn hoặc đội ngũ trong suốt kỳ đánh giá.</p>
-        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Kết quả này là cơ sở quan trọng nhất cho các chính sách Khen thưởng, Thăng tiến và Đào tạo của công ty.</p>
+        <p className="text-[11px] text-indigo-600 font-bold italic">💡 Kết quả này là cơ sở quan trọng nhất cho các chính sách Khen thưởng, Thăng tiến và Đào tạo của nhà trường.</p>
       </div>
     ),
     placement: 'bottom',
@@ -659,7 +659,7 @@ export const evaluationsSteps: Step[] = [
   {
     target: '#tour-eval-filters',
     title: '📂 Tra cứu Lịch sử',
-    content: <p>Dễ dàng tra cứu lại kết quả từ nhiều kỳ trước đó để theo dõi <strong>biểu đồ tăng trưởng năng lực</strong> và sự tiến bộ của nhân viên theo thời gian.</p>,
+    content: <p>Dễ dàng tra cứu lại kết quả từ nhiều kỳ trước đó để theo dõi <strong>biểu đồ tăng trưởng năng lực</strong> và sự tiến bộ của giảng viên theo thời gian.</p>,
     placement: 'bottom',
   },
   {
@@ -668,7 +668,7 @@ export const evaluationsSteps: Step[] = [
     content: (
       <div className="space-y-2">
         <p>Nhấn vào từng dòng để xem <strong>Chi tiết Đánh giá</strong>.</p>
-        <p className="text-[11px] text-slate-500 italic">Tại đây bạn có thể đối chiếu sự chênh lệch giữa Điểm tự chấm của nhân viên và Điểm phê duyệt cuối cùng của quản lý.</p>
+        <p className="text-[11px] text-slate-500 italic">Tại đây bạn có thể đối chiếu sự chênh lệch giữa Điểm tự chấm của giảng viên và Điểm phê duyệt cuối cùng của quản lý.</p>
       </div>
     ),
     placement: 'bottom',
@@ -694,7 +694,7 @@ export const analyticsSteps: Step[] = [
     content: (
       <div className="space-y-3">
         <ul className="text-[11px] space-y-2 list-disc pl-4 text-slate-500 font-medium">
-          <li><strong className="text-slate-900">Thống kê tổng:</strong> Tỷ lệ hoàn thành KPI trung bình của toàn doanh nghiệp.</li>
+          <li><strong className="text-slate-900">Thống kê tổng:</strong> Tỷ lệ hoàn thành KPI trung bình của toàn trường.</li>
           <li><strong className="text-slate-900">Phân cấp:</strong> So sánh hiệu suất giữa các đơn vị để tối ưu hóa nguồn lực.</li>
           <li><strong className="text-slate-900">Bảng chi tiết:</strong> Xuất dữ liệu ra Excel phục vụ báo cáo quản trị chuyên sâu.</li>
         </ul>
@@ -745,13 +745,13 @@ export const okrManagementSteps: Step[] = [
 
 /* ─── Map page keys to their labels (for sidebar replay button tooltips) ─── */
 export const tourPageLabels: Record<TourPageKey, string> = {
-  'dashboard-director': 'Tổng quan (Giám đốc)',
+  'dashboard-director': 'Tổng quan (Hiệu trưởng)',
   'dashboard-head': 'Tổng quan (Trưởng đơn vị)',
   'dashboard-staff': 'Dashboard cá nhân',
-  'company': 'Công ty',
+  'company': 'Nhà trường',
   'roles': 'Vai trò',
   'org-structure': 'Sơ đồ tổ chức',
-  'users': 'Nhân sự',
+  'users': 'Giảng viên',
   'settings': 'Cấu hình hệ thống',
   'kpi-criteria': 'Quản lý chỉ tiêu',
   'kpi-periods': 'Quản lý đợt',

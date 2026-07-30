@@ -13,7 +13,7 @@ export interface MatrixHeatmap {
   rows: string[]          // dải điểm hành vi
   cols: string[]          // dải % hoàn thành
   ratings: number[][]     // ratings[row][col] = xếp loại (từ cấu hình org)
-  counts: number[][]      // counts[row][col] = số nhân sự
+  counts: number[][]      // counts[row][col] = số giảng viên
 }
 
 export interface MatrixOverview {

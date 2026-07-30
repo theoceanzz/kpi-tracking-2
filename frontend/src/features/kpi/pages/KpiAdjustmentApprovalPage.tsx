@@ -247,7 +247,7 @@ export default function KpiAdjustmentApprovalPage() {
                     {mainTitle} <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">{lastWord}</span>
                   </h1>
                   <p className="text-slate-500 dark:text-slate-400 font-medium text-sm max-w-xl leading-relaxed">
-                    Xử lý các đề xuất thay đổi hoặc hủy bỏ chỉ tiêu từ nhân viên.
+                    Xử lý các đề xuất thay đổi hoặc hủy bỏ chỉ tiêu từ giảng viên.
                   </p>
                 </div>
               </div>

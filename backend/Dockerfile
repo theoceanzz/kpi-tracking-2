@@ -21,7 +21,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 # Expose the port your Spring Boot app runs on
-EXPOSE 8081
+EXPOSE 8082
 
 # Copy the generated JAR file from the build stage
 COPY --from=build /app/target/*.jar app.jar

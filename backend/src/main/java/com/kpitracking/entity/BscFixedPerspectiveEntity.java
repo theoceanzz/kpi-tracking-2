@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.UUID;
 
 /**
- * Bảng CHA: 4 viễn cảnh BSC (Tài chính, Khách hàng, Quy trình nội bộ, Học hỏi & phát triển)
+ * Bảng CHA: 4 viễn cảnh BSC (Tài chính, Người học, Quy trình nội bộ, Học hỏi & phát triển)
  * theo TỪNG TỔ CHỨC. Mỗi org có bản sao 4 dòng, tự chỉnh sửa tên/màu/thứ tự; {@code code}
  * giữ cố định (khớp enum {@link com.kpitracking.enums.BscFixedPerspective}) — mỗi "Hạng mục"
  * ({@link BscPerspective}) trỏ tới đây qua cột {@code fixed_perspective} (theo mã, trong cùng org).

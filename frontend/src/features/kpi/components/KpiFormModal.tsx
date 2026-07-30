@@ -208,7 +208,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
     formOrgUnitIds.forEach(id => {
       const unit = flatOrgUnits.find(u => u.id === id)
       unit?.assignedRoles?.forEach((role: any) => {
-        rolesMap.set(role.name, role) // Use name as key to deduplicate standard roles like "Nhân viên"
+        rolesMap.set(role.name, role) // Use name as key to deduplicate standard roles like "Giảng viên"
       })
     })
     return Array.from(rolesMap.values())
@@ -450,7 +450,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
   const handleAiSuggest = async () => {
     const orgUnitId = formOrgUnitIds[0] || user?.memberships?.[0]?.orgUnitId
     if (!orgUnitId) {
-      toast.error('Vui lòng chọn hoặc đảm bảo bạn thuộc một phòng ban để nhận gợi ý chính xác')
+      toast.error('Vui lòng chọn hoặc đảm bảo bạn thuộc một khoa để nhận gợi ý chính xác')
       return
     }
 
@@ -560,7 +560,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
         <div className="flex items-center justify-between mb-5">
           <div className="space-y-1">
             <h3 className="text-lg font-extrabold tracking-tight text-[var(--color-foreground)]">{isEdit ? 'Chỉnh sửa chỉ tiêu' : 'Tạo mới KPI'}</h3>
-            <p className="text-xs text-[var(--color-muted-foreground)] font-medium">Phát triển mục tiêu kinh doanh & vận hành</p>
+            <p className="text-xs text-[var(--color-muted-foreground)] font-medium">Phát triển mục tiêu chuyên môn & vận hành</p>
           </div>
           <button onClick={onClose} className="text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] transition-all p-1.5 hover:bg-[var(--color-accent)] rounded-full">
             <X size={20} />
@@ -621,7 +621,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
               <input 
                 {...register('name')} 
                 className={inputCls} 
-                placeholder="VD: Doanh thu tháng 10" 
+                placeholder="VD: Số tiết giảng tháng 10" 
               />
               {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name.message}</p>}
             </div>
@@ -888,7 +888,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
                 </label>
                 {!isStaff && (
                     <div className="px-2.5 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] font-black uppercase tracking-wider">
-                        {totalMemberCount} nhân sự khả dụng
+                        {totalMemberCount} giảng viên khả dụng
                     </div>
                 )}
             </div>
@@ -964,7 +964,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
                     </div>
                     ) : displayUsers.length === 0 ? (
                         <div className="p-12 text-center text-xs text-[var(--color-muted-foreground)] font-medium italic">
-                            Không tìm thấy nhân sự phù hợp theo tiêu chí lọc
+                            Không tìm thấy giảng viên phù hợp theo tiêu chí lọc
                         </div>
                     ) : (
                     displayUsers.map((u) => (
@@ -1005,7 +1005,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
                 </>
             ) : (
                 <div className="p-10 text-center text-[10px] text-[var(--color-muted-foreground)] font-bold uppercase tracking-widest italic bg-[var(--color-background)]/50 rounded-xl border border-dashed border-[var(--color-border)] animate-pulse">
-                     Vui lòng chọn đơn vị thực hiện để hiển thị danh sách nhân sự
+                     Vui lòng chọn đơn vị thực hiện để hiển thị danh sách giảng viên
                 </div>
             )}
           </div>)}
@@ -1165,7 +1165,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
                 {selectedPerspMissing && (
                   <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 flex items-start gap-1.5 mt-1.5">
                     <span className="shrink-0">⚠</span>
-                    Hạng mục đang gán <b>chưa có trong thẻ điểm</b> của đơn vị bạn chọn ⇒ KPI sẽ <b>không tính vào điểm BSC</b>. Hãy thêm hạng mục này vào thẻ điểm cho phòng ban đó.
+                    Hạng mục đang gán <b>chưa có trong thẻ điểm</b> của đơn vị bạn chọn ⇒ KPI sẽ <b>không tính vào điểm BSC</b>. Hãy thêm hạng mục này vào thẻ điểm cho khoa đó.
                   </p>
                 )}
                 {availablePerspectiveIds && !formKpiPeriodId && (
@@ -1189,7 +1189,7 @@ export default function KpiFormModal({ open, onClose, editKpi, parentKpi, parent
                 {availablePerspectiveIds && periodHasScorecard && hasRealUnit && filteredGroupedPerspectives.length === 0 && (
                   <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 flex items-start gap-1.5 mt-1.5">
                     <span className="shrink-0">⚠</span>
-                    Thẻ điểm của phòng ban bạn chọn <b>chưa có hạng mục nào</b> — hãy thêm hạng mục vào thẻ điểm cho phòng ban đó trước.
+                    Thẻ điểm của khoa bạn chọn <b>chưa có hạng mục nào</b> — hãy thêm hạng mục vào thẻ điểm cho khoa đó trước.
                   </p>
                 )}
               </div>

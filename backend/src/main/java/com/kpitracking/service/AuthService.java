@@ -455,18 +455,18 @@ public class AuthService {
             boolean isManagementLevel = (roleLevel <= 2);
             
             // Create Head (Rank 0)
-            String headName = isTop ? (levelDto.getManagerRoleLabel() != null ? levelDto.getManagerRoleLabel() : "GIÁM ĐỐC") : "TRƯỞNG " + levelDto.getUnitTypeName().toUpperCase();
+            String headName = isTop ? (levelDto.getManagerRoleLabel() != null ? levelDto.getManagerRoleLabel() : "HIỆU TRƯỞNG") : "TRƯỞNG " + levelDto.getUnitTypeName().toUpperCase();
             Role headRole = createRole(organization, headName, roleLevel, 0, isTop);
             assignDefaultPermissions(headRole, allPerms, isManagementLevel ? "director" : "manager", i + 1, total);
 
             // Create Deputy (Rank 1)
-            String deputyName = "PHÓ " + (isTop ? (levelDto.getManagerRoleLabel() != null ? levelDto.getManagerRoleLabel() : "GIÁM ĐỐC") : levelDto.getUnitTypeName().toUpperCase());
+            String deputyName = "PHÓ " + (isTop ? (levelDto.getManagerRoleLabel() != null ? levelDto.getManagerRoleLabel() : "HIỆU TRƯỞNG") : levelDto.getUnitTypeName().toUpperCase());
             Role deputyRole = createRole(organization, deputyName, roleLevel, 1, false);
             assignDefaultPermissions(deputyRole, allPerms, isManagementLevel ? "deputy_director" : "deputy", i + 1, total);
 
             // Create Staff (Rank 2) for bottom level
             if (isBottom) {
-                Role staffRole = createRole(organization, "NHÂN VIÊN", roleLevel, 2, false);
+                Role staffRole = createRole(organization, "GIẢNG VIÊN", roleLevel, 2, false);
                 assignDefaultPermissions(staffRole, allPerms, "staff", i + 1, total);
             }
         }

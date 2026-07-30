@@ -16,7 +16,7 @@ export function useOrganization(id?: string) {
     mutationFn: (data: UpdateOrganizationRequest) => organizationApi.update(id!, data),
     onSuccess: () => {
       invalidateOrgDerived(queryClient)
-      toast.success('Cập nhật thông tin công ty thành công')
+      toast.success('Cập nhật thông tin nhà trường thành công')
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || 'Có lỗi xảy ra khi cập nhật')

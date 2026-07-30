@@ -596,7 +596,7 @@ function MyKpiTableRow({ kpi, depth = 0, childKpis = [], isCollapsed, onToggleCo
                 "p-2 rounded-lg transition-all",
                 isDelegated ? "text-emerald-500 bg-emerald-50 hover:bg-emerald-100" : "text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/40"
               )} 
-              title={isDelegated ? "Đã giao việc - Nhấn để điều chỉnh" : "Giao cho nhân viên"}
+              title={isDelegated ? "Đã giao việc - Nhấn để điều chỉnh" : "Giao cho giảng viên"}
             >
               <GitBranch size={16} />
             </button>
@@ -621,7 +621,7 @@ function MyKpiTableRow({ kpi, depth = 0, childKpis = [], isCollapsed, onToggleCo
                   Nộp bài
                 </Link>
               ) : (
-                <div className="px-4 py-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 border border-indigo-100 dark:border-indigo-900/30 rounded-xl text-[10px] font-black uppercase tracking-widest italic shadow-sm" title="Kết quả sẽ được tự động cộng dồn từ nhân viên đã được giao">
+                <div className="px-4 py-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 border border-indigo-100 dark:border-indigo-900/30 rounded-xl text-[10px] font-black uppercase tracking-widest italic shadow-sm" title="Kết quả sẽ được tự động cộng dồn từ giảng viên đã được giao">
                   Đang theo dõi
                 </div>
               )
@@ -739,7 +739,7 @@ function MyKpiCard({ kpi, depth = 0, childKpis = [], isCollapsed, onToggleCollap
               "p-3 rounded-2xl transition-all",
               isDelegated ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 hover:bg-indigo-100"
             )} 
-            title={isDelegated ? "Đã giao việc - Nhấn để điều chỉnh" : "Giao cho nhân viên"}
+            title={isDelegated ? "Đã giao việc - Nhấn để điều chỉnh" : "Giao cho giảng viên"}
           >
             <GitBranch size={18} />
           </button>
@@ -763,7 +763,7 @@ function MyKpiCard({ kpi, depth = 0, childKpis = [], isCollapsed, onToggleCollap
                 Nộp báo cáo
               </Link>
             ) : (
-              <div className="flex-1 px-6 py-3 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 border border-indigo-100 dark:border-indigo-900/30 rounded-2xl font-black text-xs text-center uppercase tracking-widest italic" title="Kết quả sẽ được tự động cộng dồn từ nhân viên đã được giao">
+              <div className="flex-1 px-6 py-3 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 border border-indigo-100 dark:border-indigo-900/30 rounded-2xl font-black text-xs text-center uppercase tracking-widest italic" title="Kết quả sẽ được tự động cộng dồn từ giảng viên đã được giao">
                 Đang theo dõi
               </div>
             )

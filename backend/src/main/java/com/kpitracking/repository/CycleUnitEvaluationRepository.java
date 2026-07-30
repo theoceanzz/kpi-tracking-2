@@ -12,6 +12,6 @@ public interface CycleUnitEvaluationRepository extends JpaRepository<CycleUnitEv
 
     Optional<CycleUnitEvaluation> findByKpiCycleIdAndOrgUnitId(UUID kpiCycleId, UUID orgUnitId);
 
-    /** Mọi bản tổng hợp phòng ban của một kỳ — dùng để kiểm tra đã chốt hay chưa. */
+    /** Mọi bản tổng hợp khoa của một kỳ — dùng để kiểm tra đã chốt hay chưa. */
     java.util.List<CycleUnitEvaluation> findByKpiCycleId(UUID kpiCycleId);
 }

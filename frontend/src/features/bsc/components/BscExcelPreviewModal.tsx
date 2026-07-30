@@ -29,7 +29,7 @@ const DEFAULT_COLOR = '#8b5cf6'
 const DEFAULT_FIXED = 'INTERNAL_PROCESS'
 const FIXED_FALLBACK = [
   { code: 'FINANCIAL', name: 'Tài chính' },
-  { code: 'CUSTOMER', name: 'Khách hàng' },
+  { code: 'CUSTOMER', name: 'Người học' },
   { code: 'INTERNAL_PROCESS', name: 'Quy trình nội bộ' },
   { code: 'LEARNING_GROWTH', name: 'Học hỏi & phát triển' },
 ]

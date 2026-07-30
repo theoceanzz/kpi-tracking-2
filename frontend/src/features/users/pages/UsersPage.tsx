@@ -41,7 +41,7 @@ export default function UsersPage() {
   const user = useAuthStore(state => state.user)
   const organizationId = user?.memberships?.[0]?.organizationId
   const { data: customLabels = {} } = useSidebarSettings(organizationId!)
-  const pageTitle = ((customLabels as Record<string, string>)['/users'] || 'Quản lý nhân sự')
+  const pageTitle = ((customLabels as Record<string, string>)['/users'] || 'Quản lý giảng viên')
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
@@ -103,7 +103,7 @@ export default function UsersPage() {
     return flatten(orgTree || [])
   }, [orgTree])
 
-  // Set default org unit to the first one (Chi nhánh Hà Nội)
+  // Set default org unit to the first one (Cơ sở Hà Nội)
   useEffect(() => {
     const firstUnitId = orgTree?.[0]?.id
     if (firstUnitId && orgUnitFilter === 'ALL') {
@@ -144,7 +144,7 @@ export default function UsersPage() {
       qc.invalidateQueries({ queryKey: ['users'] }); 
       qc.invalidateQueries({ queryKey: ['organization-users'] }); 
       qc.invalidateQueries({ queryKey: ['stats'] }); 
-      toast.success('Đã xoá nhân sự'); 
+      toast.success('Đã xoá giảng viên'); 
       setDeleteUser(null) 
     },
     onError: () => toast.error('Xoá thất bại'),
@@ -236,7 +236,7 @@ export default function UsersPage() {
       <div id="tour-users-header">
         <PageHeader
           title={pageTitle}
-          description="Cơ sở dữ liệu toàn bộ cán bộ nhân viên"
+          description="Cơ sở dữ liệu toàn bộ cán bộ giảng viên"
           action={
             <div className="flex flex-wrap gap-3">
               {canImport && (
@@ -256,7 +256,7 @@ export default function UsersPage() {
                   onClick={() => { setEditUser(null); setShowForm(true) }}
                   className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold hover:opacity-90 transition-all shadow-md"
                 >
-                  <Plus size={16} /> Bổ sung Nhân sự
+                  <Plus size={16} /> Bổ sung Giảng viên
                 </button>
               )}
               <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" className="hidden" onChange={handleImport} />
@@ -372,7 +372,7 @@ export default function UsersPage() {
         open={!!deleteUser}
         onClose={() => setDeleteUser(null)}
         onConfirm={() => deleteUser && deleteMutation.mutate(deleteUser.id)}
-        title="Tiến hành Xoá Nhân sự"
+        title="Tiến hành Xoá Giảng viên"
         description={`Bạn có chắc chắn muốn rời "${deleteUser?.fullName}" khỏi hệ thống? Hành động này không thể hoàn tác nhưng quy trình của họ vẫn sẽ được lưu trữ.`}
         confirmLabel="Đồng ý Xoá"
         loading={deleteMutation.isPending}

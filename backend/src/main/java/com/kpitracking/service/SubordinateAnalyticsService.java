@@ -36,7 +36,7 @@ public class SubordinateAnalyticsService {
     private final KpiCriteriaRepository kpiCriteriaRepository;
     private final EvaluationService evaluationService;
 
-    /** ID các nhân sự thuộc phạm vi cấp dưới (để tính hiệu suất theo đánh giá). */
+    /** ID các giảng viên thuộc phạm vi cấp dưới (để tính hiệu suất theo đánh giá). */
     private java.util.Set<UUID> subordinateUserIds() {
         List<UUID> orgUnitIds = getSubordinateOrgUnitIds();
         if (orgUnitIds.isEmpty()) return java.util.Set.of();

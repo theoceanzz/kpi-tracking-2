@@ -173,7 +173,7 @@ export default function OrgUnitFormModal({ open, onClose, editUnit, initialParen
       return allRoles.filter((r: any) => r.rank === 2)
     }
 
-    // Middle levels: trưởng (rank=0), phó (rank=1), nhân viên (rank=2)
+    // Middle levels: trưởng (rank=0), phó (rank=1), giảng viên (rank=2)
     return allRoles.filter((r: any) => r.rank === 0 || r.rank === 1 || r.rank === 2)
   }, [selectedLevel, allRoles, minDepth, maxDepth])
 
@@ -220,7 +220,7 @@ export default function OrgUnitFormModal({ open, onClose, editUnit, initialParen
                 {...register('code')} 
                 disabled={isRoot && !isEdit}
                 className={`${inputCls} ${isRoot && !isEdit ? 'bg-[var(--color-accent)] opacity-70 cursor-not-allowed' : ''}`}
-                placeholder="VD: PKT, ACC, HR..." 
+                placeholder="VD: CNTT, KTPM, KT..." 
               />
               {errors.code && <p className="text-red-500 text-xs mt-1">{errors.code.message}</p>}
             </div>

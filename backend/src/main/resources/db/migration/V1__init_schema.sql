@@ -1,5 +1,5 @@
 -- ====================================================
--- V1: KeyGo - Initial Schema
+-- V1: KeyLearn - Initial Schema
 -- ====================================================
 
 -- Enable UUID extension
@@ -360,7 +360,7 @@ CREATE TABLE kpi_periods (
 CREATE INDEX idx_kpi_periods_org_id ON kpi_periods(organization_id);
 CREATE INDEX idx_kpi_periods_cycle_id ON kpi_periods(kpi_cycle_id);
 
--- Đánh giá tổng hợp của PHÒNG BAN theo kỳ (có lưu + chốt).
+-- Đánh giá tổng hợp của KHOA theo kỳ (có lưu + chốt).
 CREATE TABLE cycle_unit_evaluations (
     id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     kpi_cycle_id    UUID            NOT NULL REFERENCES kpi_cycles(id) ON DELETE CASCADE,
@@ -384,7 +384,7 @@ CREATE TABLE cycle_unit_evaluations (
 CREATE INDEX idx_cycle_unit_evals_cycle ON cycle_unit_evaluations(kpi_cycle_id);
 CREATE INDEX idx_cycle_unit_evals_unit  ON cycle_unit_evaluations(org_unit_id);
 
--- Điểm CHỐT KỲ của từng nhân viên (mặc định = TB điểm QLTT các đợt, cho phép chỉnh tay).
+-- Điểm CHỐT KỲ của từng giảng viên (mặc định = TB điểm QLTT các đợt, cho phép chỉnh tay).
 CREATE TABLE cycle_user_evaluations (
     id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     kpi_cycle_id  UUID            NOT NULL REFERENCES kpi_cycles(id) ON DELETE CASCADE,
@@ -861,7 +861,7 @@ CREATE INDEX idx_bsc_scorecards_kpi_period_id ON bsc_scorecards(kpi_period_id);
 -- Tính duy nhất (1 thẻ mặc định/kỳ, mỗi đơn vị ≤1 thẻ/kỳ) được ENFORCE Ở SERVICE
 -- vì thẻ điểm áp dụng cho NHIỀU đơn vị (bảng nối bsc_scorecard_org_units bên dưới).
 
--- Thẻ điểm áp dụng cho NHIỀU phòng ban (giống OKR objective_org_units). Danh sách RỖNG = mặc định toàn tổ chức.
+-- Thẻ điểm áp dụng cho NHIỀU khoa (giống OKR objective_org_units). Danh sách RỖNG = mặc định toàn tổ chức.
 CREATE TABLE bsc_scorecard_org_units (
     scorecard_id UUID NOT NULL REFERENCES bsc_scorecards(id) ON DELETE CASCADE,
     org_unit_id  UUID NOT NULL REFERENCES org_units(id) ON DELETE CASCADE,
@@ -902,7 +902,7 @@ CREATE TABLE evaluation_perspective_scores (
     perspective_id    UUID             NOT NULL REFERENCES bsc_perspectives(id) ON DELETE CASCADE,
     weight_percentage DOUBLE PRECISION,
     -- Điểm thô của viễn cảnh (0..150): trung bình có trọng số các KPI của NV trong viễn cảnh.
-    -- NULL = nhân viên không có KPI nào trong viễn cảnh (viễn cảnh rỗng).
+    -- NULL = giảng viên không có KPI nào trong viễn cảnh (viễn cảnh rỗng).
     raw_score         DOUBLE PRECISION,
     -- Đóng góp = weight_percentage% × raw_score
     weighted_score    DOUBLE PRECISION,
@@ -914,7 +914,7 @@ CREATE INDEX idx_evaluation_perspective_scores_evaluation_id ON evaluation_persp
 CREATE UNIQUE INDEX uq_evaluation_perspective_scores
     ON evaluation_perspective_scores(evaluation_id, perspective_id);
 
--- Quan hệ nhân-quả có hướng giữa các Objective (triết lý BSC: Học hỏi → Quy trình → Khách hàng → Tài chính)
+-- Quan hệ nhân-quả có hướng giữa các Objective (triết lý BSC: Học hỏi → Quy trình → Người học → Tài chính)
 CREATE TABLE bsc_objective_relations (
     id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id     UUID            NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,

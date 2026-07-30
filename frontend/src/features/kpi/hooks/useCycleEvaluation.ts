@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { kpiCycleEvaluationApi } from '../api/kpiCycleEvaluationApi'
 import { toast } from 'sonner'
 
-/** Tổng hợp đánh giá phòng ban theo kỳ (kèm danh sách thành viên). */
+/** Tổng hợp đánh giá khoa theo kỳ (kèm danh sách thành viên). */
 export const useUnitCycleSummary = (cycleId?: string, orgUnitId?: string) => {
   const qc = useQueryClient()
 
@@ -16,7 +16,7 @@ export const useUnitCycleSummary = (cycleId?: string, orgUnitId?: string) => {
     mutationFn: (comment: string) => kpiCycleEvaluationApi.finalizeUnit(cycleId!, orgUnitId!, comment),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['cycleUnitSummary', cycleId, orgUnitId] })
-      toast.success('Đã chốt đánh giá phòng ban theo kỳ')
+      toast.success('Đã chốt đánh giá khoa theo kỳ')
     },
     onError: () => toast.error('Chốt đánh giá thất bại'),
   })

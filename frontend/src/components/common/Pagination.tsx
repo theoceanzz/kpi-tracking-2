@@ -9,7 +9,7 @@ interface PaginationProps {
   itemLabel?: string
 }
 
-export default function Pagination({ currentPage, totalPages, onPageChange, totalElements, size, itemLabel = 'nhân sự' }: PaginationProps) {
+export default function Pagination({ currentPage, totalPages, onPageChange, totalElements, size, itemLabel = 'giảng viên' }: PaginationProps) {
   const start = totalElements === 0 ? 0 : currentPage * size + 1
   const end = Math.min((currentPage + 1) * size, totalElements)
 

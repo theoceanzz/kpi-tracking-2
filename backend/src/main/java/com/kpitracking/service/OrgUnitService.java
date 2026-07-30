@@ -223,7 +223,7 @@ public class OrgUnitService {
                                 .findFirst()
                                 .orElse(null);
                         String roleName = role != null ? role.getName() : "này";
-                        throw new BusinessException("Không thể bỏ vai trò '" + roleName + "' vì vẫn còn nhân viên đang giữ vai trò này trong đơn vị.");
+                        throw new BusinessException("Không thể bỏ vai trò '" + roleName + "' vì vẫn còn giảng viên đang giữ vai trò này trong đơn vị.");
                     }
                     userRoleOrgUnitRepository.deleteByOrgUnitIdAndRoleId(unitId, oldRoleId);
                 }
@@ -256,9 +256,9 @@ public class OrgUnitService {
             throw new BusinessException("Không thể xóa đơn vị này vì vẫn còn các đơn vị con bên trong. Vui lòng xóa hoặc di chuyển các đơn vị con trước.");
         }
 
-        // 2. Kiểm tra nếu có nhân viên đang gán vào đơn vị này
+        // 2. Kiểm tra nếu có giảng viên đang gán vào đơn vị này
         if (userRoleOrgUnitRepository.existsByOrgUnitId(unitId)) {
-            throw new BusinessException("Không thể xóa đơn vị này vì vẫn còn nhân viên/chức vụ đang hoạt động. Vui lòng gỡ bỏ nhân viên khỏi đơn vị trước khi xóa.");
+            throw new BusinessException("Không thể xóa đơn vị này vì vẫn còn giảng viên/chức vụ đang hoạt động. Vui lòng gỡ bỏ giảng viên khỏi đơn vị trước khi xóa.");
         }
 
         orgUnit.setDeletedAt(Instant.now());

@@ -40,7 +40,7 @@ export default function LandingPage() {
               <Target className="text-white" size={22} />
             </div>
             <span className="font-black text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
-              KeyGo
+              KeyLearn
             </span>
           </div>
 
@@ -139,7 +139,7 @@ export default function LandingPage() {
           </h1>
           
           <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-12 font-medium leading-relaxed">
-            KeyGo là giải pháp phần mềm quản trị doanh nghiệp toàn diện giúp bạn thiết lập OKR, theo dõi KPI, đánh giá hiệu suất 360 độ và xây dựng một đội ngũ gắn kết, minh bạch.
+            KeyLearn là giải pháp quản trị mục tiêu và hiệu suất toàn diện dành cho trường học, giúp nhà trường thiết lập OKR, theo dõi KPI, đánh giá 360 độ và xây dựng đội ngũ giảng viên gắn kết, minh bạch.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -271,10 +271,10 @@ export default function LandingPage() {
               Giải pháp tối ưu
             </div>
             <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6 text-slate-900 dark:text-white">
-              Tại sao chọn <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">KeyGo</span>?
+              Tại sao chọn <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">KeyLearn</span>?
             </h2>
             <p className="text-lg text-slate-500 dark:text-slate-400 font-medium">
-              Số hóa toàn diện quy trình giao việc, đánh giá, và quản lý mục tiêu. Phù hợp cho mọi quy mô doanh nghiệp từ SME đến Enterprise.
+              Số hóa toàn diện quy trình giao nhiệm vụ, đánh giá và quản lý mục tiêu. Phù hợp với mọi quy mô, từ trường phổ thông đến đại học và cao đẳng nhiều cơ sở.
             </p>
           </div>
 
@@ -282,13 +282,13 @@ export default function LandingPage() {
             <FeatureCard 
               icon={Target}
               title="Quản lý OKR & KPI"
-              description="Kết hợp mục tiêu khát vọng (OKR) và chỉ số đo lường (KPI) giúp đội ngũ đi đúng hướng và đo lường chính xác hiệu quả."
+              description="Kết hợp mục tiêu khát vọng (OKR) và chỉ số đo lường (KPI) giúp khoa, bộ môn và giảng viên đi đúng định hướng của nhà trường."
               color="indigo"
             />
             <FeatureCard 
               icon={Users}
               title="Đánh giá 360 Độ"
-              description="Quy trình đánh giá minh bạch: Tự đánh giá, Quản lý đánh giá và Chốt kết quả theo luồng phân quyền chặt chẽ."
+              description="Quy trình đánh giá minh bạch: giảng viên tự đánh giá, trưởng khoa/bộ môn đánh giá và chốt kết quả theo luồng phân quyền chặt chẽ."
               color="purple"
             />
             <FeatureCard 
@@ -300,19 +300,19 @@ export default function LandingPage() {
             <FeatureCard 
               icon={ShieldCheck}
               title="Phân Quyền Đa Tầng"
-              description="Thiết lập cơ cấu tổ chức sâu rộng, phân quyền theo vai trò (Role-based) và theo đơn vị (Unit-based)."
+              description="Thiết lập cơ cấu cơ sở — khoa — bộ môn nhiều tầng, phân quyền theo chức danh (Role-based) và theo đơn vị (Unit-based)."
               color="amber"
             />
             <FeatureCard 
               icon={Zap}
               title="Tự Động Hóa & Nhắc Nhở"
-              description="Hệ thống thông báo thông minh, theo dõi trạng thái Pending/Approved tự động, tiết kiệm 50% thời gian HR."
+              description="Hệ thống thông báo thông minh, theo dõi trạng thái Pending/Approved tự động, tiết kiệm 50% thời gian cho bộ phận nhân sự."
               color="blue"
             />
             <FeatureCard 
               icon={Server}
               title="SaaS & Triển khai riêng"
-              description="Hỗ trợ cả mô hình SaaS Multi-tenant linh hoạt và Dedicated Environment / On-site cho các tập đoàn lớn."
+              description="Hỗ trợ cả mô hình SaaS Multi-tenant linh hoạt và Dedicated Environment / On-site cho các trường có yêu cầu bảo mật cao."
               color="rose"
             />
           </div>
@@ -325,14 +325,14 @@ export default function LandingPage() {
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="flex-1 space-y-8">
               <h2 className="text-3xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white">
-                Chuyển đổi cách doanh nghiệp bạn <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">Vận hành</span>
+                Chuyển đổi cách nhà trường bạn <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">Vận hành</span>
               </h2>
               <div className="space-y-6">
                 {[
-                  "Minh bạch hóa mục tiêu công ty đến từng cá nhân",
-                  "Gắn kết đội ngũ bằng các mục tiêu chung",
+                  "Minh bạch hóa mục tiêu nhà trường đến từng giảng viên",
+                  "Gắn kết khoa, bộ môn bằng các mục tiêu chung",
                   "Đo lường chính xác hiệu quả công việc",
-                  "Tạo động lực phát triển cho nhân viên",
+                  "Tạo động lực phát triển cho giảng viên",
                   "Ra quyết định dựa trên dữ liệu thực tế"
                 ].map((benefit, idx) => (
                   <div key={idx} className="flex items-center gap-4">
@@ -381,7 +381,7 @@ export default function LandingPage() {
               tier="Standard"
               price="Liên hệ"
               unit=""
-              description="Phù hợp cho các nhóm nhỏ (< 200 user) cần số hóa đánh giá nhân sự cơ bản."
+              description="Phù hợp cho các trường quy mô nhỏ (< 200 user) cần số hóa đánh giá cán bộ, giảng viên ở mức cơ bản."
               features={[
                 { text: "SaaS Multi-tenant, dùng chung Domain", included: true },
                 { text: "Quản trị người dùng & Phân quyền", included: true },
@@ -400,13 +400,13 @@ export default function LandingPage() {
               tier="Professional"
               price="Liên hệ"
               unit=""
-              description="Giải pháp toàn diện cho doanh nghiệp tầm trung (< 500 user) quản trị OKR & KPI."
+              description="Giải pháp toàn diện cho các trường quy mô vừa (< 500 user) quản trị OKR & KPI."
               isPopular
               features={[
                 { text: "SaaS Multi-tenant, dùng chung Domain", included: true },
                 { text: "Quản lý mục tiêu OKR & KPI", included: true },
                 { text: "Dashboard động tùy chỉnh", included: true },
-                { text: "White Label (Logo + Powered by KeyGo)", included: true },
+                { text: "White Label (Logo + Powered by KeyLearn)", included: true },
                 { text: "Báo cáo chuyên sâu", included: true },
                 { text: "Hỗ trợ SLA 24h", included: true },
                 { text: "API Integration / SSO", included: "Tính phí riêng" },
@@ -420,7 +420,7 @@ export default function LandingPage() {
               tier="Enterprise"
               price="Liên hệ"
               unit=""
-              description="Giải pháp Dedicated / Onsite cho các tổ chức lớn, bảo mật cao (> 500 user)."
+              description="Giải pháp Dedicated / Onsite cho các trường lớn, nhiều cơ sở, yêu cầu bảo mật cao (> 500 user)."
               features={[
                 { text: "Subdomain riêng hoặc Onsite triển khai", included: true },
                 { text: "Tenant & Database riêng biệt", included: true },
@@ -437,7 +437,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-16 text-center text-sm font-medium text-slate-500 dark:text-slate-400">
-            * Vui lòng liên hệ để nhận báo giá chi tiết. Các tính năng <span className="font-bold text-slate-700 dark:text-slate-300">AI Assistant / AI Insight</span> sẽ được tư vấn theo nhu cầu thực tế của từng doanh nghiệp.
+            * Vui lòng liên hệ để nhận báo giá chi tiết. Các tính năng <span className="font-bold text-slate-700 dark:text-slate-300">AI Assistant / AI Insight</span> sẽ được tư vấn theo nhu cầu thực tế của từng nhà trường.
           </div>
         </div>
       </section>
@@ -450,10 +450,10 @@ export default function LandingPage() {
         
         <div className="max-w-4xl mx-auto text-center relative z-10 space-y-8">
           <h2 className="text-4xl md:text-6xl font-black tracking-tight text-white">
-            Sẵn sàng nâng tầm <br /> quản trị doanh nghiệp?
+            Sẵn sàng nâng tầm <br /> quản trị nhà trường?
           </h2>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto font-medium">
-            Tạo tài khoản ngay hôm nay và trải nghiệm môi trường quản lý mục tiêu chuyên nghiệp nhất dành cho doanh nghiệp của bạn.
+            Tạo tài khoản ngay hôm nay và trải nghiệm môi trường quản lý mục tiêu chuyên nghiệp nhất dành cho nhà trường của bạn.
           </p>
           <div className="pt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Link 
@@ -480,10 +480,10 @@ export default function LandingPage() {
               <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
                 <Target className="text-white" size={18} />
               </div>
-              <span className="font-black text-2xl text-slate-900 dark:text-white">KeyGo</span>
+              <span className="font-black text-2xl text-slate-900 dark:text-white">KeyLearn</span>
             </div>
             <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-md">
-              Hệ thống Quản trị Mục tiêu và Đánh giá hiệu suất nhân sự toàn diện. Giúp doanh nghiệp minh bạch hóa mục tiêu, tối ưu hiệu suất và kiến tạo văn hóa làm việc xuất sắc.
+              Hệ thống Quản trị Mục tiêu và Đánh giá hiệu suất dành riêng cho trường học. Giúp nhà trường minh bạch hóa mục tiêu, tối ưu hiệu suất và kiến tạo văn hóa chuyên môn xuất sắc.
             </p>
           </div>
           <div>
@@ -500,14 +500,14 @@ export default function LandingPage() {
             <ul className="space-y-4 font-medium text-slate-500 dark:text-slate-400">
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Tài liệu HDSD</a></li>
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Trung tâm trợ giúp</a></li>
-              <li><a href="#" className="hover:text-indigo-600 transition-colors">Liên hệ kinh doanh</a></li>
+              <li><a href="#" className="hover:text-indigo-600 transition-colors">Liên hệ tư vấn</a></li>
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Chính sách bảo mật</a></li>
             </ul>
           </div>
         </div>
         <div className="max-w-[1200px] mx-auto border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 dark:text-slate-400 font-bold text-sm">
-            © {new Date().getFullYear()} KeyGo Platform.
+            © {new Date().getFullYear()} KeyLearn Platform.
           </p>
           <div className="flex gap-4">
             <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 cursor-pointer transition-colors">

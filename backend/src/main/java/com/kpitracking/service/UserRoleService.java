@@ -157,7 +157,7 @@ public class UserRoleService {
                 // Check if unit has any Manager (Rank 0)
                 boolean hasManager = userRoleOrgUnitRepository.existsByOrgUnitIdAndRoleRank(orgUnit.getId(), 0);
                 if (!hasManager) {
-                    throw new com.kpitracking.exception.BusinessException("Đơn vị '" + orgUnit.getName() + "' chưa có người quản lý (Cấp trưởng). Bạn phải chỉ định quản lý trước khi thêm nhân viên.");
+                    throw new com.kpitracking.exception.BusinessException("Đơn vị '" + orgUnit.getName() + "' chưa có người quản lý (Cấp trưởng). Bạn phải chỉ định quản lý trước khi thêm giảng viên.");
                 }
             }
         }
@@ -175,7 +175,7 @@ public class UserRoleService {
                 
                 if (exists) {
                     String rankName = (rank == 0) ? "Trưởng" : "Phó";
-                    throw new com.kpitracking.exception.BusinessException("Đơn vị '" + unit.getName() + "' đã có nhân sự đảm nhiệm vai trò " + rankName + ". Mỗi đơn vị chỉ được phép có tối đa một " + rankName.toLowerCase() + ".");
+                    throw new com.kpitracking.exception.BusinessException("Đơn vị '" + unit.getName() + "' đã có giảng viên đảm nhiệm vai trò " + rankName + ". Mỗi đơn vị chỉ được phép có tối đa một " + rankName.toLowerCase() + ".");
                 }
             }
         }

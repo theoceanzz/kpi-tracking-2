@@ -11,7 +11,7 @@ const MODE_LABEL: Record<CycleEvaluationMode, string> = {
 const sanitize = (s: string) => (s || '').replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_').slice(0, 60)
 
 /**
- * Xuất bản đánh giá kỳ của MỘT phòng ban ra Excel (theo đơn vị + kỳ đang chọn).
+ * Xuất bản đánh giá kỳ của MỘT khoa ra Excel (theo đơn vị + kỳ đang chọn).
  * Ở chế độ Định tính, điểm hiển thị dạng mức 0-5 (giống trên màn hình).
  */
 export async function exportCycleEvaluationToExcel(
@@ -32,7 +32,7 @@ export async function exportCycleEvaluationToExcel(
   const wb = new ExcelJS.Workbook()
   const ws = wb.addWorksheet('Đánh giá kỳ')
 
-  const lastCol = showDim ? 6 : 4 // STT + Nhân viên + Đơn vị + 3 điểm (+ 2 cột định tính)
+  const lastCol = showDim ? 6 : 4 // STT + Giảng viên + Đơn vị + 3 điểm (+ 2 cột định tính)
   const colLetter = String.fromCharCode(64 + lastCol) // A=65
 
   // 1. Tiêu đề
@@ -44,9 +44,9 @@ export async function exportCycleEvaluationToExcel(
   titleCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF059669' } } // Emerald-600
   ws.getRow(1).height = 26
 
-  // 2. Thông tin tổng hợp phòng ban
+  // 2. Thông tin tổng hợp khoa
   const info: [string, string][] = [
-    ['Phòng ban', summary.orgUnitName || '—'],
+    ['Khoa', summary.orgUnitName || '—'],
     ['Chế độ đánh giá', MODE_LABEL[summary.mode]],
     ['Số thành viên', String(summary.memberCount)],
     [isQual ? 'Mức chốt (TB phòng)' : 'Điểm chốt (TB phòng)', side(summary.managerScore)],
@@ -80,8 +80,8 @@ export async function exportCycleEvaluationToExcel(
   ws.addRow([])
 
   // 3. Bảng thành viên
-  const headers = ['STT', 'Nhân viên', 'Đơn vị',
-    isQual ? 'Mức tự đánh giá' : 'Nhân viên tự đánh giá',
+  const headers = ['STT', 'Giảng viên', 'Đơn vị',
+    isQual ? 'Mức tự đánh giá' : 'Giảng viên tự đánh giá',
     isQual ? 'Mức QLTT' : 'Cán bộ QLTT đánh giá',
     isQual ? 'Mức chốt kỳ' : 'Điểm chốt kỳ']
   if (showDim) headers.push('Định tính', 'Xếp loại')

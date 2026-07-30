@@ -67,10 +67,10 @@ const DEFAULT_SUMMARY_WIDGETS: SummaryWidget[] = [
   { i: 'trend-chart', type: 'TREND_CHART', title: 'Xu hướng KPI theo thời gian', x: 0, y: 0, w: 12, h: 15, visible: true },
   { i: 'kpi-detail', type: 'KPI_DETAIL', title: 'Bảng chi tiết KPI đơn vị', x: 0, y: 15, w: 12, h: 18, visible: true },
   { i: 'unit-perf', type: 'UNIT_PERFORMANCE', title: 'Hiệu suất & Tiến độ đơn vị', x: 0, y: 34, w: 12, h: 13, visible: true },
-  { i: 'member-dist', type: 'MEMBER_DIST', title: 'Nhân sự & vai trò theo đơn vị', x: 0, y: 47, w: 12, h: 10, visible: true },
+  { i: 'member-dist', type: 'MEMBER_DIST', title: 'Giảng viên & vai trò theo đơn vị', x: 0, y: 47, w: 12, h: 10, visible: true },
   { i: 'unit-risk', type: 'UNIT_RISK', title: 'Rủi ro đơn vị', x: 0, y: 57, w: 12, h: 11, visible: true },
   { i: 'warning-list', type: 'WARNING_LIST', title: 'Rủi ro thành viên', x: 0, y: 68, w: 12, h: 11, visible: true },
-  { i: 'rank-table', type: 'RANKING_TABLE', title: 'Bảng xếp hạng nhân sự', x: 0, y: 79, w: 12, h: 13, visible: true },
+  { i: 'rank-table', type: 'RANKING_TABLE', title: 'Bảng xếp hạng giảng viên', x: 0, y: 79, w: 12, h: 13, visible: true },
 ]
 
 // Các widget cốt lõi luôn có mặt (bổ sung cho cấu hình cũ chưa có sau khi thêm mới).
@@ -92,7 +92,7 @@ const summaryPostProcess = (mapped: SummaryWidget[], defaults: SummaryWidget[]):
   let result = mapped
     .filter(w => w.type !== 'ROLE_DIST')
     .map(w => (hasLegacyRoleDist && w.type === 'MEMBER_DIST')
-      ? { ...w, w: 12, x: 0, title: 'Nhân sự & vai trò theo đơn vị' }
+      ? { ...w, w: 12, x: 0, title: 'Giảng viên & vai trò theo đơn vị' }
       : w)
     .map(w => (w.type === 'TREND_CHART' && (w.h ?? 0) < 15) ? { ...w, h: 15 } : w)
   CORE_WIDGET_IDS.forEach(id => {
@@ -300,11 +300,11 @@ export default function SummaryTab() {
       )
       case 'UNIT_KPI': return null // gộp vào UNIT_PERFORMANCE (Hiệu suất & Tiến độ đơn vị)
       case 'MEMBER_DIST': return (
-        <ChartWrapper title="Nhân sự & vai trò theo đơn vị" icon={<Users size={20} className="text-purple-600" />} widget={widget} onTogglePin={handleTogglePin} isEditMode={isEditMode}>
+        <ChartWrapper title="Giảng viên & vai trò theo đơn vị" icon={<Users size={20} className="text-purple-600" />} widget={widget} onTogglePin={handleTogglePin} isEditMode={isEditMode}>
           <MemberRoleChart data={mainData?.roleDistribution} />
         </ChartWrapper>
       )
-      case 'ROLE_DIST': return null // đã gộp vào MEMBER_DIST (Nhân sự & vai trò)
+      case 'ROLE_DIST': return null // đã gộp vào MEMBER_DIST (Giảng viên & vai trò)
       case 'UNIT_RISK': return <UnitRiskSection orgUnitId={selectedUnitId} from={from} to={to} onlyApproved={onlyApproved} periodId={periodId} periodIdTo={periodIdTo} isEditMode={isEditMode} widget={widget} onTogglePin={handleTogglePin} />
       case 'WARNING_LIST': return <WarningListSection orgUnitId={selectedUnitId} from={from} to={to} onlyApproved={onlyApproved} periodId={periodId} periodIdTo={periodIdTo} isEditMode={isEditMode} widget={widget} onTogglePin={handleTogglePin} />
       case 'RANKING_TABLE': return <EmployeeRankingTableSection orgUnitId={selectedUnitId} from={from} to={to} onlyApproved={onlyApproved} periodId={periodId} periodIdTo={periodIdTo} isEditMode={isEditMode} widget={widget} onTogglePin={handleTogglePin} />
@@ -382,7 +382,7 @@ export default function SummaryTab() {
           <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-teal-100 dark:bg-teal-900/40 text-teal-600 dark:text-teal-400 flex items-center justify-center shrink-0"><Users size={24} /></div>
             <div>
-              <p className="text-xs font-bold text-slate-500">Tổng nhân sự</p>
+              <p className="text-xs font-bold text-slate-500">Tổng giảng viên</p>
               <p className="text-2xl font-black">{mainData?.totalMembers ?? '—'}</p>
             </div>
           </div>
@@ -1154,7 +1154,7 @@ export function EmployeeRankingTableSection({ orgUnitId, from, to, onlyApproved,
             <thead>
               <tr className="text-left text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 dark:border-slate-800">
                 <th className="px-6 py-4">Hạng</th>
-                <th className="px-6 py-4">Nhân viên</th>
+                <th className="px-6 py-4">Giảng viên</th>
                 <th className="px-6 py-4">Đơn vị</th>
                 <th className="px-6 py-4 text-center cursor-pointer hover:text-indigo-600" onClick={() => handleSort('avgProgress')}>
                   Tiến độ trung bình {sortIcon('avgProgress')}
@@ -1267,14 +1267,14 @@ export function EmployeeRankingTableSection({ orgUnitId, from, to, onlyApproved,
           )}
         </div>
         {totalRankPages > 1 && (
-          <Pagination currentPage={rankPage} totalPages={totalRankPages} onPageChange={setRankPage} totalElements={totalRankElements} size={RANK_PAGE_SIZE} itemLabel="nhân viên" />
+          <Pagination currentPage={rankPage} totalPages={totalRankPages} onPageChange={setRankPage} totalElements={totalRankElements} size={RANK_PAGE_SIZE} itemLabel="giảng viên" />
         )}
       </div>
   )
   if (bare) return <div className="h-full flex flex-col overflow-auto custom-scrollbar">{body}</div>
   return (
     <ChartWrapper
-      title="Bảng xếp hạng nhân sự"
+      title="Bảng xếp hạng giảng viên"
       icon={<Medal size={20} className="text-indigo-600" />}
       widget={widget!} onTogglePin={onTogglePin!} isEditMode={!!isEditMode}
       extraHeaderContent={

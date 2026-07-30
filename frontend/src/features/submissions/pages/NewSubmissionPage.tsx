@@ -301,7 +301,7 @@ export default function NewSubmissionPage() {
                 </label>
                 <p className="text-xs font-medium text-slate-500 -mt-2">Chọn mức bạn tự thấy phù hợp; quản lý sẽ xác nhận hoặc điều chỉnh khi duyệt.</p>
                 {qualitativeLevels.length === 0 ? (
-                  <p className="text-xs font-bold text-amber-600">Chưa cấu hình thang điểm định tính ở trang Công ty.</p>
+                  <p className="text-xs font-bold text-amber-600">Chưa cấu hình thang điểm định tính ở trang Nhà trường.</p>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {qualitativeLevels.map(level => {

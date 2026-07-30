@@ -391,7 +391,7 @@ public class StatsService {
 
                 
                 if (!hasAccess) {
-                    throw new com.kpitracking.exception.ForbiddenException("Bạn không có quyền xem tiến độ của nhân viên này");
+                    throw new com.kpitracking.exception.ForbiddenException("Bạn không có quyền xem tiến độ của giảng viên này");
                 }
             }
         }
@@ -719,7 +719,7 @@ public class StatsService {
             }
         }
 
-        // Thành viên = TẤT CẢ nhân sự trong cây con (đơn vị hiện tại + đơn vị con), KHÔNG chỉ trực tiếp.
+        // Thành viên = TẤT CẢ giảng viên trong cây con (đơn vị hiện tại + đơn vị con), KHÔNG chỉ trực tiếp.
         // Mỗi người xuất hiện 1 lần, gán về đơn vị CAO NHẤT (path ngắn nhất) mà họ giữ vai trò; sắp xếp
         // theo đơn vị từ cao xuống thấp (path ngắn → dài) rồi theo tên → đơn vị hiện tại đứng đầu.
         List<UUID> currentSubtree = getSubtreeIds(currentOrgUnit);
@@ -907,7 +907,7 @@ public class StatsService {
         Collection<UserRoleOrgUnit> allMembers = memberMap.values();
 
         // Structure logic — đếm MỖI NGƯỜI 1 LẦN ở đơn vị SÂU NHẤT (memberMap), theo vai trò tại đó.
-        // Bucket 0 = ĐƠN VỊ HIỆN TẠI: gồm TOÀN BỘ nhân sự dưới cây (kể cả đơn vị con).
+        // Bucket 0 = ĐƠN VỊ HIỆN TẠI: gồm TOÀN BỘ giảng viên dưới cây (kể cả đơn vị con).
         // Bucket i+1 = từng đơn vị con (breakdown, là tập con của bucket 0).
         int childCount = childUnits.size();
         Map<UUID, Integer> unitToChild = new HashMap<>();

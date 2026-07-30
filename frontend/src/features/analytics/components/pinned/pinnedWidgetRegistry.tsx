@@ -98,7 +98,7 @@ function PinnedUnitPerf({ filter }: { filter?: PinnedFilter }) {
 }
 
 function PinnedMemberDist() {
-  // Cơ cấu nhân sự/vai trò không theo thời gian → không phụ thuộc filter.
+  // Cơ cấu giảng viên/vai trò không theo thời gian → không phụ thuộc filter.
   const { data } = useSummaryStats()
   return <Fill><MemberRoleChart data={data?.roleDistribution} /></Fill>
 }
@@ -149,7 +149,7 @@ export const PINNED_REGISTRY: Record<string, ComponentType<{ filter?: PinnedFilt
   // Hiệu suất & tiến độ đơn vị
   'unit-perf': PinnedUnitPerf,
   'sub-unit-perf': PinnedUnitPerf,
-  // Nhân sự & vai trò
+  // Giảng viên & vai trò
   'member-dist': PinnedMemberDist,
   'sub-member': PinnedMemberDist,
   // Chi tiết mục tiêu cấp dưới (đã self-contained)

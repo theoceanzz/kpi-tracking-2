@@ -39,7 +39,7 @@ public class MatrixAnalyticsResponses {
         private List<String> rows;          // dải điểm hành vi
         private List<String> cols;          // dải % hoàn thành
         private List<List<Integer>> ratings; // ratings[row][col] = xếp loại (từ cấu hình org)
-        private List<List<Integer>> counts;  // counts[row][col] = số nhân sự rơi vào ô
+        private List<List<Integer>> counts;  // counts[row][col] = số giảng viên rơi vào ô
     }
 
 }

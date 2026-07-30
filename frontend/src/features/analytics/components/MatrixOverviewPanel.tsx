@@ -157,7 +157,7 @@ export function MatrixDistHeatmap({ overview }: { overview?: MatrixOverview }) {
                           <div
                             className="w-full h-[52px] min-w-[64px] rounded-lg flex flex-col items-center justify-center border border-black/5"
                             style={{ backgroundColor: hexA(color, alpha) }}
-                            title={`Xếp loại ${rating ?? '—'} · ${count} nhân sự`}
+                            title={`Xếp loại ${rating ?? '—'} · ${count} giảng viên`}
                           >
                             <span className={cn('text-base font-black tabular-nums', count > 0 ? 'text-slate-900 dark:text-white' : 'text-slate-300 dark:text-slate-600')}>{count}</span>
                             <span className="text-[9px] font-bold" style={{ color }}>loại {rating ?? '—'}</span>
@@ -169,7 +169,7 @@ export function MatrixDistHeatmap({ overview }: { overview?: MatrixOverview }) {
                 ))}
               </tbody>
             </table>
-            <p className="text-[11px] text-slate-400 font-medium mt-2 text-center">Số trong ô = số nhân sự rơi vào (điểm hành vi × % hoàn thành) đó · màu theo xếp loại của ô.</p>
+            <p className="text-[11px] text-slate-400 font-medium mt-2 text-center">Số trong ô = số giảng viên rơi vào (điểm hành vi × % hoàn thành) đó · màu theo xếp loại của ô.</p>
           </div>
         ) : <EmptyState>Tổ chức chưa cấu hình ma trận xếp loại</EmptyState>}
       </Card>

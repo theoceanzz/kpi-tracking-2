@@ -344,7 +344,7 @@ public class OrganizationService {
         if (dto.getManagerRoleLabel() != null && !dto.getManagerRoleLabel().trim().isEmpty()) {
             headName = dto.getManagerRoleLabel();
         } else {
-            headName = isTop ? "GIÁM ĐỐC" : "TRƯỞNG " + dto.getUnitTypeName().toUpperCase();
+            headName = isTop ? "HIỆU TRƯỞNG" : "TRƯỞNG " + dto.getUnitTypeName().toUpperCase();
         }
         syncSingleRole(org, headName, roleLevel, 0, isTop ? "director" : "manager", allPerms, tierLevel, numTiers);
 
@@ -359,13 +359,13 @@ public class OrganizationService {
                 deputyName = "Phó " + managerLabel;
             }
         } else {
-            deputyName = "Phó " + (isTop ? "Giám Đốc" : dto.getUnitTypeName().toUpperCase());
+            deputyName = "Phó " + (isTop ? "Hiệu Trưởng" : dto.getUnitTypeName().toUpperCase());
         }
         syncSingleRole(org, deputyName, roleLevel, 1, isTop ? "deputy_director" : "deputy", allPerms, tierLevel, numTiers);
 
         // Staff (Rank 2) - only for bottom level
         if (isBottom) {
-            syncSingleRole(org, "NHÂN VIÊN", roleLevel, 2, "staff", allPerms, tierLevel, numTiers);
+            syncSingleRole(org, "GIẢNG VIÊN", roleLevel, 2, "staff", allPerms, tierLevel, numTiers);
         }
     }
 

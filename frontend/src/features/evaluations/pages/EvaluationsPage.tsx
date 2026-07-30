@@ -199,7 +199,7 @@ export default function EvaluationsPage() {
           </h1>
           <p className="text-slate-500 font-medium text-sm max-w-lg">
             {canViewAll 
-              ? 'Hệ thống quản trị và phản hồi kết quả đánh giá năng lực nhân sự định kỳ.'
+              ? 'Hệ thống quản trị và phản hồi kết quả đánh giá năng lực giảng viên định kỳ.'
               : 'Nơi phản ánh kết quả nỗ lực và tự đánh giá năng lực bản thân theo từng kỳ.'}
           </p>
         </div>
@@ -268,7 +268,7 @@ export default function EvaluationsPage() {
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <Building2 size={16} className="text-slate-400" />
                       </div>
-                      <SelectValue placeholder="Chọn phòng ban..." />
+                      <SelectValue placeholder="Chọn khoa..." />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-[var(--color-border)] shadow-lg max-h-[300px]">
                       {flatOrgUnits.map(unit => (
@@ -285,10 +285,10 @@ export default function EvaluationsPage() {
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                       <User size={16} className="text-slate-400" />
                     </div>
-                    <SelectValue placeholder="Tất cả nhân viên..." />
+                    <SelectValue placeholder="Tất cả giảng viên..." />
                   </SelectTrigger>
                   <SelectContent className="rounded-xl border-[var(--color-border)] shadow-lg max-h-[300px]">
-                    <SelectItem value="ALL" className="font-medium cursor-pointer rounded-lg text-xs">Tất cả nhân viên...</SelectItem>
+                    <SelectItem value="ALL" className="font-medium cursor-pointer rounded-lg text-xs">Tất cả giảng viên...</SelectItem>
                     {employees.map(emp => (
                       <SelectItem key={emp.id} value={emp.id} className="font-medium cursor-pointer rounded-lg text-xs">{emp.fullName}</SelectItem>
                     ))}
@@ -362,7 +362,7 @@ export default function EvaluationsPage() {
                   <th className="px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Kết quả</th>
                   <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
                     <button onClick={() => handleSort('userName')} className="flex items-center gap-1 hover:text-indigo-600 transition-colors">
-                      Nhân viên <ArrowUpDown size={12} />
+                      Giảng viên <ArrowUpDown size={12} />
                     </button>
                   </th>
                   <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -421,7 +421,7 @@ export default function EvaluationsPage() {
                               {isNewGroup && (
                                 <div className="flex items-center gap-2 mt-0.5">
                                   <span className="px-1.5 py-0.5 rounded-md bg-blue-50 dark:bg-blue-900/30 text-[8px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest border border-blue-100 dark:border-blue-800/50">
-                                    {ev.userRoleName || 'NHÂN VIÊN'}
+                                    {ev.userRoleName || 'GIẢNG VIÊN'}
                                   </span>
                                   <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">{ev.orgUnitName}</span>
                                 </div>
@@ -491,7 +491,7 @@ export default function EvaluationsPage() {
                       <p className="text-sm font-black text-slate-900 dark:text-white truncate">{ev.userName}</p>
                       <div className="flex items-center gap-2 mt-0.5">
                         <span className="px-1.5 py-0.5 rounded-md bg-blue-50 dark:bg-blue-900/30 text-[8px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest border border-blue-100 dark:border-blue-800/50">
-                          {ev.userRoleName || 'NHÂN VIÊN'}
+                          {ev.userRoleName || 'GIẢNG VIÊN'}
                         </span>
                         <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter truncate">{ev.orgUnitName}</span>
                       </div>

@@ -255,7 +255,7 @@ public class BscService {
                         .flatMap(sc -> sc.getOrgUnits().stream()).map(OrgUnit::getId).collect(Collectors.toSet());
                 String names = orgUnits.stream().filter(u -> taken.contains(u.getId()))
                         .map(OrgUnit::getName).distinct().collect(Collectors.joining(", "));
-                throw new DuplicateResourceException("Phòng ban đã có thẻ điểm trong kỳ này: " + names);
+                throw new DuplicateResourceException("Khoa đã có thẻ điểm trong kỳ này: " + names);
             }
         }
         validateWeights(request.getPerspectives());
@@ -365,17 +365,17 @@ public class BscService {
         return mapToScorecardResponse(scorecard);
     }
 
-    /** Nạp + kiểm tra danh sách phòng ban thuộc đúng tổ chức. RỖNG/null ⇒ thẻ điểm mặc định toàn org. */
+    /** Nạp + kiểm tra danh sách khoa thuộc đúng tổ chức. RỖNG/null ⇒ thẻ điểm mặc định toàn org. */
     private List<OrgUnit> resolveRequestOrgUnits(UUID organizationId, List<UUID> orgUnitIds) {
         if (orgUnitIds == null || orgUnitIds.isEmpty()) return new ArrayList<>();
         List<OrgUnit> units = new ArrayList<>();
         for (UUID id : orgUnitIds.stream().distinct().collect(Collectors.toList())) {
             OrgUnit unit = orgUnitRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Phòng ban", "id", id));
+                    .orElseThrow(() -> new ResourceNotFoundException("Khoa", "id", id));
             UUID unitOrgId = unit.getOrgHierarchyLevel() != null && unit.getOrgHierarchyLevel().getOrganization() != null
                     ? unit.getOrgHierarchyLevel().getOrganization().getId() : null;
             if (unitOrgId == null || !unitOrgId.equals(organizationId)) {
-                throw new BusinessException("Phòng ban không thuộc tổ chức này");
+                throw new BusinessException("Khoa không thuộc tổ chức này");
             }
             units.add(unit);
         }
@@ -698,11 +698,11 @@ public class BscService {
                         .or(() -> kpiPeriodRepository.findByNameIgnoreCase(clean))
                         .orElseThrow(() -> new BusinessException("Không tìm thấy kỳ '" + g.periodName + "'"));
 
-                // Phòng ban áp dụng cho thẻ điểm của kỳ này (cột OrgUnits, phân tách dấu phẩy; RỖNG = toàn org).
+                // Khoa áp dụng cho thẻ điểm của kỳ này (cột OrgUnits, phân tách dấu phẩy; RỖNG = toàn org).
                 List<OrgUnit> targetUnits = resolveUnitsByCodes(organizationId, g.orgUnitCodes);
 
-                // Xác định thẻ điểm đích: theo phòng ban đã chọn (upsert thẻ đang chứa các phòng ban đó),
-                // hoặc thẻ MẶC ĐỊNH toàn org nếu không chọn phòng ban nào.
+                // Xác định thẻ điểm đích: theo khoa đã chọn (upsert thẻ đang chứa các khoa đó),
+                // hoặc thẻ MẶC ĐỊNH toàn org nếu không chọn khoa nào.
                 BscScorecard scorecard;
                 if (targetUnits.isEmpty()) {
                     scorecard = scorecardRepository.findDefaultByPeriod(organizationId, period.getId()).orElse(null);
@@ -710,7 +710,7 @@ public class BscService {
                     List<UUID> unitIds = targetUnits.stream().map(OrgUnit::getId).collect(Collectors.toList());
                     List<BscScorecard> overlap = scorecardRepository.findByOrgUnitsAndPeriod(organizationId, unitIds, period.getId());
                     if (overlap.size() > 1) {
-                        throw new BusinessException("Các phòng ban đã chọn đang thuộc nhiều thẻ điểm khác nhau trong kỳ này");
+                        throw new BusinessException("Các khoa đã chọn đang thuộc nhiều thẻ điểm khác nhau trong kỳ này");
                     }
                     scorecard = overlap.isEmpty() ? null : overlap.get(0);
                 }
@@ -773,7 +773,7 @@ public class BscService {
         final java.util.LinkedHashMap<String, Double> weights = new java.util.LinkedHashMap<>();
     }
 
-    /** Phân giải danh sách MÃ phòng ban (phân tách dấu phẩy) → OrgUnit trong tổ chức. RỖNG ⇒ danh sách rỗng. */
+    /** Phân giải danh sách MÃ khoa (phân tách dấu phẩy) → OrgUnit trong tổ chức. RỖNG ⇒ danh sách rỗng. */
     private List<OrgUnit> resolveUnitsByCodes(UUID organizationId, String codesCsv) {
         List<OrgUnit> units = new ArrayList<>();
         if (codesCsv == null || codesCsv.isBlank()) return units;
@@ -782,7 +782,7 @@ public class BscService {
             String code = raw.trim();
             if (code.isEmpty()) continue;
             OrgUnit unit = orgUnitRepository.findByCodeSmart(code, organizationId)
-                    .orElseThrow(() -> new BusinessException("Không tìm thấy phòng ban mã '" + code + "'"));
+                    .orElseThrow(() -> new BusinessException("Không tìm thấy khoa mã '" + code + "'"));
             if (seen.add(unit.getId())) units.add(unit);
         }
         return units;

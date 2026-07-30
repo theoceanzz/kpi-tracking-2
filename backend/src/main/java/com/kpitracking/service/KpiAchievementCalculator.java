@@ -103,7 +103,7 @@ public class KpiAchievementCalculator {
      *
      * Trả null khi: chưa được chấm mức, hoặc HR chưa cấu hình score_percent cho mức đó
      * ⇒ KPI này bị LOẠI khỏi điểm BSC (không tính trọng số) thay vì bị coi là 0đ —
-     * tránh trừ oan nhân viên khi quản lý chưa kịp chấm.
+     * tránh trừ oan giảng viên khi quản lý chưa kịp chấm.
      */
     public Double qualitativeRatio(KpiCriteria kpi, UUID targetUserId) {
         QualitativeLevel level = kpi.getSubmissions().stream()

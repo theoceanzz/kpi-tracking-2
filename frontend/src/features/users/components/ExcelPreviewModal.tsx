@@ -237,7 +237,7 @@ export default function ExcelPreviewModal({ open, file, onClose, onImport, isImp
       r.name.toLowerCase() === row.Role.toLowerCase()
     )
 
-    // Fallback: Partial matching for renamed roles (e.g., "Trưởng phòng" matches "Trưởng phòng 1")
+    // Fallback: Partial matching for renamed roles (e.g., "Trưởng khoa" matches "Trưởng khoa 1")
     if (!roleObj && rolesData && row.Role) {
       const excelRole = row.Role.toLowerCase().trim()
       roleObj = rolesData.find(r => {
@@ -353,7 +353,7 @@ export default function ExcelPreviewModal({ open, file, onClose, onImport, isImp
       if (row.EmployeeCode && row.EmployeeCode.trim()) {
         const code = row.EmployeeCode.trim().toLowerCase()
         if ((codeCounts.get(code) || 0) > 1) {
-          errors['EmployeeCode'] = 'Mã nhân viên bị trùng lặp trong tệp tin'
+          errors['EmployeeCode'] = 'Mã giảng viên bị trùng lặp trong tệp tin'
         }
       }
 
@@ -477,7 +477,7 @@ export default function ExcelPreviewModal({ open, file, onClose, onImport, isImp
                         <th className="px-4 py-3 min-w-[150px] bg-gray-50">Mã NV</th>
                         <th className="px-4 py-3 min-w-[200px] bg-gray-50">Chức danh <span className="text-red-500">*</span></th>
                         <th className="px-4 py-3 min-w-[200px] bg-gray-50">Mật khẩu</th>
-                        <th className="px-4 py-3 min-w-[300px] bg-gray-50">Phòng ban / Đơn vị</th>
+                        <th className="px-4 py-3 min-w-[300px] bg-gray-50">Khoa / Đơn vị</th>
                         <th className="px-4 py-3 w-16 text-center bg-gray-50">Xóa</th>
                       </tr>
                     </thead>

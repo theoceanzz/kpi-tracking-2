@@ -340,7 +340,7 @@ export default function OrgUnitDetailPage() {
               </div>
               
               <p className="text-sm text-blue-100/80 leading-relaxed font-medium">
-                Dữ liệu thành viên và cấu trúc phòng ban được bảo vệ đa lớp. Mọi thao tác thay đổi nhân sự hoặc định cấu hình sẽ được ghi lại trong nhật ký an ninh hệ thống dưới quyền quản trị viên cấp cao nhất.
+                Dữ liệu thành viên và cấu trúc khoa được bảo vệ đa lớp. Mọi thao tác thay đổi giảng viên hoặc định cấu hình sẽ được ghi lại trong nhật ký an ninh hệ thống dưới quyền quản trị viên cấp cao nhất.
               </p>
               
               <div className="mt-10 pt-8 border-t border-white/5 flex items-center justify-center">

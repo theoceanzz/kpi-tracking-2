@@ -12,7 +12,7 @@ import java.util.UUID;
 
 /**
  * Quan hệ nhân-quả có hướng giữa hai Mục tiêu (Objective) trong bản đồ chiến lược.
- * Thể hiện chuỗi nhân-quả kinh điển của BSC: Học hỏi → Quy trình → Khách hàng → Tài chính.
+ * Thể hiện chuỗi nhân-quả kinh điển của BSC: Học hỏi → Quy trình → Người học → Tài chính.
  */
 @Entity
 @Table(name = "bsc_objective_relations")

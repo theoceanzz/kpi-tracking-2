@@ -198,7 +198,7 @@ export default function EmployeePerformancePage() {
           {tasks.length === 0 ? (
             <div className="p-16 text-center opacity-60">
               <Target size={48} className="mx-auto mb-4 text-slate-300" />
-              <p className="font-bold text-slate-500">Nhân viên này chưa được giao KPI nào</p>
+              <p className="font-bold text-slate-500">Giảng viên này chưa được giao KPI nào</p>
             </div>
           ) : (
             tasks.map((task: KpiTask) => {

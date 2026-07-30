@@ -129,7 +129,7 @@ export default function StaffPerformanceDetailModal({
                </div>
                <div className="space-y-2">
                   <p className="text-xl font-black text-slate-900 dark:text-white">Chưa có bài nộp nào</p>
-                  <p className="text-sm text-slate-500 max-w-sm mx-auto">Nhân viên này chưa thực hiện nộp kết quả cho các chỉ tiêu trong đợt đánh giá hiện tại.</p>
+                  <p className="text-sm text-slate-500 max-w-sm mx-auto">Giảng viên này chưa thực hiện nộp kết quả cho các chỉ tiêu trong đợt đánh giá hiện tại.</p>
                </div>
             </div>
           ) : (

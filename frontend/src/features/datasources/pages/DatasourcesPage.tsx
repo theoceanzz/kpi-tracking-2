@@ -186,7 +186,7 @@ export default function DatasourcesPage() {
                   type="text"
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
-                  placeholder="VD: Doanh thu Q1 2026"
+                  placeholder="VD: Kết quả tuyển sinh Q1 2026"
                   className="w-full px-3 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30"
                   autoFocus
                 />

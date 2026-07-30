@@ -478,7 +478,7 @@ export default function DatasourceDetailPage() {
                 <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex items-center justify-between cursor-pointer" onClick={() => setNewColIsMultiUser(!newColIsMultiUser)}>
                   <div>
                     <div className="text-sm font-bold text-slate-800 dark:text-slate-200">Cho phép chọn nhiều</div>
-                    <div className="text-xs text-slate-500 font-medium">Bật nếu một ô có thuộc tính nhiều nhân sự</div>
+                    <div className="text-xs text-slate-500 font-medium">Bật nếu một ô có thuộc tính nhiều giảng viên</div>
                   </div>
                   <div className={`w-10 h-6 rounded-full p-1 transition-colors ${newColIsMultiUser ? 'bg-indigo-500' : 'bg-slate-300 dark:bg-slate-600'}`}>
                     <div className={`w-4 h-4 bg-white rounded-full transition-transform ${newColIsMultiUser ? 'translate-x-4' : 'translate-x-0'}`} />
