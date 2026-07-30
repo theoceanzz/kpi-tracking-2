@@ -1,0 +1,40 @@
+package com.kpitracking.repository;
+
+import com.kpitracking.entity.BscScorecard;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Repository
+public interface BscScorecardRepository extends JpaRepository<BscScorecard, UUID> {
+
+    List<BscScorecard> findByOrganizationIdOrderByCreatedAtDesc(UUID organizationId);
+
+    /** Thẻ điểm CHỨA một khoa cụ thể trong 1 kỳ. */
+    @Query("SELECT s FROM BscScorecard s JOIN s.orgUnits u "
+            + "WHERE s.organization.id = :orgId AND s.kpiPeriod.id = :periodId AND u.id = :unitId")
+    Optional<BscScorecard> findByOrgUnitAndPeriod(@Param("orgId") UUID orgId,
+                                                  @Param("unitId") UUID unitId,
+                                                  @Param("periodId") UUID periodId);
+
+    /** Các thẻ điểm CHỨA bất kỳ khoa nào trong danh sách (dùng để kiểm tra chồng lấn). */
+    @Query("SELECT DISTINCT s FROM BscScorecard s JOIN s.orgUnits u "
+            + "WHERE s.organization.id = :orgId AND s.kpiPeriod.id = :periodId AND u.id IN :unitIds")
+    List<BscScorecard> findByOrgUnitsAndPeriod(@Param("orgId") UUID orgId,
+                                               @Param("unitIds") Collection<UUID> unitIds,
+                                               @Param("periodId") UUID periodId);
+
+    /** Thẻ điểm MẶC ĐỊNH toàn org (không gắn khoa nào) trong 1 kỳ. */
+    @Query("SELECT s FROM BscScorecard s "
+            + "WHERE s.organization.id = :orgId AND s.kpiPeriod.id = :periodId AND s.orgUnits IS EMPTY")
+    Optional<BscScorecard> findDefaultByPeriod(@Param("orgId") UUID orgId, @Param("periodId") UUID periodId);
+
+    /** Có BẤT KỲ thẻ điểm nào (theo khoa hoặc mặc định) cho org+kỳ không. */
+    boolean existsByOrganizationIdAndKpiPeriodId(UUID organizationId, UUID kpiPeriodId);
+}

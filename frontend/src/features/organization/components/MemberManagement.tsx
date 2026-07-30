@@ -1,0 +1,762 @@
+import { useState, useMemo } from 'react'
+import { 
+  Users, 
+  UserPlus,
+  UserMinus, 
+  ChevronDown, 
+  ChevronUp, 
+  Shield,  
+  Search,
+  Loader2,
+  X,
+  Settings2,
+  AlertTriangle,
+  CheckCircle2
+} from 'lucide-react'
+import { useOrgUnitMembers, useRoles, useAssignRole, useRevokeRole, useOrganizationUsers, useBulkAssignRole, useRemoveAllFromUnit, useRemoveBulkFromUnit } from '../hooks/useUserRoles'
+import { useOrgUnit, useOrgHierarchyLevels } from '../hooks/useOrganizationStructure'
+import { useUpdateUser } from '@/features/users/hooks/useUsers'
+import { useAuthStore } from '@/store/authStore'
+import { toast } from 'sonner'
+import { useOrgUnitTree } from '@/features/orgunits/hooks/useOrgUnitTree'
+
+
+interface MemberManagementProps {
+  orgUnitId: string
+}
+
+type GroupedMember = {
+  userId: string
+  userFullName: string
+  userEmail: string
+  userStatus?: string
+  assignments: {
+    roleId: string
+    roleName: string
+    assignedAt: string
+  }[]
+}
+
+interface ConfirmModalState {
+    isOpen: boolean
+    userId: string
+    roleId: string
+    roleName: string
+    userFullName: string
+}
+
+export function MemberManagement({ orgUnitId }: MemberManagementProps) {
+  const [isExpanded, setIsExpanded] = useState(true)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [showManageModal, setShowManageModal] = useState<GroupedMember | null>(null)
+  const [confirmModal, setConfirmModal] = useState<ConfirmModalState>({
+      isOpen: false,
+      userId: '',
+      roleId: '',
+      roleName: '',
+      userFullName: ''
+  })
+  const [showRemoveAllConfirm, setShowRemoveAllConfirm] = useState(false)
+  
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([])
+  const [selectedMemberIds, setSelectedMemberIds] = useState<string[]>([])
+  const [selectedRole, setSelectedRole] = useState<string | null>(null)
+  
+  const { user } = useAuthStore()
+  const orgId = user?.memberships?.[0]?.organizationId
+  const { data: orgUnit } = useOrgUnit(orgId, orgUnitId)
+
+  const { data: orgUnitTree } = useOrgUnitTree()
+  const rootUnitId = orgUnitTree?.[0]?.id
+
+  const { data: members = [], isLoading: isMembersLoading } = useOrgUnitMembers(orgUnitId)
+  const { data: roles = [] } = useRoles()
+  const { data: orgUsersData } = useOrganizationUsers(rootUnitId)
+  
+  const orgUsers = orgUsersData?.content || []
+
+  const assignMutation = useAssignRole()
+  const bulkAssignMutation = useBulkAssignRole()
+  const revokeMutation = useRevokeRole()
+  const removeAllMutation = useRemoveAllFromUnit()
+  const removeBulkMutation = useRemoveBulkFromUnit()
+  const updateUserMutation = useUpdateUser()
+
+  const { data: hierarchyLevels = [] } = useOrgHierarchyLevels(orgId)
+
+  // Roles available for this specific unit based on scope
+  const filteredRoles = useMemo(() => {
+    let result = roles
+
+    // 1. Filter by hierarchy level count
+    if (hierarchyLevels.length > 0) {
+      const levelCount = hierarchyLevels.length
+      result = result.filter(r => {
+        if (r.isSystem) {
+          return r.name !== 'DIRECTOR_SYSTEM'
+        }
+        
+        // Staff (rank 2) always shown
+        if (r.rank === 2) return true
+        
+        // Director-level (level 0, rank 0)
+        if (r.level === 0 && r.rank === 0) return levelCount >= 1
+        
+        // Mid-level (level 1) only if 3+ hierarchy levels
+        if (r.level === 1) return levelCount > 2
+        
+        // Team-level (level 2, rank 0 or 1) always shown
+        if (r.level === 2 && (r.rank === 0 || r.rank === 1)) return true
+        
+        return true
+      })
+    }
+
+    // 2. Filter by unit allowed roles
+    if (orgUnit?.allowedRoles) {
+      if (orgUnit.allowedRoles.length === 0) return []
+      const allowedIds = new Set(orgUnit.allowedRoles.map(r => r.id))
+      return result.filter(r => allowedIds.has(r.id))
+    }
+
+    return result
+  }, [roles, orgUnit?.allowedRoles, hierarchyLevels])
+
+  // Group members by userId
+  const groupedMembers = useMemo(() => {
+    const groups: Record<string, GroupedMember> = {}
+    members.forEach(m => {
+      if (!groups[m.userId]) {
+        const userGlobal = orgUsers.find(u => u.id === m.userId)
+        groups[m.userId] = {
+          userId: m.userId,
+          userFullName: m.userFullName,
+          userEmail: m.userEmail,
+          userStatus: userGlobal?.status || 'ACTIVE',
+          assignments: []
+        }
+      }
+      const group = groups[m.userId]
+      if (group) {
+        group.assignments.push({
+          roleId: m.roleId,
+          roleName: m.roleName,
+          assignedAt: m.assignedAt
+        })
+      }
+    })
+    return Object.values(groups)
+  }, [members, orgUsers])
+
+  // Filter users for selection (exclude existing members)
+  const eligibleUsers = useMemo(() => {
+    const memberUserIds = new Set(members.map(m => m.userId))
+    return orgUsers.filter(u => 
+      !memberUserIds.has(u.id) && (
+        u.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        u.email.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    )
+  }, [orgUsers, searchQuery, members])
+
+  // Get assignments for selected user (for role exclusion in Manage Modal)
+  const selectedUserAssignments = useMemo(() => {
+    const firstSelected = selectedUsers[0]
+    if (!firstSelected) return []
+    return groupedMembers.find(m => m.userId === firstSelected)?.assignments || []
+  }, [selectedUsers, groupedMembers])
+
+  // Track which ranks (0/1) are already taken by other users in this unit
+  const takenRanks = useMemo(() => {
+    const ranksByUserId: Record<number, string> = {}
+    members.forEach(m => {
+      const role = roles.find(r => r.id === m.roleId)
+      if (role && (role.rank === 0 || role.rank === 1)) {
+        ranksByUserId[role.rank] = m.userId
+      }
+    })
+    return ranksByUserId
+  }, [members, roles])
+
+  const handleAddMember = async () => {
+    if (!selectedRole) {
+      toast.error('Vui lòng chọn vai trò')
+      return
+    }
+    
+    try {
+      if (showManageModal) {
+        // Single assignment for management modal
+        await assignMutation.mutateAsync({
+          userId: showManageModal.userId,
+          roleId: selectedRole,
+          orgUnitId
+        })
+      } else {
+        // Bulk assignment for new members
+        if (selectedUsers.length === 0) {
+          toast.error('Vui lòng chọn ít nhất một giảng viên')
+          return
+        }
+
+        // Prevent bulk assigning manager/deputy roles
+        const selectedRoleObj = roles.find(r => r.id === selectedRole)
+        if (selectedRoleObj && (selectedRoleObj.rank === 0 || selectedRoleObj.rank === 1) && selectedUsers.length > 1) {
+            toast.error(`Mỗi đơn vị chỉ được phép có tối đa một ${selectedRoleObj.rank === 0 ? 'Trưởng' : 'Phó'}. Không thể gán hàng loạt.`)
+            return
+        }
+
+        await bulkAssignMutation.mutateAsync({
+          userIds: selectedUsers,
+          roleId: selectedRole,
+          orgUnitId
+        })
+      }
+      
+      toast.success('Gán vai trò thành công')
+      
+      // Update local state for "instant" update in Manage Modal
+      if (showManageModal) {
+          const roleData = filteredRoles.find(r => r.id === selectedRole)
+          setShowManageModal({
+              ...showManageModal,
+              assignments: [
+                  ...showManageModal.assignments,
+                  { 
+                      roleId: selectedRole, 
+                      roleName: roleData?.name || 'Unknown', 
+                      assignedAt: new Date().toISOString() 
+                  }
+              ]
+          })
+      }
+
+      setSelectedRole(null)
+      if (!showManageModal) {
+        setShowAddModal(false)
+        setSelectedUsers([])
+      }
+    } catch (error) {
+      toast.error('Không thể gán vai trò')
+    }
+  }
+
+  const triggerRemoveConfirm = (member: { userId: string, userFullName: string }, role: { roleId: string, roleName: string }) => {
+      setConfirmModal({
+          isOpen: true,
+          userId: member.userId,
+          userFullName: member.userFullName,
+          roleId: role.roleId,
+          roleName: role.roleName
+      })
+  }
+
+  const handleConfirmedRemove = async () => {
+    const { userId, roleId, roleName } = confirmModal
+    try {
+        await revokeMutation.mutateAsync({ userId, roleId, orgUnitId })
+        toast.success(`Đã thu hồi vai trò ${roleName}`)
+        
+        // Update local state for "instant" update
+        if (showManageModal && showManageModal.userId === userId) {
+            setShowManageModal({
+                ...showManageModal,
+                assignments: showManageModal.assignments.filter(a => a.roleId !== roleId)
+            })
+        }
+        setConfirmModal(prev => ({ ...prev, isOpen: false }))
+    } catch (error) {
+        toast.error('Không thể thu hồi vai trò')
+    }
+  }
+
+  const handleRemoveAllFromUnit = async () => {
+    try {
+        if (selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length) {
+            await removeBulkMutation.mutateAsync({ userIds: selectedMemberIds, orgUnitId })
+            toast.success(`Đã xóa ${selectedMemberIds.length} giảng viên khỏi đơn vị`)
+        } else {
+            await removeAllMutation.mutateAsync(orgUnitId)
+            toast.success(`Đã xóa toàn bộ giảng viên khỏi đơn vị`)
+        }
+        setShowRemoveAllConfirm(false)
+        setSelectedMemberIds([])
+    } catch (error) {
+        toast.error('Không thể xóa giảng viên')
+    }
+  }
+
+  const handleStatusChange = async (newStatus: 'ACTIVE' | 'INACTIVE') => {
+      if (!showManageModal) return
+      try {
+          await updateUserMutation.mutateAsync({
+              id: showManageModal.userId,
+              data: { status: newStatus }
+          })
+          setShowManageModal({
+              ...showManageModal,
+              userStatus: newStatus
+          })
+      } catch (error) {
+          // Error handled by mutation
+      }
+  }
+
+  return (
+    <div className="bg-white rounded-[2rem] shadow-sm border overflow-hidden">
+      <div
+        className="px-4 md:px-8 py-4 md:py-5 bg-gray-50/50 flex justify-between items-center cursor-pointer border-b gap-2"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 md:w-12 md:h-12 rounded-2xl bg-blue-100 flex items-center justify-center shrink-0">
+            <Users className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-sm md:text-lg font-black text-gray-900 whitespace-nowrap">Quản lý giảng viên</h2>
+            <p className="text-[10px] md:text-xs text-gray-500 font-bold uppercase tracking-wider truncate">{groupedMembers.length} giảng viên • {members.length} phân quyền</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {selectedMemberIds.length > 0 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                setShowRemoveAllConfirm(true)
+              }}
+              disabled={removeAllMutation.isPending || removeBulkMutation.isPending}
+              className="flex items-center px-3 md:px-5 py-2 md:py-2.5 bg-red-50 text-red-600 rounded-2xl hover:bg-red-100 text-xs md:text-sm font-black transition-all animate-in fade-in zoom-in-95 duration-200 whitespace-nowrap"
+            >
+              <UserMinus className="w-3.5 h-3.5 mr-1.5" />
+              {selectedMemberIds.length === groupedMembers.length ? 'Xóa toàn bộ' : `Xóa (${selectedMemberIds.length})`}
+            </button>
+          )}
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowAddModal(true)
+            }}
+            className="flex items-center px-3 md:px-5 py-2 md:py-2.5 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 text-xs md:text-sm font-black transition-all shadow-lg shadow-blue-200 whitespace-nowrap"
+          >
+            <UserPlus className="w-3.5 h-3.5 mr-1.5" />
+            Thêm giảng viên
+          </button>
+          {isExpanded ? <ChevronUp className="w-4 h-4 text-gray-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+        </div>
+      </div>
+
+      {isExpanded && (
+        <div className="p-0">
+          {isMembersLoading ? (
+            <div className="p-12 flex justify-center">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+            </div>
+          ) : groupedMembers.length === 0 ? (
+            <div className="p-16 text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-50 mb-4 border-2 border-dashed border-gray-200">
+                <Users className="w-10 h-10 text-gray-300" />
+              </div>
+              <p className="text-gray-500 font-bold">Chưa có giảng viên nào trong đơn vị này</p>
+            </div>
+          ) : (
+            <>
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gray-50/30 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] border-b">
+                    <th className="px-8 py-5 w-10">
+                      <input 
+                        type="checkbox"
+                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        checked={groupedMembers.length > 0 && selectedMemberIds.length === groupedMembers.length}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedMemberIds(groupedMembers.map(m => m.userId))
+                          } else {
+                            setSelectedMemberIds([])
+                          }
+                        }}
+                      />
+                    </th>
+                    <th className="px-8 py-5">Giảng viên</th>
+                    <th className="px-8 py-5">Vai trò đảm nhiệm</th>
+                    <th className="px-8 py-5 text-right">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {groupedMembers.map((member) => (
+                    <tr key={member.userId} className={`hover:bg-gray-50/50 transition-colors group ${selectedMemberIds.includes(member.userId) ? 'bg-blue-50/30' : ''}`}>
+                      <td className="px-8 py-5">
+                        <input 
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          checked={selectedMemberIds.includes(member.userId)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedMemberIds(prev => [...prev, member.userId])
+                            } else {
+                              setSelectedMemberIds(prev => prev.filter(id => id !== member.userId))
+                            }
+                          }}
+                        />
+                      </td>
+                      <td className="px-8 py-5">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-black text-sm">
+                                {member.userFullName.charAt(0)}
+                            </div>
+                            <div>
+                                <p className="text-sm font-black text-gray-900">{member.userFullName}</p>
+                                <p className="text-xs text-gray-500 font-medium">{member.userEmail}</p>
+                            </div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-5">
+                        <div className="flex flex-wrap gap-2">
+                          {member.assignments.map((asgn) => (
+                            <span key={asgn.roleId} className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-gray-100 text-gray-700 text-[10px] font-black shadow-sm group/badge hover:border-red-200 hover:bg-red-50 transition-all">
+                              <Shield className="w-3 h-3 mr-2 text-blue-500 group-hover/badge:text-red-500" />
+                              {asgn.roleName}
+                              <button 
+                                onClick={() => triggerRemoveConfirm({ userId: member.userId, userFullName: member.userFullName }, { roleId: asgn.roleId, roleName: asgn.roleName })}
+                                className="ml-2 hover:text-red-600 opacity-0 group-hover/badge:opacity-100 transition-opacity"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-8 py-5 text-right flex items-center justify-end space-x-2">
+                        <button 
+                          onClick={() => {
+                             setSelectedRole(null)
+                             setShowManageModal(member)
+                          }}
+                          className="p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all"
+                          title="Quản lý vai trò"
+                        >
+                          <Settings2 className="w-5 h-5" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="md:hidden divide-y divide-gray-100">
+              {groupedMembers.map((member) => (
+                <div key={member.userId} className={`p-5 space-y-3 ${selectedMemberIds.includes(member.userId) ? 'bg-blue-50/30' : ''}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <label className="flex items-center gap-3 min-w-0 flex-1">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 shrink-0"
+                        checked={selectedMemberIds.includes(member.userId)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedMemberIds(prev => [...prev, member.userId])
+                          } else {
+                            setSelectedMemberIds(prev => prev.filter(id => id !== member.userId))
+                          }
+                        }}
+                      />
+                      <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-black text-sm shrink-0">
+                        {member.userFullName.charAt(0)}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-black text-gray-900 truncate">{member.userFullName}</p>
+                        <p className="text-xs text-gray-500 font-medium truncate">{member.userEmail}</p>
+                      </div>
+                    </label>
+                    <button
+                      onClick={() => { setSelectedRole(null); setShowManageModal(member) }}
+                      className="p-2.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all shrink-0"
+                      title="Quản lý vai trò"
+                    >
+                      <Settings2 className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 pl-7">
+                    {member.assignments.map((asgn) => (
+                      <span key={asgn.roleId} className="inline-flex items-center px-3 py-1.5 rounded-full bg-white border border-gray-100 text-gray-700 text-[10px] font-black shadow-sm">
+                        <Shield className="w-3 h-3 mr-2 text-blue-500" />
+                        {asgn.roleName}
+                        <button
+                          onClick={() => triggerRemoveConfirm({ userId: member.userId, userFullName: member.userFullName }, { roleId: asgn.roleId, roleName: asgn.roleName })}
+                          className="ml-2 active:text-red-600"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Add/Update Member Modal */}
+      {(showAddModal || showManageModal) && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-md" onClick={() => { setShowAddModal(false); setShowManageModal(null); setSelectedRole(null); }} />
+            <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-xl max-h-[90vh] relative z-[201] overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
+                <div className="p-10 border-b bg-gradient-to-r from-gray-50 to-white">
+                    <h3 className="text-2xl font-black text-gray-900 tracking-tight">
+                        {showManageModal ? `Quản lý vai trò: ${showManageModal.userFullName}` : 'Phân công giảng viên mới'}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-2 font-medium">Thiết lập các vai trò cụ thể cho giảng viên trong đơn vị này.</p>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto p-10 space-y-8 custom-scrollbar">
+                    {!showManageModal && (
+                        <div className="space-y-3">
+                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Chọn giảng viên từ hệ thống</label>
+                            <div className="relative group">
+                                <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                                <input 
+                                    type="text"
+                                    placeholder="Tìm theo tên hoặc email..."
+                                    className="w-full pl-12 pr-6 py-3.5 bg-gray-50 border-none rounded-[1.25rem] outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm font-bold placeholder:text-gray-300"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+                            
+                            <div className="max-h-52 overflow-y-auto border border-gray-100 rounded-[1.25rem] bg-white divide-y scrollbar-hide shadow-inner">
+                                {eligibleUsers.length === 0 ? (
+                                    <p className="p-8 text-sm text-gray-400 text-center font-bold italic">Không tìm thấy người dùng phù hợp</p>
+                                ) : (
+                                    eligibleUsers.map(user => {
+                                        const isSelected = selectedUsers.includes(user.id)
+                                        return (
+                                            <div 
+                                                key={user.id}
+                                                onClick={() => {
+                                                    setSelectedUsers(prev => 
+                                                        isSelected ? prev.filter(id => id !== user.id) : [...prev, user.id]
+                                                    )
+                                                }}
+                                                className={`p-4 cursor-pointer flex items-center justify-between transition-all ${isSelected ? 'bg-blue-600 text-white shadow-lg scale-[0.98]' : 'hover:bg-blue-50 text-gray-700'}`}
+                                            >
+                                                <div className="flex items-center space-x-3">
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-black ${isSelected ? 'bg-white/20' : 'bg-gray-100'}`}>
+                                                        {user.fullName.charAt(0)}
+                                                    </div>
+                                                    <div>
+                                                        <p className={`text-sm font-black ${isSelected ? 'text-white' : 'text-gray-900'}`}>{user.fullName}</p>
+                                                        <p className={`text-[10px] font-bold ${isSelected ? 'text-blue-100' : 'text-gray-400'}`}>{user.email}</p>
+                                                    </div>
+                                                </div>
+                                                {isSelected && <CheckCircle2 className="w-4 h-4 text-white animate-pulse" />}
+                                            </div>
+                                        )
+                                    })
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {showManageModal && (
+                        <div className="space-y-6">
+                             {/* Global Status Toggle */}
+                             <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between gap-3">
+                                <div className="min-w-0">
+                                    <h4 className="text-sm font-black text-gray-900 leading-tight">Trạng thái tài khoản <span className="block sm:inline text-gray-500 font-bold">(Toàn hệ thống)</span></h4>
+                                    <p className="text-[10px] text-gray-500 font-medium mt-1">
+                                        Vô hiệu hóa sẽ chặn quyền truy cập của người dùng này vào toàn bộ hệ thống.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => handleStatusChange(showManageModal.userStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE')}
+                                    disabled={updateUserMutation.isPending}
+                                    className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors focus:outline-none ${showManageModal.userStatus === 'ACTIVE' ? 'bg-blue-600' : 'bg-gray-300'}`}
+                                >
+                                    <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${showManageModal.userStatus === 'ACTIVE' ? 'translate-x-6' : 'translate-x-1'}`} />
+                                </button>
+                             </div>
+
+                             <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Vai trò đang đảm nhiệm</label>
+                                    <div className="group relative">
+                                        <AlertTriangle className="w-4 h-4 text-orange-400 cursor-help" />
+                                        <div className="absolute bottom-full right-0 mb-2 w-64 p-3 bg-gray-900 text-white text-[10px] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 shadow-xl font-medium leading-relaxed">
+                                            Lưu ý: "Thu hồi" chỉ gỡ vai trò tại đơn vị này. Để chặn hoàn toàn hãy dùng mục Trạng thái ở trên.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-wrap gap-3">
+                                    {showManageModal.assignments.map(asgn => (
+                                        <div key={asgn.roleId} className="flex items-center px-4 py-2.5 bg-blue-50 rounded-2xl border border-blue-100 group">
+                                            <Shield className="w-4 h-4 mr-2 text-blue-600" />
+                                            <span className="text-sm font-black text-blue-700 mr-4">{asgn.roleName}</span>
+                                            <button 
+                                                onClick={() => triggerRemoveConfirm({ userId: showManageModal.userId, userFullName: showManageModal.userFullName }, { roleId: asgn.roleId, roleName: asgn.roleName })}
+                                                className="p-1 hover:bg-red-100 hover:text-red-600 rounded-lg transition-colors"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                             </div>
+                        </div>
+                    )}
+
+                    <div className="space-y-3">
+                        <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">
+                            {(showManageModal || selectedUserAssignments.length > 0) ? 'Bổ sung vai trò' : 'Vai trò khởi đầu'}
+                        </label>
+                        <div className="grid grid-cols-2 gap-3">
+                            {filteredRoles.length === 0 && (
+                                <div className="col-span-2 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-center gap-3 text-red-600">
+                                    <AlertTriangle className="w-5 h-5 shrink-0" />
+                                    <p className="text-xs font-bold italic">
+                                        Đơn vị này chưa được thiết lập phạm vi vai trò. Vui lòng quay lại mục "Sơ đồ tổ chức" để cấu hình trước khi gán giảng viên.
+                                    </p>
+                                </div>
+                            )}
+                            {filteredRoles.map(role => {
+                                const isAssigned = (showManageModal?.assignments || selectedUserAssignments).some(a => a.roleId === role.id)
+                                
+                                // NEW LOGIC: Check if rank (0/1) is taken by ANOTHER user
+                                const currentUserId = showManageModal?.userId || (selectedUsers.length === 1 ? selectedUsers[0] : null)
+                                const rankTakenByUserId = role.rank !== undefined ? takenRanks[role.rank] : undefined
+                                const isRankTakenByOther = (role.rank === 0 || role.rank === 1) && 
+                                                         rankTakenByUserId && 
+                                                         rankTakenByUserId !== currentUserId
+
+                                const isDisabled = isAssigned || isRankTakenByOther || (selectedUsers.length > 1 && (role.rank === 0 || role.rank === 1))
+                                
+                                return (
+                                    <button
+                                        key={role.id}
+                                        disabled={isDisabled}
+                                        onClick={() => setSelectedRole(role.id)}
+                                        className={`flex items-center p-4 rounded-[1.25rem] border-2 transition-all text-left relative ${
+                                            isDisabled 
+                                            ? 'bg-gray-50 border-gray-100 opacity-50 cursor-not-allowed'
+                                            : selectedRole === role.id 
+                                                ? 'border-blue-600 bg-blue-50 shadow-md ring-2 ring-blue-600/10' 
+                                                : 'border-gray-100 hover:border-blue-200 hover:bg-blue-50/50'
+                                        }`}
+                                    >
+                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center mr-3 ${selectedRole === role.id ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-400'}`}>
+                                            <Shield className="w-4 h-4" />
+                                        </div>
+                                        <div className="flex-1 overflow-hidden">
+                                            <p className="text-sm font-black text-gray-900 truncate">{role.name}</p>
+                                            <p className="text-[10px] text-gray-400 font-bold uppercase truncate">
+                                                {isRankTakenByOther ? 'Đã có người đảm nhiệm' : (selectedUsers.length > 1 && (role.rank === 0 || role.rank === 1)) ? 'Không thể gán hàng loạt' : ''}
+                                            </p>
+                                        </div>
+                                        {isRankTakenByOther && (
+                                            <AlertTriangle className="w-4 h-4 text-orange-400 absolute top-2 right-2" />
+                                        )}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="p-5 md:p-10 bg-gray-50/50 flex space-x-3 md:space-x-4 border-t">
+                    <button
+                        onClick={() => { setShowAddModal(false); setShowManageModal(null); }}
+                        className="flex-1 px-4 md:px-8 py-3 md:py-4 bg-white border border-gray-200 text-gray-700 rounded-[1.25rem] hover:bg-gray-100 font-black transition-all shadow-sm whitespace-nowrap"
+                    >
+                        Đóng
+                    </button>
+                    <button
+                        disabled={(!showManageModal && selectedUsers.length === 0) || !selectedRole || assignMutation.isPending || bulkAssignMutation.isPending}
+                        onClick={handleAddMember}
+                        className="flex-1 px-4 md:px-8 py-3 md:py-4 bg-blue-600 text-white rounded-[1.25rem] hover:bg-blue-700 font-black transition-all shadow-xl shadow-blue-200 disabled:opacity-50 flex items-center justify-center whitespace-nowrap"
+                    >
+                        {(assignMutation.isPending || bulkAssignMutation.isPending) ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Xác nhận gán'}
+                    </button>
+                </div>
+            </div>
+        </div>
+      )}
+
+      {/* Custom Confirmation Modal */}
+      {confirmModal.isOpen && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))} />
+            <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md relative z-[301] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="p-8 text-center">
+                    <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <AlertTriangle className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-black text-gray-900 mb-2">Xác nhận thu hồi vai trò</h3>
+                    <p className="text-gray-500 font-medium">
+                        Bạn có chắc chắn muốn thu hồi vai trò <span className="text-gray-900 font-black">"{confirmModal.roleName}"</span> của <span className="text-gray-900 font-black">{confirmModal.userFullName}</span>?
+                    </p>
+                </div>
+                <div className="p-6 bg-gray-50 flex space-x-3">
+                    <button 
+                        onClick={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+                        className="flex-1 px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-100 font-bold transition-all"
+                    >
+                        Hủy
+                    </button>
+                    <button 
+                        onClick={handleConfirmedRemove}
+                        disabled={revokeMutation.isPending}
+                        className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold transition-all shadow-lg shadow-red-200 flex items-center justify-center"
+                    >
+                        {revokeMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Xác nhận xóa'}
+                    </button>
+                </div>
+            </div>
+        </div>
+      )}
+
+      {/* Remove All Confirmation Modal */}
+      {showRemoveAllConfirm && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setShowRemoveAllConfirm(false)} />
+            <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md relative z-[301] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                <div className="p-8 text-center">
+                    <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <AlertTriangle className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-black text-gray-900 mb-2">
+                        {selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length ? 'Xóa giảng viên đã chọn' : 'Xóa toàn bộ giảng viên'}
+                    </h3>
+                    <p className="text-gray-500 font-medium">
+                        {selectedMemberIds.length > 0 && selectedMemberIds.length < groupedMembers.length ? (
+                            <>Hành động này sẽ thu hồi <span className="text-red-600 font-black">TẤT CẢ</span> vai trò của <span className="text-gray-900 font-black">{selectedMemberIds.length} giảng viên đã chọn</span>. Bạn có chắc chắn?</>
+                        ) : (
+                            <>Hành động này sẽ thu hồi <span className="text-red-600 font-black">TẤT CẢ</span> vai trò của <span className="text-gray-900 font-black">{groupedMembers.length} giảng viên</span> trong đơn vị này. Bạn có chắc chắn?</>
+                        )}
+                    </p>
+                </div>
+                <div className="p-6 bg-gray-50 flex space-x-3">
+                    <button 
+                        onClick={() => setShowRemoveAllConfirm(false)}
+                        className="flex-1 px-4 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-100 font-bold transition-all"
+                    >
+                        Hủy
+                    </button>
+                    <button 
+                        onClick={handleRemoveAllFromUnit}
+                        disabled={removeAllMutation.isPending || removeBulkMutation.isPending}
+                        className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold transition-all shadow-lg shadow-red-200 flex items-center justify-center"
+                    >
+                        {removeAllMutation.isPending || removeBulkMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Xác nhận xóa'}
+                    </button>
+                </div>
+            </div>
+        </div>
+      )}
+    </div>
+  )
+}
