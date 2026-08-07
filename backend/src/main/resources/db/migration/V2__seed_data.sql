@@ -18,7 +18,7 @@ INSERT INTO districts (id, name, code, province_id) VALUES
 
 -- Organization
 INSERT INTO organizations (id, name, code, evaluation_max_score, kpi_reminder_percentage, enable_okr) VALUES
-    ('11111111-1111-1111-1111-111111111111', 'Trường Demo', 'DEMO1', 100.0, 50, TRUE);
+    ('11111111-1111-1111-1111-111111111111', 'Keyperson', 'KEYPERSON', 100.0, 50, TRUE);
 -- Evaluation Levels
 INSERT INTO evaluation_levels (organization_id, name, threshold, color) VALUES
     ('11111111-1111-1111-1111-111111111111', 'XUẤT SẮC',   90.0, '#10b981'),
@@ -57,44 +57,44 @@ SET enable_qualitative = TRUE,
 }'::jsonb
 WHERE id = '11111111-1111-1111-1111-111111111111';
 
--- Org Hierarchy Levels (3-tier: Cơ sở → Khoa → Bộ môn)
--- level_order 0 = top (Trường / Cơ sở), role_level matches role.level
+-- Org Hierarchy Levels (3-tier: Trung tâm → Khoa → Lớp học)
+-- level_order 0 = top (Trung tâm đào tạo), role_level matches role.level
 INSERT INTO org_hierarchy_levels (id, organization_id, level_order, unit_type_name, manager_role_label, role_level) VALUES
-    ('21111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 0, 'Trường', 'Hiệu trưởng',2),
+    ('21111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 0, 'Trung tâm', 'Giám đốc Trung tâm',2),
     ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', 1, 'Khoa',    'Trưởng khoa',3),
-    ('23333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 2, 'Bộ môn',       'Trưởng bộ môn',4);
+    ('23333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', 2, 'Lớp học',       'Giảng viên chủ nhiệm',4);
 
 -- Org Units
 -- Note: path is set automatically by the trg_set_org_path trigger on INSERT
 INSERT INTO org_units (id, name, code, parent_id, org_hierarchy_id, district_id, status) VALUES
-    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Cơ sở Hà Nội',   'HN-BRANCH',  NULL,                                     '21111111-1111-1111-1111-111111111111', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    -- Khoa Kỹ thuật
-    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Khoa Kỹ thuật',      'IT-DEPT',    'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'Bộ môn Lập trình',   'BE-TEAM',    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Bộ môn Giao diện',   'FE-TEAM',    'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    -- Khoa Truyền thông
-    ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Khoa Truyền thông',  'COMM-DEPT',  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'Bộ môn Nội dung',    'CONT-TEAM',  'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
-    ('abcdefab-cdef-cdef-cdef-abcdefabcdef', 'Bộ môn Thiết kế',    'DES-TEAM',   'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE');
+    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Trung tâm Đào tạo Keyperson', 'KP-CENTER',  NULL,                                     '21111111-1111-1111-1111-111111111111', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    -- Khoa Công nghệ thông tin
+    ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Khoa Công nghệ thông tin', 'K-CNTT',   'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'Lớp Lập trình Web K01',    'L-WEB-K01',  'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'Lớp Thiết kế UI/UX K01',   'L-UIUX-K01', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    -- Khoa Truyền thông & Marketing
+    ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Khoa Truyền thông & Marketing', 'K-MKT', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'Lớp Content Marketing K01', 'L-CONT-K01', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('abcdefab-cdef-cdef-cdef-abcdefabcdef', 'Lớp Thiết kế Đồ hoạ K01',  'L-GRAP-K01', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '23333333-3333-3333-3333-333333333333', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE');
 
 
 -- 3. ROLES
 -- ============================================================================
--- level 2 = Cơ sở (top-level of this org), level 3 = Khoa, level 4 = Bộ môn
+-- level 2 = Trung tâm (top-level of this org), level 3 = Khoa, level 4 = Lớp học
 -- rank: 0=primary, 1=deputy, 2=staff
 INSERT INTO roles (id, organization_id, name, level, rank, is_system) VALUES
-    -- Level 2: Cơ sở
-    ('a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '11111111-1111-1111-1111-111111111111', 'Hiệu trưởng',     2, 0, false),
-    ('a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', '11111111-1111-1111-1111-111111111111', 'Phó Hiệu trưởng', 2, 1, false),
+    -- Level 2: Trung tâm
+    ('a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '11111111-1111-1111-1111-111111111111', 'Giám đốc Trung tâm',     2, 0, false),
+    ('a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', '11111111-1111-1111-1111-111111111111', 'Phó Giám đốc Trung tâm', 2, 1, false),
 
     -- Level 3: Khoa
     ('b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '11111111-1111-1111-1111-111111111111', 'Trưởng khoa', 3, 0, false),
     ('c3cccccc-cccc-cccc-cccc-cccccccccccc', '11111111-1111-1111-1111-111111111111', 'Phó khoa',    3, 1, false),
 
-    -- Level 4: Bộ môn
-    ('e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '11111111-1111-1111-1111-111111111111', 'Trưởng bộ môn', 4, 0, false),
-    ('e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', '11111111-1111-1111-1111-111111111111', 'Phó bộ môn',    4, 1, false),
-    ('d4dddddd-dddd-dddd-dddd-dddddddddddd', '11111111-1111-1111-1111-111111111111', 'Giảng viên',    4, 2, false);
+    -- Level 4: Lớp học
+    ('e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '11111111-1111-1111-1111-111111111111', 'Giảng viên chủ nhiệm', 4, 0, false),
+    ('e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', '11111111-1111-1111-1111-111111111111', 'Trợ giảng',    4, 1, false),
+    ('d4dddddd-dddd-dddd-dddd-dddddddddddd', '11111111-1111-1111-1111-111111111111', 'Học viên',    4, 2, false);
 
 
 -- 4. PERMISSIONS
@@ -153,7 +153,8 @@ INSERT INTO permissions (id, code, resource, action, description) VALUES
     ('00000000-0000-0000-0000-000000000245', 'KPI_CYCLE:DELETE',         'KPI_CYCLE',    'DELETE',           'Cho phép xoá kỳ đánh giá tổng hợp khỏi hệ thống'),
     -- Đánh giá theo kỳ. Việc GÁN quyền làm ở cuối file theo cách data-driven.
     ('00000000-0000-0000-0000-000000000246', 'CYCLE_EVAL:VIEW',          'CYCLE_EVAL',   'VIEW',             'Cho phép xem kết quả đánh giá tổng hợp theo kỳ (giảng viên và khoa)'),
-    ('00000000-0000-0000-0000-000000000247', 'CYCLE_EVAL:FINALIZE',      'CYCLE_EVAL',   'FINALIZE',         'Cho phép chốt đánh giá tổng hợp khoa theo kỳ kèm nhận xét'),
+    ('00000000-0000-0000-0000-000000000247', 'CYCLE_EVAL:FINALIZE',      'CYCLE_EVAL',   'FINALIZE',         'Cho phép chốt đánh giá tổng hợp của khoa theo kỳ kèm nhận xét'),
+    ('00000000-0000-0000-0000-000000000248', 'CYCLE_EVAL:SEND',          'CYCLE_EVAL',   'SEND',             'Cho phép gửi kết quả đánh giá kỳ qua email cho giảng viên'),
     -- Submission
     ('00000000-0000-0000-0000-000000000121', 'SUBMISSION:REVIEW',        'SUBMISSION',   'REVIEW',           'Cho phép duyệt/từ chối bài nộp kết quả KPI của giảng viên cấp dưới'),
     ('00000000-0000-0000-0000-000000000127', 'SUBMISSION:REVIEW_KPI',    'SUBMISSION',   'REVIEW_KPI',       'Cho phép xem chi tiết bài nộp KPI của giảng viên để phục vụ việc đánh giá'),
@@ -244,7 +245,7 @@ WHERE code IN (
     'NOTIF:VIEW', 'NOTIF:MANAGE',
     'KPI_PERIOD:VIEW', 'KPI_PERIOD:CREATE', 'KPI_PERIOD:UPDATE', 'KPI_PERIOD:DELETE',
     'KPI_CYCLE:VIEW', 'KPI_CYCLE:CREATE', 'KPI_CYCLE:UPDATE', 'KPI_CYCLE:DELETE',
-    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE',
+    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND',
     'AI:SUGGEST_KPI',
     'POLICY:VIEW', 'POLICY:CREATE', 'POLICY:UPDATE', 'POLICY:ASSIGN',
     'STATS:VIEW_ORG', 'STATS:VIEW_EMPLOYEE',
@@ -280,7 +281,7 @@ WHERE code IN (
     'NOTIF:VIEW', 'NOTIF:MANAGE',
     'KPI_PERIOD:VIEW', 'KPI_PERIOD:CREATE', 'KPI_PERIOD:UPDATE',
     'KPI_CYCLE:VIEW', 'KPI_CYCLE:CREATE', 'KPI_CYCLE:UPDATE',
-    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE',
+    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND',
     'AI:SUGGEST_KPI',
     'POLICY:VIEW', 'POLICY:CREATE', 'POLICY:UPDATE', 'POLICY:ASSIGN',
     'STATS:VIEW_ORG', 'STATS:VIEW_EMPLOYEE',
@@ -313,7 +314,7 @@ WHERE code IN (
     'SUBMISSION:VIEW', 'SUBMISSION:REVIEW', 'SUBMISSION:REVIEW_KPI',
     'EVALUATION:VIEW', 'EVALUATION:CREATE',
     'NOTIF:VIEW', 'KPI_PERIOD:VIEW', 'KPI_CYCLE:VIEW',
-    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE',
+    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND',
     'AI:SUGGEST_KPI',
     'STATS:VIEW_EMPLOYEE',
     'ATTACHMENT:UPLOAD',
@@ -369,7 +370,7 @@ WHERE code IN (
     'SUBMISSION:VIEW', 'SUBMISSION:REVIEW', 'SUBMISSION:REVIEW_KPI',
     'EVALUATION:VIEW', 'EVALUATION:CREATE',
     'NOTIF:VIEW', 'KPI_PERIOD:VIEW', 'KPI_CYCLE:VIEW',
-    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE',
+    'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND',
     'AI:SUGGEST_KPI',
     'STATS:VIEW_EMPLOYEE',
     'ATTACHMENT:UPLOAD',
@@ -459,61 +460,61 @@ INSERT INTO users (id, email, password, full_name, status, is_email_verified, ha
 
 -- Passwords Demo123@
 INSERT INTO users (id, email, password, full_name, employee_code, phone, status, is_email_verified, has_seen_onboarding) VALUES
-    -- Cơ sở (level 2)
-    ('22222222-0000-0000-0000-000000000100', 'director@demo.com',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Nguyễn Văn Director',   'EM001', '0901000001', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000200', 'deputy.dir@demo.com',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Trần Thị Deputy Dir',   'EM002', '0901000002', 'ACTIVE', true, false),
-    -- Khoa Kỹ thuật (level 3)
-    ('22222222-0000-0000-0000-000000000101', 'head@demo.com',          '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Lê Văn Head',           'EM003', '0901000003', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000102', 'deputy@demo.com',        '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phạm Thị Deputy',       'EM004', '0901000004', 'ACTIVE', true, false),
-    -- Bộ môn Lập trình (level 4)
-    ('22222222-0000-0000-0000-000000000300', 'teamlead@demo.com',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Hoàng Văn TeamLead',    'EM005', '0901000005', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000301', 'deputy.lead@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Vũ Thị Deputy Lead',    'EM006', '0901000006', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000103', 'staff@demo.com',         '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phạm Thị Staff',        'EM007', '0901000007', 'ACTIVE', true, false),
-    -- Bộ môn Giao diện (level 4)
-    ('22222222-0000-0000-0000-000000000400', 'fe.teamlead@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Đinh Văn FE Lead',      'EM008', '0901000008', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000401', 'fe.deputy@demo.com',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Ngô Thị FE Deputy',     'EM009', '0901000009', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000402', 'fe.staff@demo.com',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Bùi Văn FE Staff',      'EM010', '0901000010', 'ACTIVE', true, false),
-    -- Khoa Truyền thông (level 3)
-    ('22222222-0000-0000-0000-000000000500', 'comm.head@demo.com',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Trịnh Văn Comm Head',   'EM011', '0901000011', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000501', 'comm.deputy@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Lý Thị Comm Deputy',    'EM012', '0901000012', 'ACTIVE', true, false),
-    -- Bộ môn Nội dung (level 4)
-    ('22222222-0000-0000-0000-000000000600', 'cont.teamlead@demo.com', '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Mai Văn Cont Lead',     'EM013', '0901000013', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000601', 'cont.deputy@demo.com',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Đỗ Thị Cont Deputy',    'EM014', '0901000014', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000602', 'cont.staff@demo.com',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phan Văn Cont Staff',   'EM015', '0901000015', 'ACTIVE', true, false),
-    -- Bộ môn Thiết kế (level 4)
-    ('22222222-0000-0000-0000-000000000700', 'des.teamlead@demo.com',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Cao Văn Des Lead',      'EM016', '0901000016', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000701', 'des.deputy@demo.com',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Tô Thị Des Deputy',     'EM017', '0901000017', 'ACTIVE', true, false),
-    ('22222222-0000-0000-0000-000000000702', 'des.staff@demo.com',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Dương Văn Des Staff',   'EM018', '0901000018', 'ACTIVE', true, false);
+    -- Trung tâm (level 2)
+    ('22222222-0000-0000-0000-000000000100', 'giamdoc@keyperson.vn',       '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Nguyễn Văn Thành',   'KP001', '0901000001', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000200', 'phogiamdoc@keyperson.vn',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Trần Thị Bích Ngọc', 'KP002', '0901000002', 'ACTIVE', true, false),
+    -- Khoa Công nghệ thông tin (level 3)
+    ('22222222-0000-0000-0000-000000000101', 'truongkhoa.cntt@keyperson.vn','$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Lê Văn Cường',      'KP003', '0901000003', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000102', 'phokhoa.cntt@keyperson.vn',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phạm Thị Hồng Vân', 'KP004', '0901000004', 'ACTIVE', true, false),
+    -- Lớp Lập trình Web K01 (level 4)
+    ('22222222-0000-0000-0000-000000000300', 'gvcn.web01@keyperson.vn',    '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Hoàng Văn Dũng',    'KP005', '0901000005', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000301', 'tg.web01@keyperson.vn',      '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Vũ Thị Thanh Mai',  'KP006', '0901000006', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000103', 'hv.web01.01@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phạm Thị Lan Anh',  'KP007', '0901000007', 'ACTIVE', true, false),
+    -- Lớp Thiết kế UI/UX K01 (level 4)
+    ('22222222-0000-0000-0000-000000000400', 'gvcn.uiux01@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Đinh Văn Hiếu',     'KP008', '0901000008', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000401', 'tg.uiux01@keyperson.vn',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Ngô Thị Kim Chi',   'KP009', '0901000009', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000402', 'hv.uiux01.01@keyperson.vn',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Bùi Văn Khoa',      'KP010', '0901000010', 'ACTIVE', true, false),
+    -- Khoa Truyền thông & Marketing (level 3)
+    ('22222222-0000-0000-0000-000000000500', 'truongkhoa.mkt@keyperson.vn','$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Trịnh Văn Sơn',     'KP011', '0901000011', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000501', 'phokhoa.mkt@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Lý Thị Thu Hà',     'KP012', '0901000012', 'ACTIVE', true, false),
+    -- Lớp Content Marketing K01 (level 4)
+    ('22222222-0000-0000-0000-000000000600', 'gvcn.cont01@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Mai Văn Tuấn',      'KP013', '0901000013', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000601', 'tg.cont01@keyperson.vn',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Đỗ Thị Mỹ Linh',    'KP014', '0901000014', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000602', 'hv.cont01.01@keyperson.vn',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Phan Văn Lộc',      'KP015', '0901000015', 'ACTIVE', true, false),
+    -- Lớp Thiết kế Đồ hoạ K01 (level 4)
+    ('22222222-0000-0000-0000-000000000700', 'gvcn.grap01@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Cao Văn Bảo',       'KP016', '0901000016', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000701', 'tg.grap01@keyperson.vn',     '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Tô Thị Ngọc Diệp',  'KP017', '0901000017', 'ACTIVE', true, false),
+    ('22222222-0000-0000-0000-000000000702', 'hv.grap01.01@keyperson.vn',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q', 'Dương Văn Nam',     'KP018', '0901000018', 'ACTIVE', true, false);
 
 
 -- 8. USER → ROLE → ORG UNIT ASSIGNMENTS
 -- ============================================================================
 INSERT INTO user_role_org_units (user_id, role_id, org_unit_id) VALUES
-    -- Cơ sở Hà Nội
-    ('22222222-0000-0000-0000-000000000100', 'a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Hiệu trưởng    @ Cơ sở HN
-    ('22222222-0000-0000-0000-000000000200', 'a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Phó GĐ      @ Cơ sở HN
-    -- Khoa Kỹ thuật
-    ('22222222-0000-0000-0000-000000000101', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Trưởng khoa @ Khoa Kỹ thuật
-    ('22222222-0000-0000-0000-000000000102', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Phó khoa    @ Khoa Kỹ thuật
-    -- Bộ môn Lập trình
-    ('22222222-0000-0000-0000-000000000300', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Trưởng bộ môn @ Bộ môn Lập trình
-    ('22222222-0000-0000-0000-000000000301', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Phó bộ môn   @ Bộ môn Lập trình
-    ('22222222-0000-0000-0000-000000000103', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Giảng viên   @ Bộ môn Lập trình
-    -- Bộ môn Giao diện
-    ('22222222-0000-0000-0000-000000000400', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Trưởng bộ môn @ Bộ môn Giao diện
-    ('22222222-0000-0000-0000-000000000401', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Phó bộ môn   @ Bộ môn Giao diện
-    ('22222222-0000-0000-0000-000000000402', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Giảng viên   @ Bộ môn Giao diện
-    -- Khoa Truyền thông
-    ('22222222-0000-0000-0000-000000000500', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Trưởng khoa @ Khoa Truyền thông
-    ('22222222-0000-0000-0000-000000000501', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Phó khoa    @ Khoa Truyền thông
-    -- Bộ môn Nội dung
-    ('22222222-0000-0000-0000-000000000600', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Trưởng bộ môn @ Bộ môn Nội dung
-    ('22222222-0000-0000-0000-000000000601', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Phó bộ môn   @ Bộ môn Nội dung
-    ('22222222-0000-0000-0000-000000000602', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Giảng viên   @ Bộ môn Nội dung
-    -- Bộ môn Thiết kế
-    ('22222222-0000-0000-0000-000000000700', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Trưởng bộ môn @ Bộ môn Thiết kế
-    ('22222222-0000-0000-0000-000000000701', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Phó bộ môn   @ Bộ môn Thiết kế
-    ('22222222-0000-0000-0000-000000000702', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- Giảng viên   @ Bộ môn Thiết kế
+    -- Trung tâm Đào tạo Keyperson
+    ('22222222-0000-0000-0000-000000000100', 'a1aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Giám đốc TT     @ Trung tâm
+    ('22222222-0000-0000-0000-000000000200', 'a2aaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'),  -- Phó Giám đốc TT @ Trung tâm
+    -- Khoa Công nghệ thông tin
+    ('22222222-0000-0000-0000-000000000101', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Trưởng khoa @ Khoa CNTT
+    ('22222222-0000-0000-0000-000000000102', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- Phó khoa    @ Khoa CNTT
+    -- Lớp Lập trình Web K01
+    ('22222222-0000-0000-0000-000000000300', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- GV chủ nhiệm @ Lớp Lập trình Web K01
+    ('22222222-0000-0000-0000-000000000301', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Trợ giảng    @ Lớp Lập trình Web K01
+    ('22222222-0000-0000-0000-000000000103', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- Học viên     @ Lớp Lập trình Web K01
+    -- Lớp Thiết kế UI/UX K01
+    ('22222222-0000-0000-0000-000000000400', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- GV chủ nhiệm @ Lớp Thiết kế UI/UX K01
+    ('22222222-0000-0000-0000-000000000401', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Trợ giảng    @ Lớp Thiết kế UI/UX K01
+    ('22222222-0000-0000-0000-000000000402', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- Học viên     @ Lớp Thiết kế UI/UX K01
+    -- Khoa Truyền thông & Marketing
+    ('22222222-0000-0000-0000-000000000500', 'b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Trưởng khoa @ Khoa Truyền thông & MKT
+    ('22222222-0000-0000-0000-000000000501', 'c3cccccc-cccc-cccc-cccc-cccccccccccc', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- Phó khoa    @ Khoa Truyền thông & MKT
+    -- Lớp Content Marketing K01
+    ('22222222-0000-0000-0000-000000000600', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- GV chủ nhiệm @ Lớp Content Marketing K01
+    ('22222222-0000-0000-0000-000000000601', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Trợ giảng    @ Lớp Content Marketing K01
+    ('22222222-0000-0000-0000-000000000602', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- Học viên     @ Lớp Content Marketing K01
+    -- Lớp Thiết kế Đồ hoạ K01
+    ('22222222-0000-0000-0000-000000000700', 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- GV chủ nhiệm @ Lớp Thiết kế Đồ hoạ K01
+    ('22222222-0000-0000-0000-000000000701', 'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'),  -- Trợ giảng    @ Lớp Thiết kế Đồ hoạ K01
+    ('22222222-0000-0000-0000-000000000702', 'd4dddddd-dddd-dddd-dddd-dddddddddddd', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- Học viên     @ Lớp Thiết kế Đồ hoạ K01
 
 
 -- ============================================================
@@ -524,141 +525,141 @@ INSERT INTO user_role_org_units (user_id, role_id, org_unit_id) VALUES
 INSERT INTO objectives
     (id, organization_id, code, name, description, start_date, end_date, status)
 VALUES
-    -- Khoa Kỹ thuật
+    -- Khoa Công nghệ thông tin
     ('0b000001-0000-0000-0000-000000000001',
      '11111111-1111-1111-1111-111111111111',
-     'OBJ-IT-Q2-2026',
-     'Nâng cao chất lượng sản phẩm IT trong Q2/2026',
-     'Đảm bảo team IT hoàn thành sprint đúng tiến độ, kiểm soát tỉ lệ bug ở mức thấp nhất',
+     'OBJ-CNTT-Q2-2026',
+     'Nâng cao chất lượng đào tạo CNTT trong Q2/2026',
+     'Đảm bảo các lớp CNTT giảng dạy đúng tiến độ, giữ tỉ lệ học viên bỏ học ở mức thấp nhất',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Khoa Truyền thông
+    -- Khoa Truyền thông & Marketing
     ('0b000002-0000-0000-0000-000000000002',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-COMM-Q2-2026',
-     'Tăng trưởng độ phủ và tương tác truyền thông Q2/2026',
-     'Mở rộng nội dung đa kênh, tối ưu tương tác người dùng trên các nền tảng',
+     'Tăng trưởng tuyển sinh và độ phủ truyền thông Q2/2026',
+     'Mở rộng tư vấn tuyển sinh đa kênh, tối ưu lượt tiếp cận học viên tiềm năng',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Bộ môn Lập trình
+    -- Lớp Lập trình Web K01
     ('0b000003-0000-0000-0000-000000000003',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-BE-Q2-2026',
-     'Hoàn thiện hệ thống API và nâng cao chất lượng code Q2/2026',
-     'Đảm bảo API ổn định, review code đúng SLA và giảm thiểu technical debt',
+     'Nâng cao kết quả học tập lớp Lập trình Web K01 Q2/2026',
+     'Đảm bảo học viên nộp đủ bài tập và được giảng viên nhận xét đúng hạn',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Bộ môn Giao diện
+    -- Lớp Thiết kế UI/UX K01
     ('0b000004-0000-0000-0000-000000000004',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-FE-Q2-2026',
-     'Cải thiện UX và hiệu năng giao diện Q2/2026',
-     'Hoàn thành các màn hình đúng tiến độ, duy trì điểm Lighthouse Performance ở mức cao',
+     'Nâng cao kết quả học tập lớp Thiết kế UI/UX K01 Q2/2026',
+     'Hoàn thành bài thực hành đúng tiến độ, duy trì điểm kiểm tra trung bình ở mức cao',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Bộ môn Nội dung
+    -- Lớp Content Marketing K01
     ('0b000005-0000-0000-0000-000000000005',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-CONT-Q2-2026',
-     'Sản xuất nội dung chất lượng cao và đúng hạn Q2/2026',
-     'Tăng sản lượng bài viết, nâng tỉ lệ bài đúng deadline biên tập',
+     'Nâng cao kết quả học tập lớp Content Marketing K01 Q2/2026',
+     'Tăng số bài viết học viên nộp, nâng tỉ lệ chuyên cần của lớp',
      '2026-04-01', '2026-06-30', 'ACTIVE'),
 
-    -- Bộ môn Thiết kế
+    -- Lớp Thiết kế Đồ hoạ K01
     ('0b000006-0000-0000-0000-000000000006',
      '11111111-1111-1111-1111-111111111111',
      'OBJ-DES-Q2-2026',
-     'Nâng cao năng suất và chất lượng thiết kế Q2/2026',
-     'Tối ưu quy trình thiết kế, giảm số lần revise và tăng sản lượng asset',
+     'Nâng cao kết quả học tập lớp Thiết kế Đồ hoạ K01 Q2/2026',
+     'Tăng số sản phẩm thiết kế học viên nộp, nâng tỉ lệ bài đạt yêu cầu',
      '2026-04-01', '2026-06-30', 'ACTIVE');
 
 INSERT INTO objective_org_units (objective_id, org_unit_id) VALUES
-    ('0b000001-0000-0000-0000-000000000001', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- OBJ-IT-Q2-2026       → Khoa Kỹ thuật
-    ('0b000002-0000-0000-0000-000000000002', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- OBJ-COMM-Q2-2026     → Khoa Truyền thông
-    ('0b000003-0000-0000-0000-000000000003', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- OBJ-BE-Q2-2026       → Bộ môn Lập trình
-    ('0b000004-0000-0000-0000-000000000004', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- OBJ-FE-Q2-2026       → Bộ môn Giao diện
-    ('0b000005-0000-0000-0000-000000000005', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- OBJ-CONT-Q2-2026     → Bộ môn Nội dung
-    ('0b000006-0000-0000-0000-000000000006', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- OBJ-DES-Q2-2026      → Bộ môn Thiết kế
+    ('0b000001-0000-0000-0000-000000000001', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'),  -- OBJ-CNTT-Q2-2026       → Khoa CNTT
+    ('0b000002-0000-0000-0000-000000000002', 'cccccccc-cccc-cccc-cccc-cccccccccccc'),  -- OBJ-COMM-Q2-2026     → Khoa Truyền thông & MKT
+    ('0b000003-0000-0000-0000-000000000003', 'dddddddd-dddd-dddd-dddd-dddddddddddd'),  -- OBJ-BE-Q2-2026       → Lớp Lập trình Web K01
+    ('0b000004-0000-0000-0000-000000000004', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'),  -- OBJ-FE-Q2-2026       → Lớp Thiết kế UI/UX K01
+    ('0b000005-0000-0000-0000-000000000005', 'ffffffff-ffff-ffff-ffff-ffffffffffff'),  -- OBJ-CONT-Q2-2026     → Lớp Content Marketing K01
+    ('0b000006-0000-0000-0000-000000000006', 'abcdefab-cdef-cdef-cdef-abcdefabcdef'); -- OBJ-DES-Q2-2026      → Lớp Thiết kế Đồ hoạ K01
  
 INSERT INTO key_results
     (id, objective_id, code, name, description, target_value, current_value, unit)
 VALUES
-    -- Khoa Kỹ thuật
+    -- Khoa Công nghệ thông tin
     ('0c000001-0000-0000-0000-000000000001',
      '0b000001-0000-0000-0000-000000000001',
-     'KR-IT-01', 'Hoàn thành ≥ 50 task/tháng trong cả Q2',
-     'Trung bình số task hoàn thành sprint ≥ 50 task/tháng trong Q2',
-     150, 0, 'task'),
+     'KR-CNTT-01', 'Hoàn thành ≥ 50 buổi giảng/tháng trong cả Q2',
+     'Trung bình số buổi giảng hoàn thành ≥ 50 buổi/tháng trong Q2',
+     150, 0, 'buổi'),
  
     ('0c000002-0000-0000-0000-000000000002',
      '0b000001-0000-0000-0000-000000000001',
-     'KR-IT-02', 'Duy trì tỉ lệ bug ≤ 5% trong Q2',
-     'Tỉ lệ bug/feature trung bình không vượt 5% trong toàn Q2',
+     'KR-CNTT-02', 'Giữ tỉ lệ học viên bỏ học ≤ 5% trong Q2',
+     'Tỉ lệ học viên bỏ học trung bình không vượt 5% trong toàn Q2',
      5, 0, '%'),
  
-    -- Khoa Truyền thông
+    -- Khoa Truyền thông & Marketing
     ('0c000003-0000-0000-0000-000000000003',
      '0b000002-0000-0000-0000-000000000002',
-     'KR-COMM-01', 'Đăng ≥ 30 bài/tháng trên các kênh',
-     'Duy trì tần suất đăng bài ≥ 30 bài/tháng xuyên suốt Q2',
-     90, 0, 'bài'),
+     'KR-COMM-01', 'Thực hiện ≥ 30 buổi tư vấn tuyển sinh/tháng',
+     'Duy trì ≥ 30 buổi tư vấn tuyển sinh/tháng xuyên suốt Q2',
+     90, 0, 'buổi'),
  
     ('0c000004-0000-0000-0000-000000000004',
      '0b000002-0000-0000-0000-000000000002',
-     'KR-COMM-02', 'Đạt ≥ 5.000 lượt tương tác/tháng',
-     'Tổng lượt like/share/comment ≥ 5.000 mỗi tháng trong Q2',
+     'KR-COMM-02', 'Đạt ≥ 5.000 lượt tiếp cận truyền thông/tháng',
+     'Tổng lượt tiếp cận trên các kênh ≥ 5.000 mỗi tháng trong Q2',
      15000, 0, 'lượt'),
  
-    -- Bộ môn Lập trình
+    -- Lớp Lập trình Web K01
     ('0c000005-0000-0000-0000-000000000005',
      '0b000003-0000-0000-0000-000000000003',
-     'KR-BE-01', 'Hoàn thành ≥ 20 API endpoint/tháng pass test',
-     'Số API endpoint hoàn thành và pass automated test ≥ 20/tháng',
-     60, 0, 'endpoint'),
+     'KR-BE-01', 'Hoàn thành ≥ 20 bài tập lập trình/tháng đạt yêu cầu',
+     'Số bài tập lập trình nộp và đạt yêu cầu ≥ 20 bài/tháng',
+     60, 0, 'bài'),
  
     ('0c000006-0000-0000-0000-000000000006',
      '0b000003-0000-0000-0000-000000000003',
-     'KR-BE-02', 'Review ≥ 30 PR đúng SLA mỗi tháng',
-     'Số pull request được review và merge trong SLA ≥ 30/tháng',
-     90, 0, 'PR'),
+     'KR-BE-02', 'Nhận xét ≥ 30 bài tập đúng hạn mỗi tháng',
+     'Số bài tập được giảng viên nhận xét đúng hạn ≥ 30 bài/tháng',
+     90, 0, 'bài'),
  
-    -- Bộ môn Giao diện
+    -- Lớp Thiết kế UI/UX K01
     ('0c000007-0000-0000-0000-000000000007',
      '0b000004-0000-0000-0000-000000000004',
-     'KR-FE-01', 'Hoàn thành ≥ 15 màn hình pass QA/tháng',
-     'Số UI screen hoàn thành và pass QA ≥ 15/tháng trong Q2',
-     45, 0, 'màn hình'),
+     'KR-FE-01', 'Hoàn thành ≥ 15 bài thực hành UI đạt yêu cầu/tháng',
+     'Số bài thực hành giao diện đạt yêu cầu ≥ 15 bài/tháng trong Q2',
+     45, 0, 'bài'),
  
     ('0c000008-0000-0000-0000-000000000008',
      '0b000004-0000-0000-0000-000000000004',
-     'KR-FE-02', 'Điểm Lighthouse Performance trung bình ≥ 85',
-     'Trung bình điểm Lighthouse Performance của toàn bộ page ≥ 85 điểm',
+     'KR-FE-02', 'Điểm trung bình bài kiểm tra ≥ 85',
+     'Điểm trung bình các bài kiểm tra của lớp ≥ 85 điểm',
      85, 0, 'điểm'),
  
-    -- Bộ môn Nội dung
+    -- Lớp Content Marketing K01
     ('0c000009-0000-0000-0000-000000000009',
      '0b000005-0000-0000-0000-000000000005',
-     'KR-CONT-01', 'Sản xuất ≥ 20 bài viết/tháng',
-     'Số bài viết content hoàn thành và đăng ≥ 20 bài/tháng',
+     'KR-CONT-01', 'Nộp ≥ 20 bài viết/tháng',
+     'Số bài viết học viên nộp và được duyệt ≥ 20 bài/tháng',
      60, 0, 'bài'),
  
     ('0c000010-0000-0000-0000-000000000010',
      '0b000005-0000-0000-0000-000000000005',
-     'KR-CONT-02', 'Tỉ lệ bài đúng hạn ≥ 90%',
-     'Tỉ lệ bài nộp đúng deadline biên tập đạt ≥ 90% mỗi tháng',
+     'KR-CONT-02', 'Tỉ lệ chuyên cần ≥ 90%',
+     'Tỉ lệ buổi học có mặt đúng giờ đạt ≥ 90% mỗi tháng',
      90, 0, '%'),
  
-    -- Bộ môn Thiết kế
+    -- Lớp Thiết kế Đồ hoạ K01
     ('0c000011-0000-0000-0000-000000000011',
      '0b000006-0000-0000-0000-000000000006',
-     'KR-DES-01', 'Hoàn thành ≥ 25 asset thiết kế/tháng',
-     'Số banner/infographic hoàn thành và được duyệt ≥ 25/tháng',
-     75, 0, 'asset'),
+     'KR-DES-01', 'Nộp ≥ 25 sản phẩm thiết kế/tháng',
+     'Số sản phẩm thiết kế học viên nộp và được duyệt ≥ 25/tháng',
+     75, 0, 'sản phẩm'),
  
     ('0c000012-0000-0000-0000-000000000012',
      '0b000006-0000-0000-0000-000000000006',
-     'KR-DES-02', 'Tỉ lệ asset duyệt trong ≤ 2 lần revise ≥ 80%',
-     'Tỉ lệ asset được duyệt trong tối đa 2 lần sửa ≥ 80%',
+     'KR-DES-02', 'Tỉ lệ bài đạt yêu cầu trong ≤ 2 lần sửa ≥ 80%',
+     'Tỉ lệ bài đạt yêu cầu trong tối đa 2 lần sửa ≥ 80%',
      80, 0, '%');
  
 
@@ -682,51 +683,51 @@ INSERT INTO kpi_periods (id, organization_id, name, period_type, start_date, end
 INSERT INTO kpi_criteria
     (id, org_unit_id, kpi_period_id, name, description, weight, frequency, status, key_result_id, created_by, approved_by, submitted_at, approved_at)
 VALUES
-    ('9f4187ab-d4bd-4a73-a21a-eff99273dd27', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000104', 'Số task hoàn thành', 'Hoàn thành task trong sprint', 50, 'MONTHLY', 'APPROVED', '0c000001-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('7924184d-c084-44a1-ae37-3c6b61d518fc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000104', 'Tỉ lệ bug', 'Tỉ lệ bug/feature không vượt ngưỡng', 50, 'MONTHLY', 'APPROVED', '0c000002-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('1af7d756-973d-4680-bca0-de8e20b5c6f7', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000105', 'Số task hoàn thành', 'Hoàn thành task trong sprint', 50, 'MONTHLY', 'APPROVED', '0c000001-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('a536373a-4a01-4b25-b8f9-15c7cd479c94', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000105', 'Tỉ lệ bug', 'Tỉ lệ bug/feature không vượt ngưỡng', 50, 'MONTHLY', 'APPROVED', '0c000002-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('0888dfd5-b2c6-41ea-b925-b1b73e45dc85', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000106', 'Số task hoàn thành', 'Hoàn thành task trong sprint', 50, 'MONTHLY', 'APPROVED', '0c000001-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('9e2395d5-e706-4643-bb5c-1fa5d4d829db', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000106', 'Tỉ lệ bug', 'Tỉ lệ bug/feature không vượt ngưỡng', 50, 'MONTHLY', 'APPROVED', '0c000002-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('ce79b3ee-d13c-443c-a838-019784af9c82', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000104', 'Số bài đăng', 'Số bài đăng trên các kênh truyền thông', 50, 'MONTHLY', 'APPROVED', '0c000003-0000-0000-0000-000000000003', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('577305f2-af2b-4e4b-b695-babda1ee0695', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000104', 'Lượt tương tác', 'Tổng lượt like/share/comment', 50, 'MONTHLY', 'APPROVED', '0c000004-0000-0000-0000-000000000004', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('843fc0ed-4784-414d-a09e-0ad177c651e9', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000105', 'Số bài đăng', 'Số bài đăng trên các kênh truyền thông', 50, 'MONTHLY', 'APPROVED', '0c000003-0000-0000-0000-000000000003', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('d04e377f-7c67-42d7-9986-620c6ea83f09', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000105', 'Lượt tương tác', 'Tổng lượt like/share/comment', 50, 'MONTHLY', 'APPROVED', '0c000004-0000-0000-0000-000000000004', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('b98cd2b1-2f7a-4b74-8f43-7510f06fad00', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000106', 'Số bài đăng', 'Số bài đăng trên các kênh truyền thông', 50, 'MONTHLY', 'APPROVED', '0c000003-0000-0000-0000-000000000003', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('a357baae-1005-4f1b-8eba-0670a20a0055', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000106', 'Lượt tương tác', 'Tổng lượt like/share/comment', 50, 'MONTHLY', 'APPROVED', '0c000004-0000-0000-0000-000000000004', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('21f3bb63-11a3-40c3-9395-176c0bd74583', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000104', 'API hoàn thành', 'Số API endpoint hoàn thành và pass test', 50, 'MONTHLY', 'APPROVED', '0c000005-0000-0000-0000-000000000005', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('57de5627-31cb-4299-87c3-d370f0a00a10', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000104', 'Code review', 'Số PR được review đúng SLA', 50, 'MONTHLY', 'APPROVED', '0c000006-0000-0000-0000-000000000006', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('0bbdca82-a6d6-46dd-a4ad-48062d9353b0', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000105', 'API hoàn thành', 'Số API endpoint hoàn thành và pass test', 50, 'MONTHLY', 'APPROVED', '0c000005-0000-0000-0000-000000000005', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('f15a537e-4f63-4947-a750-ec62ab53c51e', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000105', 'Code review', 'Số PR được review đúng SLA', 50, 'MONTHLY', 'APPROVED', '0c000006-0000-0000-0000-000000000006', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('3daf855a-72f5-4941-aa42-37d13a1440f1', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000106', 'API hoàn thành', 'Số API endpoint hoàn thành và pass test', 50, 'MONTHLY', 'APPROVED', '0c000005-0000-0000-0000-000000000005', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('ba7db630-5356-45fd-a201-c60efdd1c252', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000106', 'Code review', 'Số PR được review đúng SLA', 50, 'MONTHLY', 'APPROVED', '0c000006-0000-0000-0000-000000000006', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('98501d33-c8f4-4fae-a5fe-804dc17f48d5', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000104', 'Số màn hình hoàn thành', 'Số UI screen hoàn thành và pass QA', 50, 'MONTHLY', 'APPROVED', '0c000007-0000-0000-0000-000000000007', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('3271fa4b-0d70-4d21-895a-1e3435973010', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000104', 'Điểm Lighthouse', 'Điểm trung bình Lighthouse Performance', 50, 'MONTHLY', 'APPROVED', '0c000008-0000-0000-0000-000000000008', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('6a6b79a4-dc6f-48c3-91df-730aaa25242c', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000105', 'Số màn hình hoàn thành', 'Số UI screen hoàn thành và pass QA', 50, 'MONTHLY', 'APPROVED', '0c000007-0000-0000-0000-000000000007', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('f2b49ab6-4214-4309-921e-7f039e9109a4', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000105', 'Điểm Lighthouse', 'Điểm trung bình Lighthouse Performance', 50, 'MONTHLY', 'APPROVED', '0c000008-0000-0000-0000-000000000008', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('14bed331-c027-4e62-ab68-ace512f04c58', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000106', 'Số màn hình hoàn thành', 'Số UI screen hoàn thành và pass QA', 50, 'MONTHLY', 'APPROVED', '0c000007-0000-0000-0000-000000000007', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('05589489-95ec-4cca-a3a0-de9698b4b06e', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000106', 'Điểm Lighthouse', 'Điểm trung bình Lighthouse Performance', 50, 'MONTHLY', 'APPROVED', '0c000008-0000-0000-0000-000000000008', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('d56e6f48-e0f5-44e9-a032-0c9423a55973', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000104', 'Số bài viết', 'Số bài viết content hoàn thành và đăng', 50, 'MONTHLY', 'APPROVED', '0c000009-0000-0000-0000-000000000009', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('b494ce35-58ac-42e4-8efb-001c5a07393e', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000104', 'Tỉ lệ bài đúng hạn', 'Tỉ lệ bài nộp đúng deadline biên tập', 50, 'MONTHLY', 'APPROVED', '0c000010-0000-0000-0000-000000000010', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('2eca1dfe-36ac-4359-9a65-ffcbe6c956ad', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000105', 'Số bài viết', 'Số bài viết content hoàn thành và đăng', 50, 'MONTHLY', 'APPROVED', '0c000009-0000-0000-0000-000000000009', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('97634f31-0aba-46d5-b920-b095ec513b27', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000105', 'Tỉ lệ bài đúng hạn', 'Tỉ lệ bài nộp đúng deadline biên tập', 50, 'MONTHLY', 'APPROVED', '0c000010-0000-0000-0000-000000000010', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('3d32416c-1169-4384-a3c9-6d890cfd5a59', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000106', 'Số bài viết', 'Số bài viết content hoàn thành và đăng', 50, 'MONTHLY', 'APPROVED', '0c000009-0000-0000-0000-000000000009', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('e8a1a3a1-bd0a-42ce-a15c-977587238e20', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000106', 'Tỉ lệ bài đúng hạn', 'Tỉ lệ bài nộp đúng deadline biên tập', 50, 'MONTHLY', 'APPROVED', '0c000010-0000-0000-0000-000000000010', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('ff24864e-6616-4c4c-947b-cea8defcb7a6', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000104', 'Số asset thiết kế', 'Số asset (banner/infographic) hoàn thành', 50, 'MONTHLY', 'APPROVED', '0c000011-0000-0000-0000-000000000011', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('ba76ff1a-2331-4262-98ba-a2c1f480caa8', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000104', 'Tỉ lệ revise ≤ 2 lần', 'Tỉ lệ asset được duyệt trong 2 lần sửa', 50, 'MONTHLY', 'APPROVED', '0c000012-0000-0000-0000-000000000012', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
-    ('c97782ca-253d-4e9b-b25d-fe527a76245b', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000105', 'Số asset thiết kế', 'Số asset (banner/infographic) hoàn thành', 50, 'MONTHLY', 'APPROVED', '0c000011-0000-0000-0000-000000000011', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('19dcb07f-0539-4ad7-86b8-7deea6ea3ae4', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000105', 'Tỉ lệ revise ≤ 2 lần', 'Tỉ lệ asset được duyệt trong 2 lần sửa', 50, 'MONTHLY', 'APPROVED', '0c000012-0000-0000-0000-000000000012', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
-    ('132952bd-3e85-46e1-84a0-93db48abf11f', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000106', 'Số asset thiết kế', 'Số asset (banner/infographic) hoàn thành', 50, 'MONTHLY', 'APPROVED', '0c000011-0000-0000-0000-000000000011', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
-    ('5911285c-12ec-49c5-bf8a-170e8532b9a1', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000106', 'Tỉ lệ revise ≤ 2 lần', 'Tỉ lệ asset được duyệt trong 2 lần sửa', 50, 'MONTHLY', 'APPROVED', '0c000012-0000-0000-0000-000000000012', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07');
+    ('9f4187ab-d4bd-4a73-a21a-eff99273dd27', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000104', 'Số buổi giảng hoàn thành', 'Số buổi giảng đã hoàn thành trong tháng', 50, 'MONTHLY', 'APPROVED', '0c000001-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('7924184d-c084-44a1-ae37-3c6b61d518fc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000104', 'Tỉ lệ học viên bỏ học', 'Tỉ lệ học viên bỏ học không vượt ngưỡng cho phép', 50, 'MONTHLY', 'APPROVED', '0c000002-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('1af7d756-973d-4680-bca0-de8e20b5c6f7', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000105', 'Số buổi giảng hoàn thành', 'Số buổi giảng đã hoàn thành trong tháng', 50, 'MONTHLY', 'APPROVED', '0c000001-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('a536373a-4a01-4b25-b8f9-15c7cd479c94', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000105', 'Tỉ lệ học viên bỏ học', 'Tỉ lệ học viên bỏ học không vượt ngưỡng cho phép', 50, 'MONTHLY', 'APPROVED', '0c000002-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('0888dfd5-b2c6-41ea-b925-b1b73e45dc85', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000106', 'Số buổi giảng hoàn thành', 'Số buổi giảng đã hoàn thành trong tháng', 50, 'MONTHLY', 'APPROVED', '0c000001-0000-0000-0000-000000000001', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('9e2395d5-e706-4643-bb5c-1fa5d4d829db', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-0000-0000-0000-000000000106', 'Tỉ lệ học viên bỏ học', 'Tỉ lệ học viên bỏ học không vượt ngưỡng cho phép', 50, 'MONTHLY', 'APPROVED', '0c000002-0000-0000-0000-000000000002', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('ce79b3ee-d13c-443c-a838-019784af9c82', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000104', 'Số buổi tư vấn tuyển sinh', 'Số buổi tư vấn tuyển sinh đã thực hiện', 50, 'MONTHLY', 'APPROVED', '0c000003-0000-0000-0000-000000000003', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('577305f2-af2b-4e4b-b695-babda1ee0695', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000104', 'Lượt tiếp cận truyền thông', 'Tổng lượt tiếp cận trên các kênh truyền thông', 50, 'MONTHLY', 'APPROVED', '0c000004-0000-0000-0000-000000000004', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('843fc0ed-4784-414d-a09e-0ad177c651e9', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000105', 'Số buổi tư vấn tuyển sinh', 'Số buổi tư vấn tuyển sinh đã thực hiện', 50, 'MONTHLY', 'APPROVED', '0c000003-0000-0000-0000-000000000003', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('d04e377f-7c67-42d7-9986-620c6ea83f09', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000105', 'Lượt tiếp cận truyền thông', 'Tổng lượt tiếp cận trên các kênh truyền thông', 50, 'MONTHLY', 'APPROVED', '0c000004-0000-0000-0000-000000000004', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('b98cd2b1-2f7a-4b74-8f43-7510f06fad00', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000106', 'Số buổi tư vấn tuyển sinh', 'Số buổi tư vấn tuyển sinh đã thực hiện', 50, 'MONTHLY', 'APPROVED', '0c000003-0000-0000-0000-000000000003', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('a357baae-1005-4f1b-8eba-0670a20a0055', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-0000-0000-0000-000000000106', 'Lượt tiếp cận truyền thông', 'Tổng lượt tiếp cận trên các kênh truyền thông', 50, 'MONTHLY', 'APPROVED', '0c000004-0000-0000-0000-000000000004', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('21f3bb63-11a3-40c3-9395-176c0bd74583', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000104', 'Số bài tập lập trình hoàn thành', 'Số bài tập lập trình nộp và đạt yêu cầu', 50, 'MONTHLY', 'APPROVED', '0c000005-0000-0000-0000-000000000005', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('57de5627-31cb-4299-87c3-d370f0a00a10', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000104', 'Số bài được giảng viên nhận xét', 'Số bài tập được giảng viên nhận xét đúng hạn', 50, 'MONTHLY', 'APPROVED', '0c000006-0000-0000-0000-000000000006', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('0bbdca82-a6d6-46dd-a4ad-48062d9353b0', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000105', 'Số bài tập lập trình hoàn thành', 'Số bài tập lập trình nộp và đạt yêu cầu', 50, 'MONTHLY', 'APPROVED', '0c000005-0000-0000-0000-000000000005', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('f15a537e-4f63-4947-a750-ec62ab53c51e', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000105', 'Số bài được giảng viên nhận xét', 'Số bài tập được giảng viên nhận xét đúng hạn', 50, 'MONTHLY', 'APPROVED', '0c000006-0000-0000-0000-000000000006', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('3daf855a-72f5-4941-aa42-37d13a1440f1', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000106', 'Số bài tập lập trình hoàn thành', 'Số bài tập lập trình nộp và đạt yêu cầu', 50, 'MONTHLY', 'APPROVED', '0c000005-0000-0000-0000-000000000005', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('ba7db630-5356-45fd-a201-c60efdd1c252', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-0000-0000-0000-000000000106', 'Số bài được giảng viên nhận xét', 'Số bài tập được giảng viên nhận xét đúng hạn', 50, 'MONTHLY', 'APPROVED', '0c000006-0000-0000-0000-000000000006', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('98501d33-c8f4-4fae-a5fe-804dc17f48d5', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000104', 'Số bài thực hành UI hoàn thành', 'Số bài thực hành giao diện đạt yêu cầu', 50, 'MONTHLY', 'APPROVED', '0c000007-0000-0000-0000-000000000007', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('3271fa4b-0d70-4d21-895a-1e3435973010', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000104', 'Điểm trung bình bài kiểm tra', 'Điểm trung bình các bài kiểm tra trong tháng', 50, 'MONTHLY', 'APPROVED', '0c000008-0000-0000-0000-000000000008', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('6a6b79a4-dc6f-48c3-91df-730aaa25242c', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000105', 'Số bài thực hành UI hoàn thành', 'Số bài thực hành giao diện đạt yêu cầu', 50, 'MONTHLY', 'APPROVED', '0c000007-0000-0000-0000-000000000007', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('f2b49ab6-4214-4309-921e-7f039e9109a4', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000105', 'Điểm trung bình bài kiểm tra', 'Điểm trung bình các bài kiểm tra trong tháng', 50, 'MONTHLY', 'APPROVED', '0c000008-0000-0000-0000-000000000008', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('14bed331-c027-4e62-ab68-ace512f04c58', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000106', 'Số bài thực hành UI hoàn thành', 'Số bài thực hành giao diện đạt yêu cầu', 50, 'MONTHLY', 'APPROVED', '0c000007-0000-0000-0000-000000000007', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('05589489-95ec-4cca-a3a0-de9698b4b06e', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-0000-0000-0000-000000000106', 'Điểm trung bình bài kiểm tra', 'Điểm trung bình các bài kiểm tra trong tháng', 50, 'MONTHLY', 'APPROVED', '0c000008-0000-0000-0000-000000000008', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('d56e6f48-e0f5-44e9-a032-0c9423a55973', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000104', 'Số bài viết nộp đúng hạn', 'Số bài viết học viên nộp và được duyệt', 50, 'MONTHLY', 'APPROVED', '0c000009-0000-0000-0000-000000000009', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('b494ce35-58ac-42e4-8efb-001c5a07393e', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000104', 'Tỉ lệ chuyên cần', 'Tỉ lệ buổi học có mặt đúng giờ', 50, 'MONTHLY', 'APPROVED', '0c000010-0000-0000-0000-000000000010', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('2eca1dfe-36ac-4359-9a65-ffcbe6c956ad', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000105', 'Số bài viết nộp đúng hạn', 'Số bài viết học viên nộp và được duyệt', 50, 'MONTHLY', 'APPROVED', '0c000009-0000-0000-0000-000000000009', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('97634f31-0aba-46d5-b920-b095ec513b27', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000105', 'Tỉ lệ chuyên cần', 'Tỉ lệ buổi học có mặt đúng giờ', 50, 'MONTHLY', 'APPROVED', '0c000010-0000-0000-0000-000000000010', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('3d32416c-1169-4384-a3c9-6d890cfd5a59', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000106', 'Số bài viết nộp đúng hạn', 'Số bài viết học viên nộp và được duyệt', 50, 'MONTHLY', 'APPROVED', '0c000009-0000-0000-0000-000000000009', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('e8a1a3a1-bd0a-42ce-a15c-977587238e20', 'ffffffff-ffff-ffff-ffff-ffffffffffff', '33333333-0000-0000-0000-000000000106', 'Tỉ lệ chuyên cần', 'Tỉ lệ buổi học có mặt đúng giờ', 50, 'MONTHLY', 'APPROVED', '0c000010-0000-0000-0000-000000000010', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('ff24864e-6616-4c4c-947b-cea8defcb7a6', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000104', 'Số sản phẩm thiết kế nộp', 'Số sản phẩm thiết kế học viên nộp', 50, 'MONTHLY', 'APPROVED', '0c000011-0000-0000-0000-000000000011', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('ba76ff1a-2331-4262-98ba-a2c1f480caa8', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000104', 'Tỉ lệ bài đạt yêu cầu', 'Tỉ lệ bài đạt yêu cầu trong tối đa 2 lần sửa', 50, 'MONTHLY', 'APPROVED', '0c000012-0000-0000-0000-000000000012', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-04-02 08:00:00+07', '2026-04-03 08:00:00+07'),
+    ('c97782ca-253d-4e9b-b25d-fe527a76245b', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000105', 'Số sản phẩm thiết kế nộp', 'Số sản phẩm thiết kế học viên nộp', 50, 'MONTHLY', 'APPROVED', '0c000011-0000-0000-0000-000000000011', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('19dcb07f-0539-4ad7-86b8-7deea6ea3ae4', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000105', 'Tỉ lệ bài đạt yêu cầu', 'Tỉ lệ bài đạt yêu cầu trong tối đa 2 lần sửa', 50, 'MONTHLY', 'APPROVED', '0c000012-0000-0000-0000-000000000012', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-05-02 08:00:00+07', '2026-05-03 08:00:00+07'),
+    ('132952bd-3e85-46e1-84a0-93db48abf11f', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000106', 'Số sản phẩm thiết kế nộp', 'Số sản phẩm thiết kế học viên nộp', 50, 'MONTHLY', 'APPROVED', '0c000011-0000-0000-0000-000000000011', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07'),
+    ('5911285c-12ec-49c5-bf8a-170e8532b9a1', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '33333333-0000-0000-0000-000000000106', 'Tỉ lệ bài đạt yêu cầu', 'Tỉ lệ bài đạt yêu cầu trong tối đa 2 lần sửa', 50, 'MONTHLY', 'APPROVED', '0c000012-0000-0000-0000-000000000012', '22222222-0000-0000-0000-000000000100', '22222222-0000-0000-0000-000000000100', '2026-06-02 08:00:00+07', '2026-06-03 08:00:00+07');
 
 INSERT INTO quantitative_kpi_details
     (kpi_criteria_id, target_value, minimum_value, unit)
 VALUES
-    ('9f4187ab-d4bd-4a73-a21a-eff99273dd27', 50, 35, 'task'),
+    ('9f4187ab-d4bd-4a73-a21a-eff99273dd27', 50, 35, 'buổi'),
     ('7924184d-c084-44a1-ae37-3c6b61d518fc', 5, 10, '%'),
-    ('1af7d756-973d-4680-bca0-de8e20b5c6f7', 50, 35, 'task'),
+    ('1af7d756-973d-4680-bca0-de8e20b5c6f7', 50, 35, 'buổi'),
     ('a536373a-4a01-4b25-b8f9-15c7cd479c94', 5, 10, '%'),
-    ('0888dfd5-b2c6-41ea-b925-b1b73e45dc85', 50, 35, 'task'),
+    ('0888dfd5-b2c6-41ea-b925-b1b73e45dc85', 50, 35, 'buổi'),
     ('9e2395d5-e706-4643-bb5c-1fa5d4d829db', 5, 10, '%'),
     ('ce79b3ee-d13c-443c-a838-019784af9c82', 30, 20, 'bài'),
     ('577305f2-af2b-4e4b-b695-babda1ee0695', 5000, 3000, 'lượt'),
@@ -734,17 +735,17 @@ VALUES
     ('d04e377f-7c67-42d7-9986-620c6ea83f09', 5000, 3000, 'lượt'),
     ('b98cd2b1-2f7a-4b74-8f43-7510f06fad00', 30, 20, 'bài'),
     ('a357baae-1005-4f1b-8eba-0670a20a0055', 5000, 3000, 'lượt'),
-    ('21f3bb63-11a3-40c3-9395-176c0bd74583', 20, 12, 'endpoint'),
-    ('57de5627-31cb-4299-87c3-d370f0a00a10', 30, 20, 'PR'),
-    ('0bbdca82-a6d6-46dd-a4ad-48062d9353b0', 20, 12, 'endpoint'),
-    ('f15a537e-4f63-4947-a750-ec62ab53c51e', 30, 20, 'PR'),
-    ('3daf855a-72f5-4941-aa42-37d13a1440f1', 20, 12, 'endpoint'),
-    ('ba7db630-5356-45fd-a201-c60efdd1c252', 30, 20, 'PR'),
-    ('98501d33-c8f4-4fae-a5fe-804dc17f48d5', 15, 10, 'màn hình'),
+    ('21f3bb63-11a3-40c3-9395-176c0bd74583', 20, 12, 'bài'),
+    ('57de5627-31cb-4299-87c3-d370f0a00a10', 30, 20, 'bài'),
+    ('0bbdca82-a6d6-46dd-a4ad-48062d9353b0', 20, 12, 'bài'),
+    ('f15a537e-4f63-4947-a750-ec62ab53c51e', 30, 20, 'bài'),
+    ('3daf855a-72f5-4941-aa42-37d13a1440f1', 20, 12, 'bài'),
+    ('ba7db630-5356-45fd-a201-c60efdd1c252', 30, 20, 'bài'),
+    ('98501d33-c8f4-4fae-a5fe-804dc17f48d5', 15, 10, 'bài'),
     ('3271fa4b-0d70-4d21-895a-1e3435973010', 85, 70, 'điểm'),
-    ('6a6b79a4-dc6f-48c3-91df-730aaa25242c', 15, 10, 'màn hình'),
+    ('6a6b79a4-dc6f-48c3-91df-730aaa25242c', 15, 10, 'bài'),
     ('f2b49ab6-4214-4309-921e-7f039e9109a4', 85, 70, 'điểm'),
-    ('14bed331-c027-4e62-ab68-ace512f04c58', 15, 10, 'màn hình'),
+    ('14bed331-c027-4e62-ab68-ace512f04c58', 15, 10, 'bài'),
     ('05589489-95ec-4cca-a3a0-de9698b4b06e', 85, 70, 'điểm'),
     ('d56e6f48-e0f5-44e9-a032-0c9423a55973', 20, 12, 'bài'),
     ('b494ce35-58ac-42e4-8efb-001c5a07393e', 90, 70, '%'),
@@ -752,11 +753,11 @@ VALUES
     ('97634f31-0aba-46d5-b920-b095ec513b27', 90, 70, '%'),
     ('3d32416c-1169-4384-a3c9-6d890cfd5a59', 20, 12, 'bài'),
     ('e8a1a3a1-bd0a-42ce-a15c-977587238e20', 90, 70, '%'),
-    ('ff24864e-6616-4c4c-947b-cea8defcb7a6', 25, 15, 'asset'),
+    ('ff24864e-6616-4c4c-947b-cea8defcb7a6', 25, 15, 'sản phẩm'),
     ('ba76ff1a-2331-4262-98ba-a2c1f480caa8', 80, 60, '%'),
-    ('c97782ca-253d-4e9b-b25d-fe527a76245b', 25, 15, 'asset'),
+    ('c97782ca-253d-4e9b-b25d-fe527a76245b', 25, 15, 'sản phẩm'),
     ('19dcb07f-0539-4ad7-86b8-7deea6ea3ae4', 80, 60, '%'),
-    ('132952bd-3e85-46e1-84a0-93db48abf11f', 25, 15, 'asset'),
+    ('132952bd-3e85-46e1-84a0-93db48abf11f', 25, 15, 'sản phẩm'),
     ('5911285c-12ec-49c5-bf8a-170e8532b9a1', 80, 60, '%');
 
 -- ============================================================
@@ -869,7 +870,7 @@ INSERT INTO kpi_submissions
      reviewed_by, review_note, reviewed_at, period_start, period_end)
 VALUES
     ('225d6d42-3ad8-43be-bd66-bcf5b216fcd7', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '9f4187ab-d4bd-4a73-a21a-eff99273dd27', '22222222-0000-0000-0000-000000000101',
-     45, 45.0, '45 task', 'APPROVED',
+     45, 45.0, '45 buổi', 'APPROVED',
      '22222222-0000-0000-0000-000000000100', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('bbed5370-c36a-4d15-be78-eb0ba1883f39', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '7924184d-c084-44a1-ae37-3c6b61d518fc', '22222222-0000-0000-0000-000000000101',
@@ -877,7 +878,7 @@ VALUES
      '22222222-0000-0000-0000-000000000100', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('1816b82c-22ff-4189-a098-096ab3af0258', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '9f4187ab-d4bd-4a73-a21a-eff99273dd27', '22222222-0000-0000-0000-000000000102',
-     42, 42.0, '42 task', 'APPROVED',
+     42, 42.0, '42 buổi', 'APPROVED',
      '22222222-0000-0000-0000-000000000100', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('de571ea1-fde6-4b24-81ef-307e5e7429bd', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '7924184d-c084-44a1-ae37-3c6b61d518fc', '22222222-0000-0000-0000-000000000102',
@@ -885,7 +886,7 @@ VALUES
      '22222222-0000-0000-0000-000000000100', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('ea3dfa7f-b2b8-40c1-8af8-172a94a4953b', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '1af7d756-973d-4680-bca0-de8e20b5c6f7', '22222222-0000-0000-0000-000000000101',
-     50, 50.0, '50 task', 'APPROVED',
+     50, 50.0, '50 buổi', 'APPROVED',
      '22222222-0000-0000-0000-000000000100', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('9208032c-9a76-4a39-a8d9-712e53bd7be2', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'a536373a-4a01-4b25-b8f9-15c7cd479c94', '22222222-0000-0000-0000-000000000101',
@@ -893,7 +894,7 @@ VALUES
      '22222222-0000-0000-0000-000000000100', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('76acdd0f-85a4-4878-b574-b2891fdaf4fc', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '1af7d756-973d-4680-bca0-de8e20b5c6f7', '22222222-0000-0000-0000-000000000102',
-     48, 48.0, '48 task', 'APPROVED',
+     48, 48.0, '48 buổi', 'APPROVED',
      '22222222-0000-0000-0000-000000000100', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('afbc0acf-44a8-4399-b296-58a640c7a340', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'a536373a-4a01-4b25-b8f9-15c7cd479c94', '22222222-0000-0000-0000-000000000102',
@@ -901,7 +902,7 @@ VALUES
      '22222222-0000-0000-0000-000000000100', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('fce7a7ee-57af-48d8-ba2f-ff016db4da6a', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '0888dfd5-b2c6-41ea-b925-b1b73e45dc85', '22222222-0000-0000-0000-000000000101',
-     55, 50.0, '55 task', 'APPROVED',
+     55, 50.0, '55 buổi', 'APPROVED',
      '22222222-0000-0000-0000-000000000100', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('b3518f43-05d3-4069-aa94-d0f99b86253a', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '9e2395d5-e706-4643-bb5c-1fa5d4d829db', '22222222-0000-0000-0000-000000000101',
@@ -909,7 +910,7 @@ VALUES
      '22222222-0000-0000-0000-000000000100', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('df7003df-a32c-4510-a57e-e13fc0b95e60', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '0888dfd5-b2c6-41ea-b925-b1b73e45dc85', '22222222-0000-0000-0000-000000000102',
-     52, 50.0, '52 task', 'APPROVED',
+     52, 50.0, '52 buổi', 'APPROVED',
      '22222222-0000-0000-0000-000000000100', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('ba7c0789-446c-4636-b99f-0d5e7bd9e453', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '9e2395d5-e706-4643-bb5c-1fa5d4d829db', '22222222-0000-0000-0000-000000000102',
@@ -965,79 +966,79 @@ VALUES
      '22222222-0000-0000-0000-000000000100', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('54d0a744-dea7-49cc-b0f9-65df4733b11f', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '21f3bb63-11a3-40c3-9395-176c0bd74583', '22222222-0000-0000-0000-000000000300',
-     18, 45.0, '18 endpoint', 'APPROVED',
+     18, 45.0, '18 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('6863237a-4878-4ef6-bdfc-8aa7687f5690', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '57de5627-31cb-4299-87c3-d370f0a00a10', '22222222-0000-0000-0000-000000000300',
-     25, 41.7, '25 PR', 'APPROVED',
+     25, 41.7, '25 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('2fc63b8e-1baf-4c7c-a6af-f9dfb9122aeb', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '21f3bb63-11a3-40c3-9395-176c0bd74583', '22222222-0000-0000-0000-000000000301',
-     16, 40.0, '16 endpoint', 'APPROVED',
+     16, 40.0, '16 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('02e944f0-4efe-4d42-8fee-93ecd9abee6c', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '57de5627-31cb-4299-87c3-d370f0a00a10', '22222222-0000-0000-0000-000000000301',
-     22, 36.7, '22 PR', 'APPROVED',
+     22, 36.7, '22 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('b76ec5a0-10dc-4eb5-b477-86c7d5c9ccc2', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '21f3bb63-11a3-40c3-9395-176c0bd74583', '22222222-0000-0000-0000-000000000103',
-     14, 35.0, '14 endpoint', 'APPROVED',
+     14, 35.0, '14 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('75ef9dc4-f494-4846-b1c6-7b07dfe4a565', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '57de5627-31cb-4299-87c3-d370f0a00a10', '22222222-0000-0000-0000-000000000103',
-     20, 33.3, '20 PR', 'APPROVED',
+     20, 33.3, '20 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('5e2569b3-0576-43f2-a6e0-dc493e970ab5', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '0bbdca82-a6d6-46dd-a4ad-48062d9353b0', '22222222-0000-0000-0000-000000000300',
-     20, 50.0, '20 endpoint', 'APPROVED',
+     20, 50.0, '20 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('c0714326-bd36-4c26-9876-8d5d8e669638', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'f15a537e-4f63-4947-a750-ec62ab53c51e', '22222222-0000-0000-0000-000000000300',
-     30, 50.0, '30 PR', 'APPROVED',
+     30, 50.0, '30 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('d3bbef05-75b2-4978-99ad-e070f7c2f26e', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '0bbdca82-a6d6-46dd-a4ad-48062d9353b0', '22222222-0000-0000-0000-000000000301',
-     19, 47.5, '19 endpoint', 'APPROVED',
+     19, 47.5, '19 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('d9d8a8a7-9ced-4e1d-9485-b609fc62dfd5', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'f15a537e-4f63-4947-a750-ec62ab53c51e', '22222222-0000-0000-0000-000000000301',
-     27, 45.0, '27 PR', 'APPROVED',
+     27, 45.0, '27 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('374055ed-a785-44f9-99a6-e4962ca81e92', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '0bbdca82-a6d6-46dd-a4ad-48062d9353b0', '22222222-0000-0000-0000-000000000103',
-     17, 42.5, '17 endpoint', 'APPROVED',
+     17, 42.5, '17 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('ff289c5b-06d8-430d-a1b4-4e03df1fb871', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'f15a537e-4f63-4947-a750-ec62ab53c51e', '22222222-0000-0000-0000-000000000103',
-     24, 40.0, '24 PR', 'APPROVED',
+     24, 40.0, '24 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('0f6cc9d9-0728-4f98-a73b-f2e115fef3cf', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '3daf855a-72f5-4941-aa42-37d13a1440f1', '22222222-0000-0000-0000-000000000300',
-     23, 50.0, '23 endpoint', 'APPROVED',
+     23, 50.0, '23 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('5a8544dc-dc16-46f1-bb84-6541fb965402', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'ba7db630-5356-45fd-a201-c60efdd1c252', '22222222-0000-0000-0000-000000000300',
-     35, 50.0, '35 PR', 'APPROVED',
+     35, 50.0, '35 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('0688c561-3231-4786-bb06-35e9594cd6cd', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '3daf855a-72f5-4941-aa42-37d13a1440f1', '22222222-0000-0000-0000-000000000301',
-     21, 50.0, '21 endpoint', 'APPROVED',
+     21, 50.0, '21 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('9aa4b53b-3f58-48f4-ad7f-f6282dd92df8', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'ba7db630-5356-45fd-a201-c60efdd1c252', '22222222-0000-0000-0000-000000000301',
-     32, 50.0, '32 PR', 'APPROVED',
+     32, 50.0, '32 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('d395f2f9-e006-4b84-b015-1643e8b22102', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '3daf855a-72f5-4941-aa42-37d13a1440f1', '22222222-0000-0000-0000-000000000103',
-     20, 50.0, '20 endpoint', 'APPROVED',
+     20, 50.0, '20 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('589b7526-3e1b-478f-a8f7-4fb934a3ce45', 'dddddddd-dddd-dddd-dddd-dddddddddddd', 'ba7db630-5356-45fd-a201-c60efdd1c252', '22222222-0000-0000-0000-000000000103',
-     28, 46.7, '28 PR', 'APPROVED',
+     28, 46.7, '28 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('f31fa9b9-e477-496e-872f-3ee2662934e8', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '98501d33-c8f4-4fae-a5fe-804dc17f48d5', '22222222-0000-0000-0000-000000000400',
-     13, 43.3, '13 màn hình', 'APPROVED',
+     13, 43.3, '13 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('df04a059-d1b1-4263-a3e6-9a0ef81a5219', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '3271fa4b-0d70-4d21-895a-1e3435973010', '22222222-0000-0000-0000-000000000400',
@@ -1045,7 +1046,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('cb429fb5-1aea-4d0f-8420-3e38e94638aa', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '98501d33-c8f4-4fae-a5fe-804dc17f48d5', '22222222-0000-0000-0000-000000000401',
-     12, 40.0, '12 màn hình', 'APPROVED',
+     12, 40.0, '12 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('0e3445aa-fc5d-495f-a604-167bba6be5ff', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '3271fa4b-0d70-4d21-895a-1e3435973010', '22222222-0000-0000-0000-000000000401',
@@ -1053,7 +1054,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('4968d3c0-a6e9-4753-8b77-85ed9b67d53b', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '98501d33-c8f4-4fae-a5fe-804dc17f48d5', '22222222-0000-0000-0000-000000000402',
-     11, 36.7, '11 màn hình', 'APPROVED',
+     11, 36.7, '11 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('699a6cca-13e9-42e0-88a3-ca0721ee523d', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '3271fa4b-0d70-4d21-895a-1e3435973010', '22222222-0000-0000-0000-000000000402',
@@ -1061,7 +1062,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('7576a1da-1c31-4c6f-a900-ec6985aa93dc', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '6a6b79a4-dc6f-48c3-91df-730aaa25242c', '22222222-0000-0000-0000-000000000400',
-     15, 50.0, '15 màn hình', 'APPROVED',
+     15, 50.0, '15 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('23637d52-9307-4155-95e8-5bd600057838', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'f2b49ab6-4214-4309-921e-7f039e9109a4', '22222222-0000-0000-0000-000000000400',
@@ -1069,7 +1070,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('d5d90310-3c83-4fa4-b4ce-e3091c3d0425', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '6a6b79a4-dc6f-48c3-91df-730aaa25242c', '22222222-0000-0000-0000-000000000401',
-     14, 46.7, '14 màn hình', 'APPROVED',
+     14, 46.7, '14 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('06e6348c-e3a4-4b9c-ae0d-f81626470274', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'f2b49ab6-4214-4309-921e-7f039e9109a4', '22222222-0000-0000-0000-000000000401',
@@ -1077,7 +1078,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('75923d25-1c30-4d2f-ba54-e36952a77310', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '6a6b79a4-dc6f-48c3-91df-730aaa25242c', '22222222-0000-0000-0000-000000000402',
-     13, 43.3, '13 màn hình', 'APPROVED',
+     13, 43.3, '13 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('b2752c0f-8a1b-47cd-b8ba-94600fb78ccd', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'f2b49ab6-4214-4309-921e-7f039e9109a4', '22222222-0000-0000-0000-000000000402',
@@ -1085,7 +1086,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('00b010e5-042e-4dd1-95ef-3b9e785912e0', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '14bed331-c027-4e62-ab68-ace512f04c58', '22222222-0000-0000-0000-000000000400',
-     17, 50.0, '17 màn hình', 'APPROVED',
+     17, 50.0, '17 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('b8a44af6-c5fe-4853-864d-d3653b7915b0', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '05589489-95ec-4cca-a3a0-de9698b4b06e', '22222222-0000-0000-0000-000000000400',
@@ -1093,7 +1094,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('524ef413-1d12-45ae-8fcf-2534b6a0ceee', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '14bed331-c027-4e62-ab68-ace512f04c58', '22222222-0000-0000-0000-000000000401',
-     16, 50.0, '16 màn hình', 'APPROVED',
+     16, 50.0, '16 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('5e93daac-8d43-43ff-8e6c-022d9f80117c', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '05589489-95ec-4cca-a3a0-de9698b4b06e', '22222222-0000-0000-0000-000000000401',
@@ -1101,7 +1102,7 @@ VALUES
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('e8977133-ddf3-427f-8136-5d3116b32cdb', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '14bed331-c027-4e62-ab68-ace512f04c58', '22222222-0000-0000-0000-000000000402',
-     15, 50.0, '15 màn hình', 'APPROVED',
+     15, 50.0, '15 bài', 'APPROVED',
      '22222222-0000-0000-0000-000000000101', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('7c3d1a6e-1ffe-4140-9bd0-7de5e04633ab', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '05589489-95ec-4cca-a3a0-de9698b4b06e', '22222222-0000-0000-0000-000000000402',
@@ -1181,7 +1182,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('7287273b-c7bd-4bcc-8d17-a1462d85cb4a', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'ff24864e-6616-4c4c-947b-cea8defcb7a6', '22222222-0000-0000-0000-000000000700',
-     22, 44.0, '22 asset', 'APPROVED',
+     22, 44.0, '22 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('0239c600-ded4-4dbd-b7cb-d11c0aaa6d0c', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'ba76ff1a-2331-4262-98ba-a2c1f480caa8', '22222222-0000-0000-0000-000000000700',
@@ -1189,7 +1190,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('a4d7bc94-d9d6-4e6d-9783-679eae7065bd', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'ff24864e-6616-4c4c-947b-cea8defcb7a6', '22222222-0000-0000-0000-000000000701',
-     19, 38.0, '19 asset', 'APPROVED',
+     19, 38.0, '19 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('7dfbd1eb-6461-4eec-9daa-5f8f832dfa29', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'ba76ff1a-2331-4262-98ba-a2c1f480caa8', '22222222-0000-0000-0000-000000000701',
@@ -1197,7 +1198,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('21733e53-0f7c-4c1c-9b4b-bc25599a9673', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'ff24864e-6616-4c4c-947b-cea8defcb7a6', '22222222-0000-0000-0000-000000000702',
-     17, 34.0, '17 asset', 'APPROVED',
+     17, 34.0, '17 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('57f38d10-72a7-4818-8688-e0b1fb478d71', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'ba76ff1a-2331-4262-98ba-a2c1f480caa8', '22222222-0000-0000-0000-000000000702',
@@ -1205,7 +1206,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Đạt', '2026-05-03 08:00:00+07',
      '2026-04-01 00:00:00+07', '2026-04-30 23:59:59+07'),
     ('72084f24-301f-4210-b29a-061f0f94afad', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'c97782ca-253d-4e9b-b25d-fe527a76245b', '22222222-0000-0000-0000-000000000700',
-     25, 50.0, '25 asset', 'APPROVED',
+     25, 50.0, '25 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('bfa9ee2c-fc56-423b-902a-0e7727ad1953', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '19dcb07f-0539-4ad7-86b8-7deea6ea3ae4', '22222222-0000-0000-0000-000000000700',
@@ -1213,7 +1214,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Xuất sắc', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('43225e5e-9df8-44e8-a482-2a260c25d64a', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'c97782ca-253d-4e9b-b25d-fe527a76245b', '22222222-0000-0000-0000-000000000701',
-     22, 44.0, '22 asset', 'APPROVED',
+     22, 44.0, '22 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('7cca00c9-c61f-4f5d-86e8-fb212b4f6e3b', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '19dcb07f-0539-4ad7-86b8-7deea6ea3ae4', '22222222-0000-0000-0000-000000000701',
@@ -1221,7 +1222,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('033fc9ea-88ff-4c93-b506-f8ccb4b89bdb', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', 'c97782ca-253d-4e9b-b25d-fe527a76245b', '22222222-0000-0000-0000-000000000702',
-     20, 40.0, '20 asset', 'APPROVED',
+     20, 40.0, '20 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('52e1045b-4779-413b-a51a-5e2f5a19a51d', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '19dcb07f-0539-4ad7-86b8-7deea6ea3ae4', '22222222-0000-0000-0000-000000000702',
@@ -1229,7 +1230,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-06-03 08:00:00+07',
      '2026-05-01 00:00:00+07', '2026-05-31 23:59:59+07'),
     ('028dde8d-9683-47e0-92f3-ff2961a19dcb', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '132952bd-3e85-46e1-84a0-93db48abf11f', '22222222-0000-0000-0000-000000000700',
-     28, 50.0, '28 asset', 'APPROVED',
+     28, 50.0, '28 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('accbd8f5-00fe-4bb5-a3df-cfb2ad0ca8e3', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '5911285c-12ec-49c5-bf8a-170e8532b9a1', '22222222-0000-0000-0000-000000000700',
@@ -1237,7 +1238,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('a5b62f10-3b45-4488-9cdb-545af8e9d908', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '132952bd-3e85-46e1-84a0-93db48abf11f', '22222222-0000-0000-0000-000000000701',
-     26, 50.0, '26 asset', 'APPROVED',
+     26, 50.0, '26 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('89f854f5-9abe-4ff1-b9cc-d880a2b294e0', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '5911285c-12ec-49c5-bf8a-170e8532b9a1', '22222222-0000-0000-0000-000000000701',
@@ -1245,7 +1246,7 @@ VALUES
      '22222222-0000-0000-0000-000000000500', 'Xuất sắc', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('b2957ace-664e-47b8-b810-94af0d3bcafb', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '132952bd-3e85-46e1-84a0-93db48abf11f', '22222222-0000-0000-0000-000000000702',
-     24, 48.0, '24 asset', 'APPROVED',
+     24, 48.0, '24 sản phẩm', 'APPROVED',
      '22222222-0000-0000-0000-000000000500', 'Tốt', '2026-07-03 08:00:00+07',
      '2026-06-01 00:00:00+07', '2026-06-30 23:59:59+07'),
     ('2d56f353-d95b-479f-8b7f-75c8c2de4d76', 'abcdefab-cdef-cdef-cdef-abcdefabcdef', '5911285c-12ec-49c5-bf8a-170e8532b9a1', '22222222-0000-0000-0000-000000000702',
@@ -1531,8 +1532,8 @@ VALUES
 INSERT INTO sidebar_settings (id, organization_id, menu_key, custom_label) VALUES
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/dashboard', 'Tổng quan'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/dashboard?view=staff', 'Dashboard cá nhân'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Thiết lập nhà trường', 'Thiết lập nhà trường'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/company', 'Thông tin trường'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Thiết lập nhà trường', 'Thiết lập trung tâm'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/company', 'Thông tin trung tâm'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/okr', 'Quản lý OKR'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Quản lý BSC', 'Quản lý BSC'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/bsc', 'Thẻ điểm BSC'),
@@ -1541,7 +1542,7 @@ INSERT INTO sidebar_settings (id, organization_id, menu_key, custom_label) VALUE
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Tổ chức', 'Tổ chức'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/roles', 'Phân quyền vai trò'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/org-structure', 'Cấu trúc tổ chức'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/users', 'Quản lý giảng viên'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/users', 'Quản lý học viên'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/settings', 'Cấu hình hệ thống'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', 'Quản lý KPI', 'Quản trị KPI'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/kpi-cycles', 'Danh mục kỳ KPI'),
@@ -1550,7 +1551,7 @@ INSERT INTO sidebar_settings (id, organization_id, menu_key, custom_label) VALUE
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/kpi-criteria', 'Thiết lập chỉ tiêu'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/kpi-criteria/pending', 'Phê duyệt chỉ tiêu'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/kpi-adjustments/pending', 'Duyệt điều chỉnh'),
-    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/submissions/org-unit', 'Kiểm soát bài nộp'),
+    (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/submissions/org-unit', 'Kiểm soát bài nộp của lớp'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/evaluations', 'Đánh giá xếp loại'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/my-kpi', 'KPI của tôi'),
     (gen_random_uuid(), '11111111-1111-1111-1111-111111111111', '/my-adjustments', 'Yêu cầu điều chỉnh'),
@@ -1653,13 +1654,13 @@ ON CONFLICT (id) DO NOTHING;
 
 -- 7. ROLE PERMISSIONS
 INSERT INTO role_permissions (role_id, permission_id)
-SELECT 'c3000000-0000-0000-0000-000000000001', id FROM permissions WHERE code IN ('BSC:VIEW', 'BSC:MANAGE', 'BSC:PUBLISH_SCORE', 'OKR:VIEW', 'OKR:MANAGE', 'DASHBOARD:VIEW', 'COMPANY:VIEW', 'COMPANY:UPDATE', 'ORG:VIEW', 'ORG:CREATE', 'ORG:UPDATE', 'ORG:DELETE', 'USER:VIEW', 'USER:CREATE', 'USER:UPDATE', 'USER:DELETE', 'USER:IMPORT', 'ROLE:VIEW', 'ROLE:ASSIGN', 'ROLE:CREATE', 'ROLE:UPDATE', 'PERMISSION:VIEW', 'KPI:VIEW', 'KPI:CREATE', 'KPI:UPDATE', 'KPI:DELETE', 'KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI:APPROVE_OWN', 'KPI:REVERT_APPROVAL', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_PERIOD:CREATE', 'KPI_PERIOD:UPDATE', 'KPI_PERIOD:DELETE', 'KPI_CYCLE:VIEW', 'KPI_CYCLE:CREATE', 'KPI_CYCLE:UPDATE', 'KPI_CYCLE:DELETE', 'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'SUBMISSION:REVIEW', 'SUBMISSION:VIEW', 'SUBMISSION:DELETE', 'SUBMISSION:UPDATE', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'EVALUATION:UPDATE', 'EVALUATION:DELETE', 'NOTIF:VIEW', 'NOTIF:MANAGE', 'AI:SUGGEST_KPI', 'POLICY:VIEW', 'POLICY:CREATE', 'POLICY:UPDATE', 'POLICY:ASSIGN', 'STATS:VIEW_ORG', 'STATS:VIEW_EMPLOYEE', 'USER_ROLE:VIEW', 'USER_ROLE:ASSIGN', 'USER_ROLE:REVOKE', 'ATTACHMENT:UPLOAD', 'ATTACHMENT:DELETE', 'REMINDER:SEND', 'SYSTEM:ADMIN', 'COMPANY:DELETE', 'ROLE:DELETE', 'POLICY:DELETE', 'PERMISSION:EDIT')
+SELECT 'c3000000-0000-0000-0000-000000000001', id FROM permissions WHERE code IN ('BSC:VIEW', 'BSC:MANAGE', 'BSC:PUBLISH_SCORE', 'OKR:VIEW', 'OKR:MANAGE', 'DASHBOARD:VIEW', 'COMPANY:VIEW', 'COMPANY:UPDATE', 'ORG:VIEW', 'ORG:CREATE', 'ORG:UPDATE', 'ORG:DELETE', 'USER:VIEW', 'USER:CREATE', 'USER:UPDATE', 'USER:DELETE', 'USER:IMPORT', 'ROLE:VIEW', 'ROLE:ASSIGN', 'ROLE:CREATE', 'ROLE:UPDATE', 'PERMISSION:VIEW', 'KPI:VIEW', 'KPI:CREATE', 'KPI:UPDATE', 'KPI:DELETE', 'KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI:APPROVE_OWN', 'KPI:REVERT_APPROVAL', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_PERIOD:CREATE', 'KPI_PERIOD:UPDATE', 'KPI_PERIOD:DELETE', 'KPI_CYCLE:VIEW', 'KPI_CYCLE:CREATE', 'KPI_CYCLE:UPDATE', 'KPI_CYCLE:DELETE', 'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND', 'SUBMISSION:REVIEW', 'SUBMISSION:VIEW', 'SUBMISSION:DELETE', 'SUBMISSION:UPDATE', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'EVALUATION:UPDATE', 'EVALUATION:DELETE', 'NOTIF:VIEW', 'NOTIF:MANAGE', 'AI:SUGGEST_KPI', 'POLICY:VIEW', 'POLICY:CREATE', 'POLICY:UPDATE', 'POLICY:ASSIGN', 'STATS:VIEW_ORG', 'STATS:VIEW_EMPLOYEE', 'USER_ROLE:VIEW', 'USER_ROLE:ASSIGN', 'USER_ROLE:REVOKE', 'ATTACHMENT:UPLOAD', 'ATTACHMENT:DELETE', 'REMINDER:SEND', 'SYSTEM:ADMIN', 'COMPANY:DELETE', 'ROLE:DELETE', 'POLICY:DELETE', 'PERMISSION:EDIT')
 ON CONFLICT DO NOTHING;
 INSERT INTO role_permissions (role_id, permission_id)
-SELECT 'c3000000-0000-0000-0000-000000000002', id FROM permissions WHERE code IN ('BSC:VIEW', 'BSC:MANAGE', 'BSC:PUBLISH_SCORE', 'OKR:VIEW', 'OKR:MANAGE', 'DASHBOARD:VIEW', 'COMPANY:VIEW', 'ORG:VIEW', 'ORG:CREATE', 'ORG:UPDATE', 'USER:VIEW', 'USER:CREATE', 'USER:UPDATE', 'USER:IMPORT', 'ROLE:VIEW', 'ROLE:ASSIGN', 'ROLE:CREATE', 'ROLE:UPDATE', 'PERMISSION:VIEW', 'KPI:VIEW', 'KPI:CREATE', 'KPI:UPDATE', 'KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI:APPROVE_OWN', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_PERIOD:CREATE', 'KPI_PERIOD:UPDATE', 'KPI_CYCLE:VIEW', 'KPI_CYCLE:CREATE', 'KPI_CYCLE:UPDATE', 'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'SUBMISSION:REVIEW', 'SUBMISSION:VIEW', 'SUBMISSION:UPDATE', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'EVALUATION:UPDATE', 'NOTIF:VIEW', 'NOTIF:MANAGE', 'AI:SUGGEST_KPI', 'POLICY:VIEW', 'POLICY:CREATE', 'POLICY:UPDATE', 'POLICY:ASSIGN', 'STATS:VIEW_ORG', 'STATS:VIEW_EMPLOYEE', 'USER_ROLE:VIEW', 'USER_ROLE:ASSIGN', 'ATTACHMENT:UPLOAD', 'REMINDER:SEND', 'COMPANY:DELETE', 'ROLE:DELETE', 'POLICY:DELETE', 'PERMISSION:EDIT')
+SELECT 'c3000000-0000-0000-0000-000000000002', id FROM permissions WHERE code IN ('BSC:VIEW', 'BSC:MANAGE', 'BSC:PUBLISH_SCORE', 'OKR:VIEW', 'OKR:MANAGE', 'DASHBOARD:VIEW', 'COMPANY:VIEW', 'ORG:VIEW', 'ORG:CREATE', 'ORG:UPDATE', 'USER:VIEW', 'USER:CREATE', 'USER:UPDATE', 'USER:IMPORT', 'ROLE:VIEW', 'ROLE:ASSIGN', 'ROLE:CREATE', 'ROLE:UPDATE', 'PERMISSION:VIEW', 'KPI:VIEW', 'KPI:CREATE', 'KPI:UPDATE', 'KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI:APPROVE_OWN', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_PERIOD:CREATE', 'KPI_PERIOD:UPDATE', 'KPI_CYCLE:VIEW', 'KPI_CYCLE:CREATE', 'KPI_CYCLE:UPDATE', 'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND', 'SUBMISSION:REVIEW', 'SUBMISSION:VIEW', 'SUBMISSION:UPDATE', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'EVALUATION:UPDATE', 'NOTIF:VIEW', 'NOTIF:MANAGE', 'AI:SUGGEST_KPI', 'POLICY:VIEW', 'POLICY:CREATE', 'POLICY:UPDATE', 'POLICY:ASSIGN', 'STATS:VIEW_ORG', 'STATS:VIEW_EMPLOYEE', 'USER_ROLE:VIEW', 'USER_ROLE:ASSIGN', 'ATTACHMENT:UPLOAD', 'REMINDER:SEND', 'COMPANY:DELETE', 'ROLE:DELETE', 'POLICY:DELETE', 'PERMISSION:EDIT')
 ON CONFLICT DO NOTHING;
 INSERT INTO role_permissions (role_id, permission_id)
-SELECT 'c4000000-0000-0000-0000-000000000001', id FROM permissions WHERE code IN ('BSC:VIEW', 'OKR:VIEW', 'DASHBOARD:VIEW', 'ORG:VIEW_TREE', 'USER:VIEW_LIST', 'KPI:VIEW', 'KPI:CREATE', 'KPI:UPDATE', 'KPI:DELETE', 'KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI:APPROVE_OWN', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_CYCLE:VIEW', 'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'SUBMISSION:VIEW', 'SUBMISSION:REVIEW', 'SUBMISSION:REVIEW_KPI', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'NOTIF:VIEW', 'AI:SUGGEST_KPI', 'STATS:VIEW_EMPLOYEE', 'ATTACHMENT:UPLOAD', 'REMINDER:SEND', 'KPI:VIEW_MY', 'SUBMISSION:VIEW_MY', 'STATS:VIEW_MY', 'ADJUSTMENT:VIEW_MY')
+SELECT 'c4000000-0000-0000-0000-000000000001', id FROM permissions WHERE code IN ('BSC:VIEW', 'OKR:VIEW', 'DASHBOARD:VIEW', 'ORG:VIEW_TREE', 'USER:VIEW_LIST', 'KPI:VIEW', 'KPI:CREATE', 'KPI:UPDATE', 'KPI:DELETE', 'KPI:APPROVE_CRITERIA', 'KPI:APPROVE_ADJUSTMENT', 'KPI:APPROVE_OWN', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_CYCLE:VIEW', 'CYCLE_EVAL:VIEW', 'CYCLE_EVAL:FINALIZE', 'CYCLE_EVAL:SEND', 'SUBMISSION:VIEW', 'SUBMISSION:REVIEW', 'SUBMISSION:REVIEW_KPI', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'NOTIF:VIEW', 'AI:SUGGEST_KPI', 'STATS:VIEW_EMPLOYEE', 'ATTACHMENT:UPLOAD', 'REMINDER:SEND', 'KPI:VIEW_MY', 'SUBMISSION:VIEW_MY', 'STATS:VIEW_MY', 'ADJUSTMENT:VIEW_MY')
 ON CONFLICT DO NOTHING;
 INSERT INTO role_permissions (role_id, permission_id)
 SELECT 'c4000000-0000-0000-0000-000000000002', id FROM permissions WHERE code IN ('BSC:VIEW', 'OKR:VIEW', 'DASHBOARD:VIEW', 'ORG:VIEW_TREE', 'USER:VIEW_LIST', 'KPI:VIEW', 'KPI:CREATE','KPI:UPDATE', 'KPI:DELETE', 'KPI:IMPORT', 'KPI:SUBMIT', 'KPI:REJECT', 'KPI_PERIOD:VIEW', 'KPI_CYCLE:VIEW', 'SUBMISSION:VIEW', 'SUBMISSION:REVIEW_KPI', 'EVALUATION:VIEW', 'EVALUATION:CREATE', 'NOTIF:VIEW', 'AI:SUGGEST_KPI', 'STATS:VIEW_EMPLOYEE', 'ATTACHMENT:UPLOAD', 'REMINDER:SEND', 'KPI:VIEW_MY', 'SUBMISSION:VIEW_MY', 'EVALUATION:VIEW_MY', 'STATS:VIEW_MY', 'ADJUSTMENT:VIEW_MY')
@@ -2330,8 +2331,306 @@ INSERT INTO org_notification_configs (organization_id, event_code, email_enabled
     ('22222222-2222-2222-2222-222222222222', 'submission_reviewed',  true, true),
     ('22222222-2222-2222-2222-222222222222', 'reminder_deadline',    true, true);
 
+-- ============================================================================
+-- 19. KEYPERSON — MỞ RỘNG DỮ LIỆU DEMO
+-- 5 khoa · 16 lớp học · ~176 học viên/giảng viên · 6 đợt (T1–T6/2026) · 2 kỳ
+-- Mục tiêu: phần "Phân tích & Thống kê" có đủ dữ liệu cho mọi biểu đồ.
+--
+-- Toàn bộ số liệu sinh bằng generate_series + hash tất định (md5 của cặp
+-- user×chỉ tiêu) ⇒ chạy lại migration luôn cho cùng một bộ số, không random.
+-- Các INSERT đều có NOT EXISTS / ON CONFLICT nên KHÔNG đụng dữ liệu seed cũ.
+-- ============================================================================
+
+-- 19.1 KHOA MỚI (3) ─ nâng tổng số khoa của Keyperson lên 5
+INSERT INTO org_units (id, name, code, parent_id, org_hierarchy_id, district_id, status) VALUES
+    ('ba000000-0000-0000-0000-000000000003', 'Khoa Kinh doanh & Bán hàng', 'K-KD',  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('ba000000-0000-0000-0000-000000000004', 'Khoa Ngoại ngữ',            'K-NN',  'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE'),
+    ('ba000000-0000-0000-0000-000000000005', 'Khoa Kỹ năng mềm',          'K-KNM', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '22222222-2222-2222-2222-222222222222', 'b1000000-0000-0000-0000-000000000001', 'ACTIVE');
+
+-- 19.2 Bảng phụ mô tả 16 lớp học (4 lớp seed cũ + 12 lớp mới).
+--      Dùng làm "danh bạ lớp" cho toàn bộ các bước sinh phía dưới; DROP ở cuối file.
+CREATE TABLE _kp_seed_class (
+    idx        int  PRIMARY KEY,
+    class_id   uuid NOT NULL UNIQUE,
+    khoa_id    uuid NOT NULL,
+    class_name text NOT NULL,
+    class_code text NOT NULL,
+    gvcn_id    uuid NOT NULL,
+    tg_id      uuid NOT NULL,
+    is_new     boolean NOT NULL
+);
+
+INSERT INTO _kp_seed_class (idx, class_id, khoa_id, class_name, class_code, gvcn_id, tg_id, is_new) VALUES
+    ( 1,'dddddddd-dddd-dddd-dddd-dddddddddddd','bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','Lớp Lập trình Web K01',      'L-WEB-K01', '22222222-0000-0000-0000-000000000300','22222222-0000-0000-0000-000000000301',false),
+    ( 2,'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee','bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','Lớp Thiết kế UI/UX K01',     'L-UIUX-K01','22222222-0000-0000-0000-000000000400','22222222-0000-0000-0000-000000000401',false),
+    ( 3,'ffffffff-ffff-ffff-ffff-ffffffffffff','cccccccc-cccc-cccc-cccc-cccccccccccc','Lớp Content Marketing K01',  'L-CONT-K01','22222222-0000-0000-0000-000000000600','22222222-0000-0000-0000-000000000601',false),
+    ( 4,'abcdefab-cdef-cdef-cdef-abcdefabcdef','cccccccc-cccc-cccc-cccc-cccccccccccc','Lớp Thiết kế Đồ hoạ K01',    'L-GRAP-K01','22222222-0000-0000-0000-000000000700','22222222-0000-0000-0000-000000000701',false),
+    ( 5,'c1000000-0000-0000-0000-000000000005','bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','Lớp Lập trình Web K02',      'L-WEB-K02', 'd2000000-0000-0000-0000-000000000051','d2000000-0000-0000-0000-000000000052',true),
+    ( 6,'c1000000-0000-0000-0000-000000000006','bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','Lớp Phân tích dữ liệu K01',  'L-DATA-K01','d2000000-0000-0000-0000-000000000061','d2000000-0000-0000-0000-000000000062',true),
+    ( 7,'c1000000-0000-0000-0000-000000000007','cccccccc-cccc-cccc-cccc-cccccccccccc','Lớp Digital Marketing K01',  'L-DIGI-K01','d2000000-0000-0000-0000-000000000071','d2000000-0000-0000-0000-000000000072',true),
+    ( 8,'c1000000-0000-0000-0000-000000000008','ba000000-0000-0000-0000-000000000003','Lớp Kỹ năng bán hàng K01',   'L-SALE-K01','d2000000-0000-0000-0000-000000000081','d2000000-0000-0000-0000-000000000082',true),
+    ( 9,'c1000000-0000-0000-0000-000000000009','ba000000-0000-0000-0000-000000000003','Lớp Quản trị bán hàng K01',  'L-SMGT-K01','d2000000-0000-0000-0000-000000000091','d2000000-0000-0000-0000-000000000092',true),
+    (10,'c1000000-0000-0000-0000-000000000010','ba000000-0000-0000-0000-000000000003','Lớp Chăm sóc khách hàng K01','L-CARE-K01','d2000000-0000-0000-0000-000000000101','d2000000-0000-0000-0000-000000000102',true),
+    (11,'c1000000-0000-0000-0000-000000000011','ba000000-0000-0000-0000-000000000004','Lớp Tiếng Anh giao tiếp K01','L-ENCO-K01','d2000000-0000-0000-0000-000000000111','d2000000-0000-0000-0000-000000000112',true),
+    (12,'c1000000-0000-0000-0000-000000000012','ba000000-0000-0000-0000-000000000004','Lớp Tiếng Anh thương mại K01','L-ENBI-K01','d2000000-0000-0000-0000-000000000121','d2000000-0000-0000-0000-000000000122',true),
+    (13,'c1000000-0000-0000-0000-000000000013','ba000000-0000-0000-0000-000000000004','Lớp Tiếng Nhật N4 K01',      'L-JPN4-K01','d2000000-0000-0000-0000-000000000131','d2000000-0000-0000-0000-000000000132',true),
+    (14,'c1000000-0000-0000-0000-000000000014','ba000000-0000-0000-0000-000000000005','Lớp Kỹ năng thuyết trình K01','L-PRES-K01','d2000000-0000-0000-0000-000000000141','d2000000-0000-0000-0000-000000000142',true),
+    (15,'c1000000-0000-0000-0000-000000000015','ba000000-0000-0000-0000-000000000005','Lớp Kỹ năng lãnh đạo K01',   'L-LEAD-K01','d2000000-0000-0000-0000-000000000151','d2000000-0000-0000-0000-000000000152',true),
+    (16,'c1000000-0000-0000-0000-000000000016','ba000000-0000-0000-0000-000000000005','Lớp Quản lý thời gian K01',  'L-TIME-K01','d2000000-0000-0000-0000-000000000161','d2000000-0000-0000-0000-000000000162',true);
+
+-- 19.3 LỚP HỌC MỚI (12) — path do trigger trg_set_org_path tự sinh
+INSERT INTO org_units (id, name, code, parent_id, org_hierarchy_id, district_id, status)
+SELECT c.class_id, c.class_name, c.class_code, c.khoa_id,
+       '23333333-3333-3333-3333-333333333333',
+       'b1000000-0000-0000-0000-000000000001', 'ACTIVE'
+FROM _kp_seed_class c
+WHERE c.is_new;
+
+-- 19.4 ĐỢT KPI MỚI (T1–T3/2026) — để có 2 kỳ đánh giá và đường xu hướng 6 điểm
+--      Dùng prefix 3a000000 vì dải 33333333-…-0000000001xx đã thuộc về org
+--      "Demo Education" (mục 10) — trùng sẽ vi phạm kpi_periods_pkey.
+INSERT INTO kpi_periods (id, organization_id, name, period_type, start_date, end_date, notification_date) VALUES
+    ('3a000000-0000-0000-0000-000000000101', '11111111-1111-1111-1111-111111111111',
+     'Tháng 1/2026', 'MONTHLY', '2026-01-01 00:00:00+07', '2026-01-31 23:59:59+07', '2026-01-15 00:00:00+07'),
+    ('3a000000-0000-0000-0000-000000000102', '11111111-1111-1111-1111-111111111111',
+     'Tháng 2/2026', 'MONTHLY', '2026-02-01 00:00:00+07', '2026-02-28 23:59:59+07', '2026-02-15 00:00:00+07'),
+    ('3a000000-0000-0000-0000-000000000103', '11111111-1111-1111-1111-111111111111',
+     'Tháng 3/2026', 'MONTHLY', '2026-03-01 00:00:00+07', '2026-03-31 23:59:59+07', '2026-03-15 00:00:00+07');
+
+-- 19.5 NHÂN SỰ 3 KHOA MỚI (mật khẩu giống seed cũ: Demo123@)
+INSERT INTO users (id, email, password, full_name, employee_code, phone, status, is_email_verified, has_seen_onboarding) VALUES
+    ('d1000000-0000-0000-0000-000000000031','truongkhoa.kd@keyperson.vn', '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q','Nguyễn Hữu Thắng',  'KP031','0901000031','ACTIVE',true,false),
+    ('d1000000-0000-0000-0000-000000000032','phokhoa.kd@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q','Trần Thị Quỳnh Nga','KP032','0901000032','ACTIVE',true,false),
+    ('d1000000-0000-0000-0000-000000000041','truongkhoa.nn@keyperson.vn','$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q','Lê Đình Phong',     'KP041','0901000041','ACTIVE',true,false),
+    ('d1000000-0000-0000-0000-000000000042','phokhoa.nn@keyperson.vn',   '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q','Phạm Thị Hải Yến',  'KP042','0901000042','ACTIVE',true,false),
+    ('d1000000-0000-0000-0000-000000000051','truongkhoa.knm@keyperson.vn','$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q','Vũ Quang Huy',     'KP051','0901000051','ACTIVE',true,false),
+    ('d1000000-0000-0000-0000-000000000052','phokhoa.knm@keyperson.vn',  '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q','Đỗ Thị Phương Thảo','KP052','0901000052','ACTIVE',true,false);
+
+INSERT INTO user_role_org_units (user_id, role_id, org_unit_id) VALUES
+    ('d1000000-0000-0000-0000-000000000031','b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','ba000000-0000-0000-0000-000000000003'),
+    ('d1000000-0000-0000-0000-000000000032','c3cccccc-cccc-cccc-cccc-cccccccccccc','ba000000-0000-0000-0000-000000000003'),
+    ('d1000000-0000-0000-0000-000000000041','b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','ba000000-0000-0000-0000-000000000004'),
+    ('d1000000-0000-0000-0000-000000000042','c3cccccc-cccc-cccc-cccc-cccccccccccc','ba000000-0000-0000-0000-000000000004'),
+    ('d1000000-0000-0000-0000-000000000051','b2bbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb','ba000000-0000-0000-0000-000000000005'),
+    ('d1000000-0000-0000-0000-000000000052','c3cccccc-cccc-cccc-cccc-cccccccccccc','ba000000-0000-0000-0000-000000000005');
+
+-- 19.6 GIẢNG VIÊN CHỦ NHIỆM + TRỢ GIẢNG cho 12 lớp mới (24 người)
+INSERT INTO users (id, email, password, full_name, employee_code, phone, status, is_email_verified, has_seen_onboarding)
+SELECT s.uid,
+       s.mail,
+       '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q',
+       (ARRAY['Nguyễn','Trần','Lê','Phạm','Hoàng','Vũ','Đặng','Bùi','Đỗ','Hồ','Ngô','Dương','Lý','Phan','Trịnh','Đinh'])[1 + ((c.idx * 5 + s.k * 3) % 16)]
+         || ' ' || (ARRAY['Văn','Thị','Minh','Quốc','Thu','Hải','Ngọc','Anh'])[1 + ((c.idx + s.k) % 8)]
+         || ' ' || (ARRAY['An','Bình','Chi','Dũng','Giang','Hà','Hùng','Khánh','Lan','Linh','Mai','Nam','Oanh','Phúc','Quân','Sơn','Thảo','Trang','Tuấn','Vy'])[1 + ((c.idx * 7 + s.k * 11) % 20)],
+       'KPGV' || lpad((c.idx * 10 + s.k)::text, 4, '0'),
+       '09' || lpad((20000000 + c.idx * 10 + s.k)::text, 8, '0'),
+       'ACTIVE', true, false
+FROM _kp_seed_class c
+CROSS JOIN LATERAL (VALUES
+    (1, c.gvcn_id, 'gvcn' || lpad(c.idx::text, 2, '0') || '@keyperson.vn'),
+    (2, c.tg_id,   'tg'   || lpad(c.idx::text, 2, '0') || '@keyperson.vn')
+) AS s(k, uid, mail)
+WHERE c.is_new;
+
+INSERT INTO user_role_org_units (user_id, role_id, org_unit_id)
+SELECT s.uid, s.role_id, c.class_id
+FROM _kp_seed_class c
+CROSS JOIN LATERAL (VALUES
+    (c.gvcn_id, 'e5eeeeee-eeee-eeee-eeee-eeeeeeeeeeee'::uuid),
+    (c.tg_id,   'e6eeeeee-eeee-eeee-eeee-eeeeeeeeeeef'::uuid)
+) AS s(uid, role_id)
+WHERE c.is_new
+ON CONFLICT DO NOTHING;
+
+-- 19.7 HỌC VIÊN — 8 người/lớp × 16 lớp = 128 học viên
+INSERT INTO users (id, email, password, full_name, employee_code, phone, status, is_email_verified, has_seen_onboarding)
+SELECT ('d3000000-0000-0000-0000-' || lpad((c.idx * 100 + g.s)::text, 12, '0'))::uuid,
+       'hv' || lpad(c.idx::text, 2, '0') || lpad(g.s::text, 2, '0') || '@keyperson.vn',
+       '$2a$12$w0uxjEGJpZyIwOHvTw6XQeS5HMbLLELeH5qdzr610d.RGEW9P.x8q',
+       (ARRAY['Nguyễn','Trần','Lê','Phạm','Hoàng','Vũ','Đặng','Bùi','Đỗ','Hồ','Ngô','Dương','Lý','Phan','Trịnh','Đinh'])[1 + ((c.idx * 7 + g.s * 3) % 16)]
+         || ' ' || (ARRAY['Văn','Thị','Minh','Quốc','Thu','Hải','Ngọc','Anh'])[1 + ((c.idx + g.s * 5) % 8)]
+         || ' ' || (ARRAY['An','Bình','Chi','Dũng','Giang','Hà','Hùng','Khánh','Lan','Linh','Mai','Nam','Oanh','Phúc','Quân','Sơn','Thảo','Trang','Tuấn','Vy'])[1 + ((c.idx * 3 + g.s * 7) % 20)],
+       'KPHV' || lpad((c.idx * 100 + g.s)::text, 4, '0'),
+       '09' || lpad((30000000 + c.idx * 100 + g.s)::text, 8, '0'),
+       'ACTIVE', true, false
+FROM _kp_seed_class c
+CROSS JOIN generate_series(1, 8) AS g(s);
+
+INSERT INTO user_role_org_units (user_id, role_id, org_unit_id)
+SELECT ('d3000000-0000-0000-0000-' || lpad((c.idx * 100 + g.s)::text, 12, '0'))::uuid,
+       'd4dddddd-dddd-dddd-dddd-dddddddddddd',
+       c.class_id
+FROM _kp_seed_class c
+CROSS JOIN generate_series(1, 8) AS g(s)
+ON CONFLICT DO NOTHING;
+
+-- 19.8 BÀI TẬP / CHỈ TIÊU (kpi_criteria)
+--      Sinh cho MỌI cặp (đơn vị × đợt) chưa có chỉ tiêu ⇒ tự lấp đúng phần thiếu:
+--      lớp+khoa cũ chỉ thiếu T1–T3, lớp+khoa mới thiếu cả T1–T6.
+INSERT INTO kpi_criteria
+    (id, org_unit_id, kpi_period_id, name, description, kpi_type, weight, frequency, status,
+     created_by, approved_by, submitted_at, approved_at)
+SELECT gen_random_uuid(), u.unit_id, p.id, t.nm, t.descr, 'QUANTITATIVE', 50, 'MONTHLY', 'APPROVED',
+       '22222222-0000-0000-0000-000000000100',
+       '22222222-0000-0000-0000-000000000100',
+       p.start_date + interval '1 day',
+       p.start_date + interval '2 day'
+FROM (
+    SELECT class_id AS unit_id, 2 AS lvl FROM _kp_seed_class
+    UNION ALL
+    SELECT DISTINCT khoa_id, 1 FROM _kp_seed_class
+) u
+CROSS JOIN (
+    SELECT id, start_date FROM kpi_periods
+    WHERE organization_id = '11111111-1111-1111-1111-111111111111' AND deleted_at IS NULL
+) p
+CROSS JOIN LATERAL (VALUES
+    (u.lvl, 1, 'Số bài tập hoàn thành',           'Số bài tập học viên nộp và được duyệt trong đợt'),
+    (u.lvl, 2, 'Tỉ lệ chuyên cần',                'Tỉ lệ buổi học có mặt đúng giờ trong đợt'),
+    (u.lvl, 3, 'Tỉ lệ học viên hoàn thành khoá',  'Tỉ lệ học viên hoàn thành đủ chương trình của khoa'),
+    (u.lvl, 4, 'Điểm hài lòng học viên',          'Điểm khảo sát hài lòng trung bình của học viên (thang 5)')
+) AS t(lvl, k, nm, descr)
+WHERE ((u.lvl = 2 AND t.k IN (1, 2)) OR (u.lvl = 1 AND t.k IN (3, 4)))
+  AND NOT EXISTS (
+      SELECT 1 FROM kpi_criteria kc
+      WHERE kc.org_unit_id = u.unit_id AND kc.kpi_period_id = p.id AND kc.deleted_at IS NULL
+  );
+
+INSERT INTO quantitative_kpi_details (kpi_criteria_id, target_value, minimum_value, unit)
+SELECT c.id, t.target, t.minv, t.unit
+FROM kpi_criteria c
+JOIN org_units ou             ON ou.id = c.org_unit_id
+JOIN org_hierarchy_levels ohl ON ohl.id = ou.org_hierarchy_id
+                             AND ohl.organization_id = '11111111-1111-1111-1111-111111111111'
+JOIN (VALUES
+    ('Số bài tập hoàn thành',          20.0::float8, 12.0::float8, 'bài'),
+    ('Tỉ lệ chuyên cần',               95.0,         75.0,         '%'),
+    ('Tỉ lệ học viên hoàn thành khoá', 90.0,         70.0,         '%'),
+    ('Điểm hài lòng học viên',          4.5,          3.5,         'điểm')
+) AS t(nm, target, minv, unit) ON t.nm = c.name
+WHERE c.deleted_at IS NULL
+  AND NOT EXISTS (SELECT 1 FROM quantitative_kpi_details d WHERE d.kpi_criteria_id = c.id);
+
+-- 19.9 GIAO BÀI TẬP: chỉ tiêu của LỚP → mọi học viên trong lớp;
+--      chỉ tiêu của KHOA → trưởng/phó khoa. Cũng lấp assignee cho chỉ tiêu seed cũ.
+INSERT INTO kpi_criteria_assignees (kpi_criteria_id, user_id)
+SELECT c.id, uro.user_id
+FROM kpi_criteria c
+JOIN org_units ou             ON ou.id = c.org_unit_id
+JOIN org_hierarchy_levels ohl ON ohl.id = ou.org_hierarchy_id
+                             AND ohl.organization_id = '11111111-1111-1111-1111-111111111111'
+JOIN user_role_org_units uro  ON uro.org_unit_id = c.org_unit_id
+JOIN roles r                  ON r.id = uro.role_id
+WHERE c.deleted_at IS NULL
+  AND ((ohl.level_order = 2 AND r.rank = 2) OR (ohl.level_order = 1 AND r.rank IN (0, 1)))
+ON CONFLICT DO NOTHING;
+
+-- 19.10 BÀI NỘP (kpi_submissions)
+--       actual = target × hệ số 0.72–1.19 lấy từ hash(user, chỉ tiêu) ⇒ phân tán đều,
+--       tất định, và có cả nhóm vượt chỉ tiêu lẫn nhóm chưa đạt cho biểu đồ.
+INSERT INTO kpi_submissions
+    (id, org_unit_id, kpi_criteria_id, submitted_by, actual_value, auto_score, note, status,
+     reviewed_by, review_note, reviewed_at, period_start, period_end)
+SELECT gen_random_uuid(),
+       c.org_unit_id,
+       c.id,
+       a.user_id,
+       v.actual,
+       ROUND(LEAST(130.0, GREATEST(0.0, v.actual / NULLIF(q.target_value, 0) * 100))::numeric, 1)::float8,
+       v.actual::text || ' ' || q.unit,
+       'APPROVED',
+       COALESCE(cl.gvcn_id, '22222222-0000-0000-0000-000000000100'::uuid),
+       CASE WHEN v.actual >= q.target_value THEN 'Đạt yêu cầu' ELSE 'Cần cải thiện thêm' END,
+       p.end_date + interval '3 day',
+       p.start_date,
+       p.end_date
+FROM kpi_criteria c
+JOIN kpi_criteria_assignees a   ON a.kpi_criteria_id = c.id
+JOIN quantitative_kpi_details q ON q.kpi_criteria_id = c.id
+JOIN kpi_periods p              ON p.id = c.kpi_period_id
+LEFT JOIN _kp_seed_class cl     ON cl.class_id = c.org_unit_id
+CROSS JOIN LATERAL (
+    SELECT ROUND((q.target_value * (0.72 +
+        ((('x' || substr(md5(a.user_id::text || c.id::text), 1, 8))::bit(32)::bigint & 2147483647) % 48) / 100.0
+    ))::numeric, 1)::float8 AS raw
+) r
+CROSS JOIN LATERAL (
+    SELECT CASE WHEN q.unit = '%' THEN LEAST(r.raw, 100.0::float8) ELSE r.raw END AS actual
+) v
+WHERE p.organization_id = '11111111-1111-1111-1111-111111111111'
+  AND c.deleted_at IS NULL
+  AND NOT EXISTS (
+      SELECT 1 FROM kpi_submissions s
+      WHERE s.kpi_criteria_id = c.id AND s.submitted_by = a.user_id AND s.deleted_at IS NULL
+  );
+
+-- 19.11 ĐÁNH GIÁ THEO ĐỢT (evaluations) — mọi thành viên × mọi đợt còn thiếu.
+--       Người đánh giá = trưởng đơn vị CHA (rank 0), fallback Giám đốc Trung tâm.
+--       Điểm ở đây chỉ là giá trị khởi tạo: 2 block UPDATE cuối file sẽ nắn lại
+--       theo ma trận hiệu suất + phân bố hình chuông.
+INSERT INTO evaluations
+    (id, org_unit_id, user_id, kpi_period_id, evaluator_id, score, comment, system_score,
+     period_start, period_end)
+SELECT gen_random_uuid(),
+       uro.org_unit_id,
+       uro.user_id,
+       p.id,
+       COALESCE((
+           SELECT u2.user_id
+           FROM user_role_org_units u2
+           JOIN roles r2 ON r2.id = u2.role_id AND r2.rank = 0
+           WHERE u2.org_unit_id = ou.parent_id
+           LIMIT 1
+       ), '22222222-0000-0000-0000-000000000100'::uuid),
+       sc.score,
+       'Kết quả học tập trong đợt',
+       sc.score,
+       p.start_date,
+       p.end_date
+FROM (
+    -- Một người có thể giữ nhiều vai trò; chỉ lấy MỘT đơn vị/người để không sinh
+    -- hai bản đánh giá trùng đợt (NOT EXISTS bên dưới không chặn được trùng
+    -- trong cùng một câu INSERT).
+    SELECT DISTINCT ON (uro0.user_id) uro0.user_id, uro0.org_unit_id
+    FROM user_role_org_units uro0
+    JOIN org_units ou0             ON ou0.id = uro0.org_unit_id AND ou0.deleted_at IS NULL
+    JOIN org_hierarchy_levels ohl0 ON ohl0.id = ou0.org_hierarchy_id
+                                  AND ohl0.organization_id = '11111111-1111-1111-1111-111111111111'
+    JOIN roles r0                  ON r0.id = uro0.role_id
+    ORDER BY uro0.user_id, r0.level DESC, r0.rank ASC
+) uro
+JOIN org_units ou             ON ou.id = uro.org_unit_id
+CROSS JOIN (
+    SELECT id, start_date, end_date FROM kpi_periods
+    WHERE organization_id = '11111111-1111-1111-1111-111111111111' AND deleted_at IS NULL
+) p
+CROSS JOIN LATERAL (
+    SELECT (65 + ((('x' || substr(md5(uro.user_id::text || p.id::text), 1, 8))::bit(32)::bigint & 2147483647) % 33))::float8 AS score
+) sc
+WHERE ou.deleted_at IS NULL
+  AND NOT EXISTS (
+      SELECT 1 FROM evaluations e
+      WHERE e.user_id = uro.user_id AND e.kpi_period_id = p.id AND e.deleted_at IS NULL
+  );
+
+-- 19.12 KỲ ĐÁNH GIÁ (kpi_cycles) — gom 6 đợt thành 2 quý
+INSERT INTO kpi_cycles (id, organization_id, name, cycle_type, start_date, end_date, description, evaluation_mode) VALUES
+    ('c0000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111',
+     'Quý 1/2026', 'QUARTERLY', '2026-01-01 00:00:00+07', '2026-03-31 23:59:59+07',
+     'Kỳ đánh giá tổng hợp quý 1/2026 (đợt T1–T3)', 'BOTH'),
+    ('c0000000-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111',
+     'Quý 2/2026', 'QUARTERLY', '2026-04-01 00:00:00+07', '2026-06-30 23:59:59+07',
+     'Kỳ đánh giá tổng hợp quý 2/2026 (đợt T4–T6)', 'BOTH');
+
+UPDATE kpi_periods
+SET kpi_cycle_id = CASE WHEN start_date < '2026-04-01 00:00:00+07'
+                        THEN 'c0000000-0000-0000-0000-000000000001'::uuid
+                        ELSE 'c0000000-0000-0000-0000-000000000002'::uuid END
+WHERE organization_id = '11111111-1111-1111-1111-111111111111';
+
+
 -- ============================================================
--- (TEST) Điểm ma trận cho đánh giá của ORG DEMO — để test "hiệu suất theo performance matrix (điểm)".
+-- (TEST) Điểm ma trận cho đánh giá của org Keyperson — để test "hiệu suất theo performance matrix (điểm)".
 -- Suy từ score có sẵn: behavior_score (0..4.5) và kpi_completion_percent (%) — CÓ vài mốc "vượt chỉ tiêu"
 -- (>110%, >120%) cho nhóm điểm cao để dữ liệu chạm được các ô loại 4/5 của ma trận.
 -- QUAN TRỌNG: matrix_rating TRA ĐÚNG Ô ma trận từ (điểm hành vi × % hoàn thành) — KHÔNG chia dải theo score.
@@ -2376,41 +2675,26 @@ WHERE e.org_unit_id IN (
 );
 
 -- ============================================================================
--- (TEST) Nắn phân bố XẾP LOẠI thành viên org "Trường Demo" thành HÌNH CHUÔNG
+-- (TEST) Nắn phân bố XẾP LOẠI thành viên org "Keyperson" thành HÌNH CHUÔNG
 --        (dàn đủ 5 hạng, tập trung ở giữa) — phục vụ test thống kê xếp loại đơn vị.
 --        GHI ĐÈ kết quả matrix_rating suy ở block trên cho org 11111111-… : gán lại
 --        hạng theo phân bố 10/20/40/20/10 và ĐỒNG BỘ score / behavior_score /
 --        kpi_completion_percent / matrix_rating (mỗi bộ tra ĐÚNG ô ma trận = hạng)
 --        để donut xếp loại, đường phân phối, heatmap, BSC và thang điểm cùng khớp.
---        Phân nhóm theo KHOA × KỲ để cả Trường lẫn từng khoa đều cong ở giữa.
+--        Phân nhóm theo KHOA × ĐỢT để cả Trung tâm lẫn từng khoa đều cong ở giữa.
+--        Khoa được suy từ org_units.path ('/trung-tâm/khoa/lớp/') ⇒ tự áp dụng cho
+--        mọi khoa/lớp thêm mới, không phải liệt kê tay từng UUID.
 -- ============================================================================
 WITH grp AS (
     SELECT e.id,
            e.kpi_period_id,
            e.user_id,
-           CASE
-               WHEN e.org_unit_id IN (
-                   'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',  -- Khoa Kỹ thuật
-                   'dddddddd-dddd-dddd-dddd-dddddddddddd',  -- Bộ môn Lập trình
-                   'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee')  -- Bộ môn Giao diện
-                   THEN 'IT'
-               WHEN e.org_unit_id IN (
-                   'cccccccc-cccc-cccc-cccc-cccccccccccc',  -- Khoa Truyền thông
-                   'ffffffff-ffff-ffff-ffff-ffffffffffff',  -- Bộ môn Nội dung
-                   'abcdefab-cdef-cdef-cdef-abcdefabcdef')  -- Bộ môn Thiết kế
-                   THEN 'COMM'
-               ELSE 'BRANCH'                                -- Cơ sở Hà Nội
-           END AS grp
+           COALESCE(NULLIF(split_part(ou.path, '/', 3), ''), ou.id::text) AS grp
     FROM evaluations e
-    WHERE e.org_unit_id IN (
-        'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-        'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
-        'dddddddd-dddd-dddd-dddd-dddddddddddd',
-        'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee',
-        'cccccccc-cccc-cccc-cccc-cccccccccccc',
-        'ffffffff-ffff-ffff-ffff-ffffffffffff',
-        'abcdefab-cdef-cdef-cdef-abcdefabcdef')
-),
+    JOIN org_units ou             ON ou.id = e.org_unit_id
+    JOIN org_hierarchy_levels ohl ON ohl.id = ou.org_hierarchy_id
+    WHERE ohl.organization_id = '11111111-1111-1111-1111-111111111111'
+      AND e.deleted_at IS NULL),
 ranked AS (
     SELECT id,
            -- vị trí tương đối trong (nhóm, kỳ): (rn - 0.5) / cnt  ∈ (0, 1)
@@ -2448,3 +2732,117 @@ JOIN (VALUES
     (5, 100.0::numeric, 4.5::numeric, 125.0::numeric, 'XUẤT SẮC')    -- hàng5(≥4.5)   × cột5(≥120%)      = 5
 ) AS m(g, score, behavior_score, completion, label) ON m.g = x.g
 WHERE e.id = x.id;
+
+
+-- ============================================================================
+-- 20. KEYPERSON — ĐÁNH GIÁ THEO KỲ (cycle evaluation)
+-- Chạy SAU 2 block UPDATE ở trên để số liệu kỳ khớp đúng điểm đã được nắn
+-- (score / behavior_score / matrix_rating cuối cùng), không lệch với trang đợt.
+--
+-- Điểm của một ĐƠN VỊ = trung bình toàn bộ cây con của nó (dùng org_units.path),
+-- nên Trung tâm gộp mọi khoa, khoa gộp mọi lớp — đúng như cách service tính live.
+-- ============================================================================
+
+-- 20.1 Đánh giá tổng hợp của từng đơn vị theo kỳ
+INSERT INTO cycle_unit_evaluations
+    (id, kpi_cycle_id, org_unit_id, evaluation_mode, self_score, manager_score, qual_score,
+     matrix_rating, member_count, comment, status, finalized_by, finalized_at,
+     finalized_role_level, finalized_role_rank)
+SELECT gen_random_uuid(),
+       a.cycle_id,
+       a.unit_id,
+       'BOTH',
+       ROUND((a.sc * 0.97)::numeric, 1)::float8,          -- tự đánh giá thấp hơn chút
+       ROUND(a.sc::numeric, 1)::float8,
+       ROUND(a.bh::numeric, 1)::float8,
+       ROUND(a.mr::numeric, 1)::float8,
+       a.members,
+       CASE WHEN a.sc >= 85 THEN 'Đơn vị hoàn thành tốt mục tiêu đào tạo trong kỳ.'
+            WHEN a.sc >= 70 THEN 'Đơn vị hoàn thành mục tiêu, cần duy trì tỉ lệ chuyên cần.'
+            ELSE 'Đơn vị cần cải thiện chất lượng bài nộp và chuyên cần của học viên.' END,
+       a.status,
+       CASE WHEN a.status = 'FINALIZED' THEN COALESCE(mg.user_id, '22222222-0000-0000-0000-000000000100'::uuid) END,
+       CASE WHEN a.status = 'FINALIZED' THEN a.cycle_end + interval '4 day' END,
+       CASE WHEN a.status = 'FINALIZED' THEN COALESCE(mg.lvl, 2) END,
+       CASE WHEN a.status = 'FINALIZED' THEN COALESCE(mg.rnk, 0) END
+FROM (
+    SELECT cy.id                              AS cycle_id,
+           cy.end_date                        AS cycle_end,
+           ou.id                              AS unit_id,
+           ohl.level_order                    AS lvl_order,
+           AVG(e.score)                       AS sc,
+           AVG(e.behavior_score)              AS bh,
+           AVG(e.matrix_rating)               AS mr,
+           COUNT(DISTINCT e.user_id)          AS members,
+           -- Kỳ Q1 đã chốt toàn bộ; kỳ Q2 mới chốt tới cấp khoa ⇒ Trung tâm còn DRAFT,
+           -- để trang "Đánh giá kỳ" hiển thị được luồng duyệt đang dở.
+           CASE WHEN cy.start_date < '2026-04-01 00:00:00+07' THEN 'FINALIZED'
+                WHEN ohl.level_order > 0 THEN 'FINALIZED'
+                ELSE 'DRAFT' END              AS status
+    FROM evaluations e
+    JOIN kpi_periods p             ON p.id = e.kpi_period_id AND p.deleted_at IS NULL
+    JOIN kpi_cycles cy             ON cy.id = p.kpi_cycle_id AND cy.deleted_at IS NULL
+    JOIN org_units eu              ON eu.id = e.org_unit_id
+    JOIN org_units ou              ON eu.path LIKE ou.path || '%'
+    JOIN org_hierarchy_levels ohl  ON ohl.id = ou.org_hierarchy_id
+                                  AND ohl.organization_id = '11111111-1111-1111-1111-111111111111'
+    WHERE e.deleted_at IS NULL AND ou.deleted_at IS NULL
+    GROUP BY cy.id, cy.end_date, cy.start_date, ou.id, ohl.level_order
+) a
+LEFT JOIN LATERAL (
+    SELECT uro.user_id, r.level AS lvl, r.rank AS rnk
+    FROM user_role_org_units uro
+    JOIN roles r ON r.id = uro.role_id AND r.rank = 0
+    WHERE uro.org_unit_id = a.unit_id
+    LIMIT 1
+) mg ON TRUE
+ON CONFLICT (kpi_cycle_id, org_unit_id) DO NOTHING;
+
+-- 20.2 Lịch sử chốt kỳ (dựng dòng thời gian duyệt trên UI)
+INSERT INTO cycle_unit_eval_events
+    (id, kpi_cycle_id, org_unit_id, action, actor_id, actor_role_name,
+     actor_role_level, actor_role_rank, manager_score, qual_score, matrix_rating,
+     member_count, comment, created_at)
+SELECT gen_random_uuid(), cue.kpi_cycle_id, cue.org_unit_id, 'FINALIZE',
+       cue.finalized_by,
+       COALESCE(r.name, 'Giám đốc Trung tâm'),
+       cue.finalized_role_level, cue.finalized_role_rank,
+       cue.manager_score, cue.qual_score, cue.matrix_rating, cue.member_count,
+       cue.comment, cue.finalized_at
+FROM cycle_unit_evaluations cue
+JOIN kpi_cycles cy ON cy.id = cue.kpi_cycle_id
+                  AND cy.organization_id = '11111111-1111-1111-1111-111111111111'
+LEFT JOIN LATERAL (
+    SELECT r2.name
+    FROM user_role_org_units uro2
+    JOIN roles r2 ON r2.id = uro2.role_id AND r2.rank = 0
+    WHERE uro2.org_unit_id = cue.org_unit_id AND uro2.user_id = cue.finalized_by
+    LIMIT 1
+) r ON TRUE
+WHERE cue.status = 'FINALIZED' AND cue.finalized_at IS NOT NULL;
+
+-- 20.3 Điểm chốt kỳ của từng học viên / giảng viên
+INSERT INTO cycle_user_evaluations
+    (id, kpi_cycle_id, user_id, final_score, qual_score, matrix_rating, comment,
+     evaluated_by, evaluated_at)
+SELECT gen_random_uuid(),
+       cy.id,
+       e.user_id,
+       ROUND(AVG(e.score)::numeric, 1)::float8,
+       ROUND(AVG(e.behavior_score)::numeric, 1)::float8,
+       GREATEST(1, LEAST(5, ROUND(AVG(e.matrix_rating))::int)),
+       CASE WHEN AVG(e.score) >= 85 THEN 'Kết quả học tập xuất sắc, duy trì phong độ.'
+            WHEN AVG(e.score) >= 70 THEN 'Kết quả học tập ổn định, cần đẩy mạnh bài thực hành.'
+            ELSE 'Cần cải thiện chuyên cần và chất lượng bài nộp trong kỳ tới.' END,
+       '22222222-0000-0000-0000-000000000100',
+       cy.end_date + interval '5 day'
+FROM evaluations e
+JOIN kpi_periods p ON p.id = e.kpi_period_id AND p.deleted_at IS NULL
+JOIN kpi_cycles cy ON cy.id = p.kpi_cycle_id AND cy.deleted_at IS NULL
+WHERE p.organization_id = '11111111-1111-1111-1111-111111111111'
+  AND e.deleted_at IS NULL
+GROUP BY cy.id, cy.end_date, e.user_id
+ON CONFLICT (kpi_cycle_id, user_id) DO NOTHING;
+
+-- 20.4 Dọn bảng phụ
+DROP TABLE _kp_seed_class;
