@@ -231,10 +231,10 @@ export default function LoginPage() {
 
 const DEMO_ACCOUNTS = [
   {
-    email: 'director@demo.com',
+    email: 'giamdoc@keyperson.vn',
     password: 'Demo123@',
-    role: 'Hiệu Trưởng',
-    org: 'Trường Demo',
+    role: 'Giám đốc Trung tâm',
+    org: 'Keyperson',
     icon: Crown,
   },
   {
